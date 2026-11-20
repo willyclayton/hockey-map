@@ -131,7 +131,7 @@ function selectPlayer(i, opts = {}) {
   if (!M.players[i]) return;
   if (state.player === i) { replayRoute(); return; }
   const prev = push ? pushStack() : null;
-  showPlayer(i, { dir: push ? 'forward' : 'fade', snap: snap || 'half' });
+  showPlayer(i, { dir: push ? 'forward' : 'fade', snap: snap || 'peek' });
   commit(push ? 'push' : 'replace', push ? !prev : undefined);
   fitPlayer(i);
 }
@@ -185,7 +185,7 @@ function showPlayer(i, o) {
   renderPlayerPanel(M.players[i], o);
 }
 function show(sel, dir) {
-  if (sel.player != null) showPlayer(sel.player, { dir, view: sel.view, snap: 'half' });
+  if (sel.player != null) showPlayer(sel.player, { dir, view: sel.view, snap: 'peek' });
   else showTeam(sel.team, { dir, view: sel.view, snap: 'half' });
 }
 function hideAll() {

@@ -1,36 +1,96 @@
 /* map.css: SVG map, badges, links, paths — map */
 /* ------------------------------------------------------------------ map */
-#map { position: absolute; inset: 0; background: radial-gradient(1200px 800px at 50% 40%, var(--ocean-2), var(--ocean) 60%, var(--bg)); }
-#map svg { width: 100%; height: 100%; display: block; cursor: grab; touch-action: none; }
+#map { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(1200px 800px at 50% 40%, var(--ocean-2), var(--ocean) 60%, var(--bg)); }
+#map svg { width: 100%; height: 100%; display: block; cursor: grab; touch-action: none; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; outline: none; }
 #map svg:active { cursor: grabbing; }
+#map svg.pointing { cursor: pointer; }
+#map svg:focus-visible { outline: 2px solid rgba(124, 196, 255, .5); outline-offset: -4px; border-radius: 6px; }
 .graticule { fill: none; stroke: rgba(124, 196, 255, 0.05); stroke-width: 0.6; }
 .country { fill: var(--land); stroke: var(--country-stroke); stroke-width: 0.8; vector-effect: non-scaling-stroke; }
 .country.other { fill: #101d31; stroke: #2a4366; }
 .state { fill: var(--land-2); stroke: var(--land-stroke); stroke-width: 0.5; vector-effect: non-scaling-stroke; transition: fill .3s; }
-.coast-glow { fill: none; stroke: rgba(124, 196, 255, 0.10); stroke-width: 6; vector-effect: non-scaling-stroke; filter: blur(3px); }
+.coast-glow { fill: none; stroke: rgba(124, 196, 255, 0.07); stroke-width: 7; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 
+/* ------------------------------------------------------------------ links */
 .link { fill: none; stroke-linecap: round; pointer-events: none; }
-.link.aff { stroke: url(#aff-grad); }
-.link.web { mix-blend-mode: screen; }
-.link.hot { pointer-events: visibleStroke; cursor: pointer; }
-.flow { stroke-dasharray: 2 10; animation: flow 1.2s linear infinite; }
+.aff-layer, .web-layer, .web-glow-layer { transition: opacity .3s ease; }
+.link.hot { pointer-events: visibleStroke; cursor: pointer; transition: opacity .2s ease, stroke-opacity .2s ease; }
+.web-glow { stroke-opacity: .14; animation: map-fade-in .8s ease-out both; }
+.web-layer.has-emph .web.hot:not(.emph) { opacity: .3; }
+.web.emph { stroke-opacity: 1; filter: drop-shadow(0 0 4px rgba(255, 255, 255, .45)); }
+.affl.emph .aff-base { stroke-opacity: 1; stroke-width: 3.6px; }
+/* a few beats of flow from parent club to affiliate, then it rests (a looping dash repaints the map every frame) */
+.flow { stroke-dasharray: 2 10; animation: flow 1.2s linear 4; }
+.aff-glow { stroke: #fff; stroke-opacity: .12; }
 @keyframes flow { to { stroke-dashoffset: -24; } }
-.path-line { fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 6px rgba(124,196,255,.8)); }
+
+/* hover preview of a team's web (nothing selected) */
+.map-svg.previewing .web-layer, .map-svg.previewing .aff-layer { opacity: .18; }
+.pv { stroke-opacity: .7; animation: map-fade-in .3s ease-out both; }
+.pv.aff { stroke-dasharray: 4 5; stroke-opacity: .85; }
+
+/* career route */
+.route-glow { fill: none; stroke: var(--accent); stroke-width: 8; stroke-opacity: .2; stroke-linecap: round; }
+.route-line { fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; }
+.path-stop { cursor: pointer; }
+.path-stop rect { fill: #f3f6fb; stroke: var(--c, var(--accent)); stroke-width: 2; }
 .path-stop text { font: 700 11px var(--display); fill: #06101f; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
-.path-stop circle { fill: #fff; stroke: var(--accent); stroke-width: 2; }
 
-.anchor { fill: rgba(238, 243, 250, 0.55); pointer-events: none; }
-.leader { stroke: rgba(238, 243, 250, 0.28); stroke-width: 1; pointer-events: none; }
-.team { cursor: pointer; transition: opacity .25s; }
-.team .halo { fill: none; stroke-width: 6; opacity: 0; transition: opacity .2s; }
-.team .ring { stroke-width: 2.5; }
+/* leader lines from displaced badges to their arena */
+.leader { fill: none; stroke: rgba(238, 243, 250, 0.3); stroke-width: 1; pointer-events: none; }
+.leader.dim { stroke: rgba(238, 243, 250, 0.1); }
+.anchor { fill: none; stroke: rgba(238, 243, 250, 0.6); stroke-width: 3.2; stroke-linecap: round; pointer-events: none; }
+.anchor.dim { stroke: rgba(238, 243, 250, 0.18); }
+
+/* ------------------------------------------------------------------ team badges */
+/* geometry is drawn at base size and scaled by the group transform; strokes keep their px width */
+.team { cursor: pointer; transition: opacity .3s ease; }
+.team.entering, .team.leaving { transition: none; }
+.team.leaving { pointer-events: none; }
+.team .halo { fill: none; stroke: var(--c); stroke-width: 5; opacity: var(--halo-o, 0); vector-effect: non-scaling-stroke; transition: opacity .2s ease, stroke-width .2s ease; }
+.team .shadow { fill: rgba(0, 0, 0, .42); }
 .team .disc { fill: var(--badge); }
+.team .ring { fill: none; stroke: var(--c); stroke-width: 2.5; vector-effect: non-scaling-stroke; }
 .team .abbr { font: 700 9px var(--display); fill: #0b1627; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
-.team:hover .halo, .team.selected .halo, .team.kb .halo { opacity: .55; }
+.team.tiny .disc { fill: var(--c); }
+.team.tiny image, .team.tiny .abbr, .team.tiny .shadow { display: none; }
+.map-svg.rating .team .ring { stroke-width: 4; }
+.team.selected .halo { opacity: .55; stroke-width: 6; }
 .team.selected .ring { stroke-width: 3.5; }
-.team.dim { opacity: .16; }
-.team.dim:hover { opacity: .8; }
-.team-label { font: 600 12px var(--display); letter-spacing: .02em; fill: var(--text); paint-order: stroke; stroke: rgba(6, 11, 20, .92); stroke-width: 3.5px; pointer-events: none; text-anchor: middle; }
-.count-badge circle { fill: #0a1220; stroke-width: 1.5; }
-.count-badge text { font: 700 10px var(--display); fill: #fff; text-anchor: middle; dominant-baseline: central; }
+.team.peer .halo { opacity: .4; }
+.team.hl .halo { opacity: .8; stroke-width: 10; }
+.team.hl .ring { stroke-width: 3.2; }
+/* dimmed teams stay legible as buttons: ring keeps its color, the badge just recedes */
+.team.dim { opacity: .4; }
+.team.dim.hl { opacity: 1; }
+.map-svg.previewing .team:not(.peer):not(.hl) { opacity: .45; }
 
+/* count of shared players on linked teams */
+.count-badge { pointer-events: none; animation: map-fade-in .3s ease-out both; }
+.count-badge rect { fill: #0b1526; stroke-width: 1.5; }
+.count-badge text { font: 700 10.5px var(--display); fill: #fff; text-anchor: middle; dominant-baseline: central; }
+.count-badge.emph rect { fill: #16243b; stroke-width: 2.2; }
+
+/* ------------------------------------------------------------------ labels */
+.team-label { font: 600 12px var(--display); letter-spacing: .02em; fill: var(--text); paint-order: stroke; stroke: rgba(6, 11, 20, .92); stroke-width: 3.5px; stroke-linejoin: round; pointer-events: none; opacity: 0; transition: opacity .2s ease; }
+.team-label.on { opacity: 1; animation: map-fade-in .22s ease-out; }
+.team-label.sel { font-size: 14px; font-weight: 700; }
+.team-label.hot { font-size: 13px; }
+.team-label.zoom { font-size: 11.5px; fill: var(--text-2); }
+
+/* ------------------------------------------------------------------ effects overlay (HTML, composited) */
+.map-fx { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.sel-pulse, .ping { position: absolute; left: 0; top: 0; width: 0; height: 0; will-change: translate; }
+.sel-pulse, .ping { --d: 30px; }
+.sel-pulse i { position: absolute; left: calc(var(--d) / -2); top: calc(var(--d) / -2); width: var(--d); height: var(--d); border-radius: 50%; border: 2px solid var(--c, var(--accent)); opacity: 0; animation: sel-pulse 2.8s cubic-bezier(.2, .6, .35, 1) infinite; }
+.sel-pulse i + i { animation-delay: 1.4s; }
+@keyframes sel-pulse { 0% { scale: 1; opacity: .6; } 100% { scale: 2.1; opacity: 0; } }
+.ping::before { content: ""; position: absolute; left: calc(var(--d) / -2); top: calc(var(--d) / -2); width: var(--d); height: var(--d); border-radius: 50%; border: 2.5px solid var(--c, var(--accent)); box-shadow: 0 0 12px var(--c, var(--accent)); animation: ping .75s cubic-bezier(.2, .7, .3, 1) forwards; }
+@keyframes ping { 0% { scale: .9; opacity: .95; } 100% { scale: 2.3; opacity: 0; } }
+
+@keyframes map-fade-in { from { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .sel-pulse, .ping { display: none; }
+  .flow { animation: none; stroke-dasharray: none; }
+}
