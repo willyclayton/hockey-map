@@ -20,70 +20,92 @@
     <div id="map" aria-label="Map of hockey teams"></div>
 
     <header class="topbar">
-      <div class="brand">
+      <a class="brand" id="brand" href="./" aria-label="Hockey Atlas: show the whole map" data-tip="Show the whole map">
         <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
-          <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="2" opacity=".5"/>
+          <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="2" opacity=".45"/>
+          <path d="M11 14 20 20 28 11M20 20 30 26M20 20 14 28M11 14 14 28M28 11 30 26" stroke="currentColor" stroke-width="1.2" fill="none" opacity=".65"/>
           <circle cx="11" cy="14" r="2.6" fill="currentColor"/><circle cx="28" cy="11" r="2.6" fill="currentColor"/>
           <circle cx="30" cy="26" r="2.6" fill="currentColor"/><circle cx="14" cy="28" r="2.6" fill="currentColor"/>
-          <circle cx="20" cy="20" r="3.4" fill="currentColor"/>
-          <path d="M11 14 20 20 28 11M20 20 30 26M20 20 14 28M11 14 14 28M28 11 30 26" stroke="currentColor" stroke-width="1.2" fill="none" opacity=".7"/>
+          <circle cx="20" cy="20" r="3.6" fill="#eef3fa"/>
         </svg>
-        <div>
+        <div class="brand-text">
           <h1>Hockey Atlas</h1>
-          <p class="tagline" id="tagline">Every team. Every connection.</p>
+          <span class="tagline" id="tagline">Every team. Every connection.</span>
         </div>
-      </div>
+      </a>
 
-      <div class="search" role="search">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        <input id="search" type="search" placeholder="Search teams or players…" autocomplete="off" spellcheck="false" aria-label="Search teams or players">
-        <kbd>/</kbd>
-        <div id="search-results" class="search-results" role="listbox" hidden></div>
+      <div class="search" id="search-box" role="search">
+        <svg class="search-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-4.2-4.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="search" type="search" role="combobox" placeholder="Search teams or players" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go" aria-label="Search teams or players" aria-autocomplete="list" aria-expanded="false" aria-controls="search-results">
+        <button class="search-clear" id="search-clear" type="button" aria-label="Clear search" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </button>
+        <kbd class="search-kbd" aria-hidden="true">/</kbd>
+        <div id="search-results" class="search-results" role="listbox" aria-label="Search results" hidden></div>
       </div>
 
       <div class="top-actions">
-        <button id="btn-leaderboard" class="btn" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10M12 20V4M19 20v-7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        <button id="btn-leaderboard" class="btn" type="button" aria-label="Rankings" data-tip="Connection rankings for every team">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20v-7M12 20V5M19 20v-10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
           <span>Rankings</span>
         </button>
-        <button id="btn-about" class="btn btn-icon" type="button" aria-label="How it works">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 11v6M12 7.5v.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        <button id="btn-about" class="btn btn-icon" type="button" aria-label="How it works" data-tip="How it works">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 11v5.5M12 7.6v.4" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
         </button>
       </div>
     </header>
 
-    <nav class="filters" aria-label="League filters">
+    <nav class="filters" id="filters" aria-label="League filters">
       <div class="filter-group" id="league-filters" role="group" aria-label="Leagues"></div>
     </nav>
 
-    <section class="controls" id="controls" aria-label="Map settings">
-      <div class="ctl-row">
-        <span class="ctl-label">Layers</span>
-        <div class="filter-group" role="group" aria-label="Map layers">
-          <button class="chip layer" data-layer="aff" aria-pressed="true" type="button"><span class="swatch-line aff"></span>Affiliates</button>
-          <button class="chip layer" data-layer="web" aria-pressed="true" type="button"><span class="swatch-line web"></span>Player web</button>
-        </div>
+    <div class="dock" id="dock">
+      <section class="controls" id="controls" aria-label="Map settings">
+        <button class="ctl-head" id="btn-controls" type="button" aria-controls="ctl-body" aria-expanded="true">
+          <svg class="ctl-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5 3.5 8 12 12.5 20.5 8 12 3.5Z" fill="currentColor" fill-opacity=".18"/><path d="M12 3.5 3.5 8 12 12.5 20.5 8 12 3.5Zm-8.5 8.5 8.5 4.5 8.5-4.5M3.5 16l8.5 4.5 8.5-4.5" stroke="currentColor" stroke-width="1.9" fill="none" stroke-linejoin="round" stroke-linecap="round"/></svg>
+          <span class="ctl-title"><span class="lbl-long">Map settings</span><span class="lbl-short">Layers</span></span>
+          <span class="ctl-sum" id="ctl-sum" aria-hidden="true"></span>
+          <svg class="ctl-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="ctl-wrap"><div class="ctl-body" id="ctl-body"><div class="ctl-inner">
+          <div class="ctl-row">
+            <span class="ctl-label" id="lbl-layers">Layers</span>
+            <div class="filter-group" role="group" aria-labelledby="lbl-layers">
+              <button class="chip layer" data-layer="aff" aria-pressed="true" type="button" data-tip="Lines between NHL, AHL and ECHL affiliates"><span class="swatch-line aff"></span>Affiliates</button>
+              <button class="chip layer" data-layer="web" aria-pressed="true" type="button" data-tip="Lines between teams that share players"><span class="swatch-line web"></span>Player web</button>
+            </div>
+          </div>
+          <div class="ctl-row">
+            <span class="ctl-label" id="lbl-color">Color by</span>
+            <div class="seg" id="color-mode" role="group" aria-labelledby="lbl-color">
+              <button type="button" data-mode="league" aria-pressed="true">League</button>
+              <button type="button" data-mode="rating" aria-pressed="false">Rating</button>
+            </div>
+          </div>
+          <div class="ctl-row">
+            <label class="ctl-label" for="min-shared">Min. shared</label>
+            <div class="slider" data-tip="Hide web links with fewer shared players">
+              <input id="min-shared" type="range" min="1" max="8" value="1">
+              <output id="min-shared-out" for="min-shared">1 player</output>
+            </div>
+          </div>
+          <div class="legend" id="legend"></div>
+        </div></div></div>
+      </section>
+
+      <div class="zoom-ctl" role="group" aria-label="Zoom">
+        <button type="button" id="zoom-in" aria-label="Zoom in" data-tip="Zoom in" data-tip-key="+">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v12M6 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <button type="button" id="zoom-out" aria-label="Zoom out" data-tip="Zoom out" data-tip-key="−">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <button type="button" id="zoom-reset" aria-label="Reset view" data-tip="Reset view" data-tip-key="0">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v4h4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       </div>
-      <div class="ctl-row">
-        <span class="ctl-label">Color by</span>
-        <div class="seg" id="color-mode" role="group" aria-label="Color teams by">
-          <button type="button" data-mode="league" aria-pressed="true">League</button>
-          <button type="button" data-mode="rating" aria-pressed="false">Rating</button>
-        </div>
-      </div>
-      <div class="ctl-row">
-        <label class="ctl-label" for="min-shared">Min. shared</label>
-        <div class="slider" title="Hide web links with fewer shared players">
-          <input id="min-shared" type="range" min="1" max="8" value="1">
-          <output id="min-shared-out" for="min-shared">1 player</output>
-        </div>
-      </div>
-      <div class="legend" id="legend"></div>
-    </section>
-    <button class="btn ctl-toggle" id="btn-controls" type="button" aria-controls="controls" aria-expanded="false">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 3 8l9 5 9-5-9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/></svg>
-      <span>Layers</span>
-    </button>
+    </div>
+    <div class="scrim" id="scrim" hidden></div>
 
     <aside id="panel" class="panel" aria-live="polite" hidden>
       <button class="panel-close" id="panel-close" type="button" aria-label="Close panel">
@@ -97,28 +119,45 @@
       <div id="panel-body" class="panel-body"></div>
     </aside>
 
-    <div class="zoom-ctl">
-      <button type="button" id="zoom-in" aria-label="Zoom in">+</button>
-      <button type="button" id="zoom-out" aria-label="Zoom out">−</button>
-      <button type="button" id="zoom-reset" aria-label="Reset view">
-        <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="coach" id="coach" role="status" hidden>
+      <span class="coach-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 3.5v10.2l2.6-2.4 2 4.6 2.2-1-2-4.5 3.6-.2L8 3.5Z" fill="currentColor"/></svg></span>
+      <p><span class="only-fine"><b>Click any team</b> to see its web</span><span class="only-touch"><b>Tap any team</b> to see its web</span><span class="coach-sep only-fine" aria-hidden="true">·</span><span class="only-fine">press <kbd>/</kbd> to search</span></p>
+      <button class="coach-x" id="coach-x" type="button" aria-label="Dismiss tip">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
       </button>
     </div>
 
     <div id="tooltip" class="tooltip" role="tooltip" hidden></div>
+    <div id="hint" class="hint" role="tooltip" hidden></div>
 
     <div id="modal" class="modal" hidden>
-      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-        <button class="panel-close" data-close type="button" aria-label="Close">
-          <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+        <button class="modal-close" data-close type="button" aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
         </button>
-        <div id="modal-body"></div>
+        <div id="modal-body" class="modal-body"></div>
       </div>
     </div>
 
-    <div id="loading" class="loading">
-      <div class="puck"></div>
-      <p>Lacing up the skates…</p>
+    <div id="loading" class="loading" role="status" aria-live="polite">
+      <div class="loader">
+        <svg class="rink" viewBox="0 0 168 84" aria-hidden="true">
+          <rect class="board" x="2" y="2" width="164" height="80" rx="30"/>
+          <path class="goal" d="M14 9v66M154 9v66"/>
+          <path class="blue" d="M58 2v80M110 2v80"/>
+          <path class="red" d="M84 2v80"/>
+          <path class="crease" d="M14 35a7 7 0 0 1 0 14ZM154 35a7 7 0 0 0 0 14Z"/>
+          <circle class="circle" cx="84" cy="42" r="12"/>
+          <circle class="circle" cx="34" cy="24" r="9"/><circle class="circle" cx="34" cy="60" r="9"/>
+          <circle class="circle" cx="134" cy="24" r="9"/><circle class="circle" cx="134" cy="60" r="9"/>
+          <circle class="spot" cx="34" cy="24" r="1.4"/><circle class="spot" cx="34" cy="60" r="1.4"/>
+          <circle class="spot" cx="134" cy="24" r="1.4"/><circle class="spot" cx="134" cy="60" r="1.4"/>
+          <path class="trail" pathLength="100" d="M84,42 C104,16 136,16 136,42 C136,68 104,68 84,42 C64,16 32,16 32,42 C32,68 64,68 84,42 Z"/>
+          <g class="puck"><circle r="3.8"/></g>
+        </svg>
+        <div class="loader-brand">Hockey Atlas</div>
+        <p>Lacing up the skates…</p>
+      </div>
     </div>
   </div>
 
