@@ -1,0 +1,1889 @@
+{
+ "AHL-307": {
+  "wiki": "Hartford Wolf Pack",
+  "arena": "PeoplesBank Arena",
+  "city": "Hartford, Connecticut",
+  "affiliates": [
+   "New York Rangers",
+   "National Hockey League"
+  ],
+  "lat": 41.76833,
+  "lng": -72.67694
+ },
+ "AHL-309": {
+  "wiki": "Providence Bruins",
+  "arena": "Amica Mutual Pavilion",
+  "city": "Providence, Rhode Island",
+  "affiliates": [
+   "Boston Bruins",
+   "National Hockey League",
+   "Maine Mariners (ECHL)",
+   "ECHL"
+  ],
+  "lat": 41.82361,
+  "lng": -71.41833
+ },
+ "AHL-313": {
+  "wiki": "Lehigh Valley Phantoms",
+  "arena": "PPL Center",
+  "city": "Allentown, Pennsylvania",
+  "affiliates": [
+   "Philadelphia Flyers",
+   "National Hockey League",
+   "Reading Royals",
+   "ECHL"
+  ],
+  "lat": 40.6025,
+  "lng": -75.47278
+ },
+ "AHL-316": {
+  "wiki": "Wilkes-Barre/Scranton Penguins",
+  "arena": "Mohegan Arena at Casey Plaza",
+  "city": "Wilkes-Barre Township, Pennsylvania, U.S.",
+  "affiliates": [
+   "Pittsburgh Penguins",
+   "National Hockey League",
+   "Florida Everblades",
+   "ECHL"
+  ],
+  "lat": 41.24047,
+  "lng": -75.8485
+ },
+ "AHL-319": {
+  "wiki": "Hershey Bears",
+  "arena": "Giant Center",
+  "city": "Hershey, Pennsylvania",
+  "affiliates": [
+   "Washington Capitals",
+   "National Hockey League",
+   "South Carolina Stingrays",
+   "ECHL"
+  ],
+  "lat": 40.28639,
+  "lng": -76.66917
+ },
+ "AHL-321": {
+  "wiki": "Manitoba Moose",
+  "arena": "Canada Life Centre",
+  "city": "Winnipeg, Manitoba",
+  "affiliates": [
+   "Winnipeg Jets",
+   "National Hockey League",
+   "Bloomington Bison",
+   "ECHL"
+  ],
+  "lat": 49.89278,
+  "lng": -97.14361
+ },
+ "AHL-323": {
+  "wiki": "Rochester Americans",
+  "arena": "Blue Cross Arena at the War Memorial",
+  "city": "Rochester, New York",
+  "affiliates": [
+   "Buffalo Sabres",
+   "National Hockey League",
+   "Orlando Solar Bears",
+   "ECHL"
+  ],
+  "lat": 43.15369,
+  "lng": -77.61078
+ },
+ "AHL-324": {
+  "wiki": "Syracuse Crunch",
+  "arena": "Upstate Medical University Arena",
+  "city": "Syracuse, New York",
+  "affiliates": [
+   "Tampa Bay Lightning",
+   "National Hockey League",
+   "Orlando Solar Bears",
+   "ECHL"
+  ],
+  "lat": 43.04472,
+  "lng": -76.14833
+ },
+ "AHL-327": {
+  "wiki": "Milwaukee Admirals",
+  "arena": "UW–Milwaukee Panther Arena",
+  "city": "Milwaukee",
+  "affiliates": [
+   "Nashville Predators",
+   "National Hockey League",
+   "Atlanta Gladiators",
+   "ECHL"
+  ],
+  "lat": 43.04222,
+  "lng": -87.91694
+ },
+ "AHL-328": {
+  "wiki": "Grand Rapids Griffins",
+  "arena": "Van Andel Arena",
+  "city": "Grand Rapids, Michigan",
+  "affiliates": [
+   "Detroit Red Wings",
+   "NHL",
+   "Toledo Walleye",
+   "ECHL"
+  ],
+  "lat": 42.96222,
+  "lng": -85.67194
+ },
+ "AHL-330": {
+  "wiki": "Chicago Wolves",
+  "arena": "Allstate Arena",
+  "city": "Rosemont, Illinois",
+  "affiliates": [
+   "Carolina Hurricanes",
+   "National Hockey League",
+   "Greensboro Gargoyles",
+   "ECHL"
+  ],
+  "lat": 42.00528,
+  "lng": -87.88778
+ },
+ "AHL-335": {
+  "wiki": "Toronto Marlies",
+  "arena": "Coca-Cola Coliseum",
+  "city": "Toronto, Ontario",
+  "affiliates": [
+   "Toronto Maple Leafs",
+   "National Hockey League",
+   "Cincinnati Cyclones",
+   "ECHL"
+  ],
+  "lat": 43.63583,
+  "lng": -79.415
+ },
+ "AHL-372": {
+  "wiki": "Rockford IceHogs",
+  "arena": "BMO Center",
+  "city": "Rockford, Illinois",
+  "affiliates": [
+   "Chicago Blackhawks",
+   "National Hockey League",
+   "Indy Fuel",
+   "ECHL"
+  ],
+  "lat": 42.27026,
+  "lng": -89.09608
+ },
+ "AHL-373": {
+  "wiki": "Cleveland Monsters",
+  "arena": "Rocket Arena",
+  "city": "Cleveland, Ohio",
+  "affiliates": [
+   "Columbus Blue Jackets",
+   "National Hockey League"
+  ],
+  "lat": 41.49639,
+  "lng": -81.68806
+ },
+ "AHL-380": {
+  "wiki": "Texas Stars",
+  "arena": "H-E-B Center at Cedar Park",
+  "city": "Cedar Park, Texas",
+  "affiliates": [
+   "Dallas Stars",
+   "National Hockey League",
+   "Idaho Steelheads",
+   "ECHL"
+  ],
+  "lat": 30.5414,
+  "lng": -97.8202
+ },
+ "AHL-384": {
+  "wiki": "Charlotte Checkers",
+  "arena": "Bojangles Coliseum",
+  "city": "Charlotte, North Carolina",
+  "affiliates": [
+   "Florida Panthers",
+   "National Hockey League",
+   "Savannah Ghost Pirates",
+   "ECHL"
+  ],
+  "lat": 35.20516,
+  "lng": -80.7951
+ },
+ "AHL-389": {
+  "wiki": "Iowa Wild",
+  "arena": "Casey's Center",
+  "city": "Des Moines, Iowa",
+  "affiliates": [
+   "Minnesota Wild",
+   "National Hockey League",
+   "Jacksonville Icemen",
+   "ECHL"
+  ],
+  "lat": 41.59267,
+  "lng": -93.62114
+ },
+ "AHL-390": {
+  "wiki": "Utica Comets",
+  "arena": "NBT Bank Arena at the Utica Memorial Auditorium",
+  "city": "Utica, New York",
+  "affiliates": [
+   "New Jersey Devils",
+   "National Hockey League",
+   "Adirondack Thunder",
+   "ECHL"
+  ],
+  "lat": 43.10498,
+  "lng": -75.23349
+ },
+ "AHL-402": {
+  "wiki": "Bakersfield Condors",
+  "arena": "Dignity Health Arena",
+  "city": "Bakersfield, California",
+  "affiliates": [
+   "Edmonton Oilers",
+   "National Hockey League",
+   "Fort Wayne Komets",
+   "ECHL"
+  ],
+  "lat": 35.37208,
+  "lng": -119.01372
+ },
+ "AHL-403": {
+  "wiki": "Ontario Reign",
+  "arena": "Toyota Arena",
+  "city": "Ontario, California",
+  "affiliates": [
+   "Los Angeles Kings",
+   "National Hockey League",
+   "Greenville Swamp Rabbits",
+   "ECHL"
+  ],
+  "lat": 34.07295,
+  "lng": -117.5664
+ },
+ "AHL-404": {
+  "wiki": "San Diego Gulls",
+  "arena": "Pechanga Arena",
+  "city": "San Diego, California",
+  "affiliates": [
+   "Anaheim Ducks",
+   "National Hockey League",
+   "Tulsa Oilers",
+   "ECHL"
+  ],
+  "lat": 32.75528,
+  "lng": -117.21222
+ },
+ "AHL-405": {
+  "wiki": "San Jose Barracuda",
+  "arena": "Tech CU Arena",
+  "city": "San Jose, California",
+  "affiliates": [
+   "San Jose Sharks",
+   "National Hockey League",
+   "Wichita Thunder",
+   "ECHL"
+  ],
+  "lat": 37.31931,
+  "lng": -121.86406
+ },
+ "AHL-411": {
+  "wiki": "Springfield Thunderbirds",
+  "arena": "MassMutual Center",
+  "city": "Springfield, Massachusetts",
+  "affiliates": [
+   "St. Louis Blues",
+   "National Hockey League",
+   "Worcester Railers",
+   "ECHL"
+  ],
+  "lat": 42.10222,
+  "lng": -72.58694
+ },
+ "AHL-412": {
+  "wiki": "Tucson Roadrunners",
+  "arena": "Tucson Convention Center",
+  "city": "Tucson, Arizona",
+  "affiliates": [
+   "Utah Mammoth",
+   "National Hockey League"
+  ],
+  "lat": 32.21833,
+  "lng": -110.97417
+ },
+ "AHL-413": {
+  "wiki": "Belleville Senators",
+  "arena": "CIBC Place",
+  "city": "Belleville, Ontario, Canada",
+  "affiliates": [
+   "Ottawa Senators",
+   "National Hockey League"
+  ],
+  "lat": 44.188,
+  "lng": -77.3837
+ },
+ "AHL-415": {
+  "wiki": "Laval Rocket",
+  "arena": "Place Bell",
+  "city": "Laval, Quebec",
+  "affiliates": [
+   "Montreal Canadiens",
+   "National Hockey League",
+   "Trois-Rivières Lions",
+   "ECHL"
+  ],
+  "lat": 45.5558,
+  "lng": -73.7218
+ },
+ "AHL-419": {
+  "wiki": "Colorado Eagles",
+  "arena": "Blue Arena",
+  "city": "Loveland, Colorado",
+  "affiliates": [
+   "Colorado Avalanche",
+   "National Hockey League",
+   "New Mexico Goatheads",
+   "ECHL"
+  ],
+  "lat": 40.44389,
+  "lng": -104.98944
+ },
+ "AHL-437": {
+  "wiki": "Henderson Silver Knights",
+  "arena": "Lee's Family Forum",
+  "city": "Henderson, Nevada",
+  "affiliates": [
+   "Vegas Golden Knights",
+   "National Hockey League",
+   "Tahoe Knight Monsters",
+   "ECHL"
+  ],
+  "lat": 36.01898,
+  "lng": -115.08163
+ },
+ "AHL-440": {
+  "wiki": "Abbotsford Canucks",
+  "arena": "Rogers Forum",
+  "city": "Abbotsford, British Columbia",
+  "affiliates": [
+   "Vancouver Canucks",
+   "National Hockey League",
+   "Kalamazoo Wings",
+   "ECHL"
+  ],
+  "lat": 49.03066,
+  "lng": -122.28714
+ },
+ "AHL-444": {
+  "wiki": "Calgary Wranglers",
+  "arena": "Scotiabank Saddledome",
+  "city": "Calgary, Alberta",
+  "affiliates": [
+   "Calgary Flames",
+   "National Hockey League",
+   "Rapid City Rush",
+   "ECHL"
+  ],
+  "lat": 51.0375,
+  "lng": -114.05194
+ },
+ "AHL-445": {
+  "wiki": "Coachella Valley Firebirds",
+  "arena": "Acrisure Arena",
+  "city": "Thousand Palms, California",
+  "affiliates": [
+   "Seattle Kraken",
+   "National Hockey League",
+   "Kansas City Mavericks",
+   "ECHL"
+  ],
+  "lat": 33.77917,
+  "lng": -116.33889
+ },
+ "AHL-457": {
+  "wiki": "Hamilton Hammers",
+  "arena": "TD Coliseum",
+  "city": "Hamilton, Ontario",
+  "affiliates": [
+   "New York Islanders",
+   "National Hockey League",
+   "Trenton Ironhawks",
+   "ECHL"
+  ],
+  "lat": 43.25917,
+  "lng": -79.8725
+ },
+ "ECHL-10": {
+  "wiki": "Atlanta Gladiators",
+  "arena": "Gas South Arena",
+  "city": "Duluth, Georgia",
+  "affiliates": [
+   "Nashville Predators",
+   "National Hockey League",
+   "Milwaukee Admirals",
+   "American Hockey League"
+  ],
+  "lat": 33.99139,
+  "lng": -84.09417
+ },
+ "ECHL-102": {
+  "wiki": "Savannah Ghost Pirates",
+  "arena": "Enmarket Arena",
+  "city": "Savannah, Georgia",
+  "affiliates": [
+   "Florida Panthers",
+   "National Hockey League",
+   "Charlotte Checkers",
+   "American Hockey League"
+  ],
+  "lat": 32.0741,
+  "lng": -81.1116
+ },
+ "ECHL-106": {
+  "wiki": "Tahoe Knight Monsters",
+  "arena": "Tahoe Blue Event Center",
+  "city": "Stateline, Nevada",
+  "affiliates": [
+   "Vegas Golden Knights",
+   "National Hockey League",
+   "Henderson Silver Knights",
+   "American Hockey League"
+  ],
+  "lat": 38.96275,
+  "lng": -119.93847
+ },
+ "ECHL-107": {
+  "wiki": "Bloomington Bison",
+  "arena": "Grossinger Motors Arena",
+  "city": "Bloomington, Illinois",
+  "affiliates": [
+   "Winnipeg Jets",
+   "National Hockey League",
+   "Manitoba Moose",
+   "American Hockey League"
+  ],
+  "lat": 40.47806,
+  "lng": -88.99639
+ },
+ "ECHL-108": {
+  "wiki": "Greensboro Gargoyles",
+  "arena": "First Horizon Coliseum",
+  "city": "Greensboro, North Carolina",
+  "affiliates": [
+   "Carolina Hurricanes",
+   "National Hockey League",
+   "Chicago Wolves",
+   "American Hockey League"
+  ],
+  "lat": 36.0596,
+  "lng": -79.8257
+ },
+ "ECHL-11": {
+  "wiki": "Idaho Steelheads",
+  "arena": "Idaho Central Arena",
+  "city": "Boise, Idaho",
+  "affiliates": [
+   "Dallas Stars",
+   "National Hockey League",
+   "Texas Stars",
+   "American Hockey League"
+  ],
+  "lat": 43.614,
+  "lng": -116.204
+ },
+ "ECHL-113": {
+  "wiki": "Trenton Ironhawks",
+  "arena": "CURE Insurance Arena",
+  "city": "Trenton, New Jersey",
+  "affiliates": [
+   "New York Islanders",
+   "National Hockey League",
+   "Hamilton Hammers",
+   "American Hockey League"
+  ],
+  "lat": 40.21278,
+  "lng": -74.75756
+ },
+ "ECHL-114": {
+  "wiki": "New Mexico Goatheads",
+  "arena": "Rio Rancho Events Center",
+  "city": "Rio Rancho, New Mexico",
+  "affiliates": [
+   "Colorado Avalanche",
+   "National Hockey League",
+   "Colorado Eagles",
+   "American Hockey League"
+  ],
+  "lat": 35.31029,
+  "lng": -106.68583
+ },
+ "ECHL-17": {
+  "wiki": "Reading Royals",
+  "arena": "Santander Arena",
+  "city": "Reading, Pennsylvania",
+  "affiliates": [
+   "Philadelphia Flyers",
+   "National Hockey League",
+   "Lehigh Valley Phantoms",
+   "American Hockey League"
+  ],
+  "lat": 40.33477,
+  "lng": -75.92301
+ },
+ "ECHL-18": {
+  "wiki": "South Carolina Stingrays",
+  "arena": "North Charleston Coliseum",
+  "city": "North Charleston, South Carolina",
+  "affiliates": [
+   "Washington Capitals",
+   "National Hockey League",
+   "Hershey Bears",
+   "American Hockey League"
+  ],
+  "lat": 32.8656,
+  "lng": -80.0224
+ },
+ "ECHL-21": {
+  "wiki": "Toledo Walleye",
+  "arena": "Huntington Center",
+  "city": "Toledo, Ohio",
+  "affiliates": [
+   "Detroit Red Wings",
+   "National Hockey League",
+   "Grand Rapids Griffins",
+   "American Hockey League"
+  ],
+  "lat": 41.64986,
+  "lng": -83.53723
+ },
+ "ECHL-25": {
+  "wiki": "Wheeling Nailers",
+  "arena": "WesBanco Arena",
+  "city": "Wheeling, West Virginia",
+  "affiliates": [
+   "Columbus Blue Jackets",
+   "National Hockey League",
+   "Cleveland Monsters",
+   "American Hockey League"
+  ],
+  "lat": 40.06472,
+  "lng": -80.72472
+ },
+ "ECHL-5": {
+  "wiki": "Cincinnati Cyclones",
+  "arena": "Heritage Bank Center",
+  "city": "Cincinnati, Ohio",
+  "affiliates": [
+   "Toronto Maple Leafs",
+   "National Hockey League",
+   "Toronto Marlies",
+   "American Hockey League"
+  ],
+  "lat": 39.09778,
+  "lng": -84.50444
+ },
+ "ECHL-50": {
+  "wiki": "Kalamazoo Wings",
+  "arena": "Wings Event Center",
+  "city": "Kalamazoo, Michigan, United States",
+  "affiliates": [
+   "Vancouver Canucks",
+   "Abbotsford Canucks"
+  ],
+  "lat": 42.25361,
+  "lng": -85.53528
+ },
+ "ECHL-52": {
+  "wiki": "Greenville Swamp Rabbits",
+  "arena": "Bon Secours Wellness Arena",
+  "city": "Greenville, South Carolina",
+  "affiliates": [
+   "Los Angeles Kings",
+   "National Hockey League",
+   "Ontario Reign",
+   "American Hockey League"
+  ],
+  "lat": 34.85279,
+  "lng": -82.39146
+ },
+ "ECHL-60": {
+  "wiki": "Fort Wayne Komets",
+  "arena": "Allen County War Memorial Coliseum",
+  "city": "Fort Wayne, Indiana",
+  "affiliates": [
+   "Edmonton Oilers",
+   "National Hockey League",
+   "Bakersfield Condors",
+   "American Hockey League"
+  ],
+  "lat": 41.11556,
+  "lng": -85.12444
+ },
+ "ECHL-61": {
+  "wiki": "Orlando Solar Bears",
+  "arena": "Kia Center",
+  "city": "Orlando, Florida",
+  "affiliates": [
+   "Tampa Bay Lightning",
+   "NHL",
+   "Syracuse Crunch",
+   "American Hockey League",
+   "Rochester Americans"
+  ],
+  "lat": 28.53917,
+  "lng": -81.38361
+ },
+ "ECHL-65": {
+  "wiki": "Indy Fuel",
+  "arena": "Fishers Event Center",
+  "city": "Fishers, Indiana",
+  "affiliates": [
+   "Chicago Blackhawks",
+   "National Hockey League",
+   "Rockford IceHogs",
+   "American Hockey League"
+  ],
+  "lat": 39.94833,
+  "lng": -86.00528
+ },
+ "ECHL-66": {
+  "wiki": "Allen Americans",
+  "arena": "Credit Union of Texas Event Center",
+  "city": "Allen, Texas",
+  "affiliates": [
+   "Ottawa Senators",
+   "National Hockey League",
+   "Belleville Senators",
+   "American Hockey League"
+  ],
+  "lat": 33.12734,
+  "lng": -96.65763
+ },
+ "ECHL-68": {
+  "wiki": "Kansas City Mavericks",
+  "arena": "Cable Dahmer Arena",
+  "city": "Independence, Missouri",
+  "affiliates": [
+   "Seattle Kraken",
+   "National Hockey League",
+   "Coachella Valley Firebirds",
+   "American Hockey League"
+  ],
+  "lat": 39.03913,
+  "lng": -94.35756
+ },
+ "ECHL-70": {
+  "wiki": "Rapid City Rush",
+  "arena": "The Monument",
+  "city": "Rapid City, South Dakota",
+  "affiliates": [
+   "Calgary Flames",
+   "National Hockey League",
+   "Calgary Wranglers",
+   "American Hockey League"
+  ],
+  "lat": 44.08854,
+  "lng": -103.22582
+ },
+ "ECHL-71": {
+  "wiki": "Tulsa Oilers",
+  "arena": "BOK Center",
+  "city": "Tulsa, Oklahoma",
+  "affiliates": [
+   "Anaheim Ducks",
+   "National Hockey League",
+   "San Diego Gulls",
+   "American Hockey League"
+  ],
+  "lat": 36.15272,
+  "lng": -95.99633
+ },
+ "ECHL-72": {
+  "wiki": "Wichita Thunder",
+  "arena": "Intrust Bank Arena",
+  "city": "Wichita, Kansas",
+  "affiliates": [
+   "San Jose Sharks",
+   "National Hockey League",
+   "San Jose Barracuda",
+   "American Hockey League"
+  ],
+  "lat": 37.68306,
+  "lng": -97.33139
+ },
+ "ECHL-74": {
+  "wiki": "Adirondack Thunder",
+  "arena": "Harding Mazzotti Arena",
+  "city": "Glens Falls, New York",
+  "affiliates": [
+   "New Jersey Devils",
+   "National Hockey League",
+   "Utica Comets",
+   "American Hockey League"
+  ],
+  "lat": 43.30817,
+  "lng": -73.64178
+ },
+ "ECHL-76": {
+  "wiki": "Norfolk Admirals (ECHL)",
+  "arena": "Norfolk Scope",
+  "city": "Norfolk, Virginia",
+  "affiliates": [],
+  "lat": 36.85327,
+  "lng": -76.28672
+ },
+ "ECHL-77": {
+  "wiki": "Worcester Railers",
+  "arena": "DCU Center",
+  "city": "Worcester, Massachusetts",
+  "affiliates": [
+   "St. Louis Blues",
+   "National Hockey League",
+   "Springfield Thunderbirds",
+   "American Hockey League"
+  ],
+  "lat": 42.26611,
+  "lng": -71.79833
+ },
+ "ECHL-79": {
+  "wiki": "Jacksonville Icemen",
+  "arena": "VyStar Veterans Memorial Arena",
+  "city": "Jacksonville, Florida",
+  "affiliates": [
+   "Minnesota Wild",
+   "National Hockey League",
+   "Iowa Wild",
+   "American Hockey League"
+  ],
+  "lat": 30.32577,
+  "lng": -81.64507
+ },
+ "ECHL-8": {
+  "wiki": "Florida Everblades",
+  "arena": "Hertz Arena",
+  "city": "Estero, Florida",
+  "affiliates": [
+   "Pittsburgh Penguins",
+   "National Hockey League",
+   "Wilkes-Barre/Scranton Penguins",
+   "American Hockey League"
+  ],
+  "lat": 26.44067,
+  "lng": -81.77881
+ },
+ "ECHL-82": {
+  "wiki": "Maine Mariners (ECHL)",
+  "arena": "Cross Insurance Arena",
+  "city": "Portland, Maine",
+  "affiliates": [
+   "Boston Bruins",
+   "National Hockey League",
+   "Providence Bruins",
+   "American Hockey League"
+  ],
+  "lat": 43.65556,
+  "lng": -70.25917
+ },
+ "ECHL-99": {
+  "wiki": "Trois-Rivières Lions",
+  "arena": "Colisée Vidéotron",
+  "city": "Trois-Rivières, Quebec",
+  "affiliates": [
+   "Montreal Canadiens",
+   "National Hockey League",
+   "Laval Rocket",
+   "American Hockey League"
+  ],
+  "lat": 46.32153,
+  "lng": -72.59067
+ },
+ "NHL-ANA": {
+  "wiki": "Anaheim Ducks",
+  "arena": "Honda Center",
+  "city": "Anaheim, California",
+  "affiliates": [],
+  "lat": 33.80778,
+  "lng": -117.87667
+ },
+ "NHL-BOS": {
+  "wiki": "Boston Bruins",
+  "arena": "TD Garden",
+  "city": "Boston, Massachusetts",
+  "affiliates": [],
+  "lat": 42.36639,
+  "lng": -71.06222
+ },
+ "NHL-BUF": {
+  "wiki": "Buffalo Sabres",
+  "arena": "KeyBank Center",
+  "city": "Buffalo, New York",
+  "affiliates": [],
+  "lat": 42.875,
+  "lng": -78.87639
+ },
+ "NHL-CAR": {
+  "wiki": "Carolina Hurricanes",
+  "arena": "Lenovo Center",
+  "city": "Raleigh, North Carolina",
+  "affiliates": [],
+  "lat": 35.80333,
+  "lng": -78.72194
+ },
+ "NHL-CBJ": {
+  "wiki": "Columbus Blue Jackets",
+  "arena": "Nationwide Arena",
+  "city": "Columbus, Ohio",
+  "affiliates": [],
+  "lat": 39.96928,
+  "lng": -83.00611
+ },
+ "NHL-CGY": {
+  "wiki": "Calgary Flames",
+  "arena": "Scotiabank Saddledome",
+  "city": "Calgary, Alberta",
+  "affiliates": [],
+  "lat": 51.0375,
+  "lng": -114.05194
+ },
+ "NHL-CHI": {
+  "wiki": "Chicago Blackhawks",
+  "arena": "United Center",
+  "city": "Chicago, Illinois",
+  "affiliates": [],
+  "lat": 41.88056,
+  "lng": -87.67417
+ },
+ "NHL-COL": {
+  "wiki": "Colorado Avalanche",
+  "arena": "Ball Arena",
+  "city": "Denver, Colorado",
+  "affiliates": [],
+  "lat": 39.74861,
+  "lng": -105.0075
+ },
+ "NHL-DAL": {
+  "wiki": "Dallas Stars",
+  "arena": "American Airlines Center",
+  "city": "Dallas, Texas",
+  "affiliates": [],
+  "lat": 32.79056,
+  "lng": -96.81028
+ },
+ "NHL-DET": {
+  "wiki": "Detroit Red Wings",
+  "arena": "Little Caesars Arena",
+  "city": "Detroit, Michigan",
+  "affiliates": [],
+  "lat": 42.34111,
+  "lng": -83.055
+ },
+ "NHL-EDM": {
+  "wiki": "Edmonton Oilers",
+  "arena": "Rogers Place",
+  "city": "Edmonton, Alberta",
+  "affiliates": [],
+  "lat": 53.54694,
+  "lng": -113.49778
+ },
+ "NHL-FLA": {
+  "wiki": "Florida Panthers",
+  "arena": "Amerant Bank Arena",
+  "city": "Sunrise, Florida",
+  "affiliates": [],
+  "lat": 26.15833,
+  "lng": -80.32556
+ },
+ "NHL-LAK": {
+  "wiki": "Los Angeles Kings",
+  "arena": "Crypto.com Arena",
+  "city": "Los Angeles, California",
+  "affiliates": [],
+  "lat": 34.04306,
+  "lng": -118.26722
+ },
+ "NHL-MIN": {
+  "wiki": "Minnesota Wild",
+  "arena": "Grand Casino Arena",
+  "city": "Saint Paul, Minnesota",
+  "affiliates": [],
+  "lat": 44.94472,
+  "lng": -93.10111
+ },
+ "NHL-MTL": {
+  "wiki": "Montreal Canadiens",
+  "arena": "Bell Centre",
+  "city": "Montreal, Quebec",
+  "affiliates": [],
+  "lat": 45.49611,
+  "lng": -73.56944
+ },
+ "NHL-NJD": {
+  "wiki": "New Jersey Devils",
+  "arena": "Prudential Center",
+  "city": "Newark, New Jersey",
+  "affiliates": [],
+  "lat": 40.73361,
+  "lng": -74.17111
+ },
+ "NHL-NSH": {
+  "wiki": "Nashville Predators",
+  "arena": "Bridgestone Arena",
+  "city": "Nashville, Tennessee",
+  "affiliates": [],
+  "lat": 36.15917,
+  "lng": -86.77861
+ },
+ "NHL-NYI": {
+  "wiki": "New York Islanders",
+  "arena": "UBS Arena",
+  "city": "Elmont, New York",
+  "affiliates": [],
+  "lat": 40.71179,
+  "lng": -73.72604
+ },
+ "NHL-NYR": {
+  "wiki": "New York Rangers",
+  "arena": "Madison Square Garden",
+  "city": "New York City, New York",
+  "affiliates": [],
+  "lat": 40.75056,
+  "lng": -73.99361
+ },
+ "NHL-OTT": {
+  "wiki": "Ottawa Senators",
+  "arena": "Canadian Tire Centre",
+  "city": "Ottawa, Ontario",
+  "affiliates": [],
+  "lat": 45.29694,
+  "lng": -75.92722
+ },
+ "NHL-PHI": {
+  "wiki": "Philadelphia Flyers",
+  "arena": "Xfinity Mobile Arena",
+  "city": "Philadelphia, Pennsylvania",
+  "affiliates": [],
+  "lat": 39.90111,
+  "lng": -75.17194
+ },
+ "NHL-PIT": {
+  "wiki": "Pittsburgh Penguins",
+  "arena": "PPG Paints Arena",
+  "city": "Pittsburgh, Pennsylvania",
+  "affiliates": [],
+  "lat": 40.43944,
+  "lng": -79.98917
+ },
+ "NHL-SEA": {
+  "wiki": "Seattle Kraken",
+  "arena": "Climate Pledge Arena",
+  "city": "Seattle, Washington",
+  "affiliates": [],
+  "lat": 47.622,
+  "lng": -122.354
+ },
+ "NHL-SJS": {
+  "wiki": "San Jose Sharks",
+  "arena": "SAP Center",
+  "city": "San Jose, California",
+  "affiliates": [],
+  "lat": 37.33278,
+  "lng": -121.90111
+ },
+ "NHL-STL": {
+  "wiki": "St. Louis Blues",
+  "arena": "Enterprise Center",
+  "city": "St. Louis, Missouri",
+  "affiliates": [],
+  "lat": 38.62667,
+  "lng": -90.2025
+ },
+ "NHL-TBL": {
+  "wiki": "Tampa Bay Lightning",
+  "arena": "Benchmark International Arena",
+  "city": "Tampa, Florida",
+  "affiliates": [],
+  "lat": 27.94278,
+  "lng": -82.45194
+ },
+ "NHL-TOR": {
+  "wiki": "Toronto Maple Leafs",
+  "arena": "Scotiabank Arena",
+  "city": "Toronto, Ontario",
+  "affiliates": [],
+  "lat": 43.64333,
+  "lng": -79.37917
+ },
+ "NHL-UTA": {
+  "wiki": "Utah Mammoth",
+  "arena": "Delta Center",
+  "city": "Salt Lake City, Utah",
+  "affiliates": [],
+  "lat": 40.76833,
+  "lng": -111.90111
+ },
+ "NHL-VAN": {
+  "wiki": "Vancouver Canucks",
+  "arena": "Rogers Arena",
+  "city": "Vancouver, British Columbia",
+  "affiliates": [],
+  "lat": 49.27778,
+  "lng": -123.10889
+ },
+ "NHL-VGK": {
+  "wiki": "Vegas Golden Knights",
+  "arena": "T-Mobile Arena",
+  "city": "Paradise, Nevada",
+  "affiliates": [],
+  "lat": 36.10278,
+  "lng": -115.17833
+ },
+ "NHL-WPG": {
+  "wiki": "Winnipeg Jets",
+  "arena": "Canada Life Centre",
+  "city": "Winnipeg, Manitoba",
+  "affiliates": [],
+  "lat": 49.89278,
+  "lng": -97.14361
+ },
+ "NHL-WSH": {
+  "wiki": "Washington Capitals",
+  "arena": "Capital One Arena",
+  "city": "Washington, D.C.",
+  "affiliates": [],
+  "lat": 38.89806,
+  "lng": -77.02083
+ },
+ "OHL-1": {
+  "wiki": "Brantford Bulldogs",
+  "arena": "TD Civic Centre",
+  "city": "Brantford, Ontario",
+  "affiliates": [
+   "Markham Royals"
+  ],
+  "lat": 43.13528,
+  "lng": -80.265
+ },
+ "OHL-10": {
+  "wiki": "Kitchener Rangers",
+  "arena": "Kitchener Memorial Auditorium Complex",
+  "city": "Kitchener, Ontario",
+  "affiliates": [
+   "Waterloo Siskins",
+   "Greater Ontario Junior Hockey League"
+  ],
+  "lat": 43.44694,
+  "lng": -80.46694
+ },
+ "OHL-11": {
+  "wiki": "Owen Sound Attack",
+  "arena": "Harry Lumley Bayshore Community Centre",
+  "city": "Owen Sound, Ontario",
+  "affiliates": [],
+  "lat": 44.58,
+  "lng": -80.93417
+ },
+ "OHL-12": {
+  "wiki": "Sudbury Wolves",
+  "arena": "Sudbury Community Arena",
+  "city": "Greater Sudbury, Ontario",
+  "affiliates": [
+   "Espanola Paper Kings",
+   "Northern Ontario Junior Hockey League"
+  ],
+  "lat": 46.48861,
+  "lng": -80.9925
+ },
+ "OHL-13": {
+  "wiki": "Flint Firebirds",
+  "arena": "Dort Financial Center",
+  "city": "Flint, Michigan",
+  "affiliates": [
+   "Leamington Flyers"
+  ],
+  "lat": 43.01111,
+  "lng": -83.64194
+ },
+ "OHL-14": {
+  "wiki": "London Knights",
+  "arena": "Canada Life Place",
+  "city": "London, Ontario",
+  "affiliates": [
+   "London Nationals",
+   "St. Thomas Stars"
+  ],
+  "lat": 42.9825,
+  "lng": -81.2525
+ },
+ "OHL-15": {
+  "wiki": "Sarnia Sting",
+  "arena": "Progressive Auto Sales Arena",
+  "city": "Sarnia, Ontario",
+  "affiliates": [
+   "Sarnia Legionnaires (GOJHL)",
+   "Strathroy Rockets"
+  ],
+  "lat": 42.97694,
+  "lng": -82.34694
+ },
+ "OHL-16": {
+  "wiki": "Sault Ste. Marie Greyhounds",
+  "arena": "GFL Memorial Gardens",
+  "city": "Sault Ste. Marie, Ontario",
+  "affiliates": [],
+  "lat": 46.51361,
+  "lng": -84.33694
+ },
+ "OHL-17": {
+  "wiki": "Windsor Spitfires",
+  "arena": "WFCU Centre",
+  "city": "Windsor, Ontario",
+  "affiliates": [
+   "LaSalle Vipers",
+   "GOJHL"
+  ],
+  "lat": 42.3186,
+  "lng": -82.9279
+ },
+ "OHL-18": {
+  "wiki": "Brampton Steelheads",
+  "arena": "CAA Centre",
+  "city": "Brampton, Ontario",
+  "affiliates": [],
+  "lat": 43.66701,
+  "lng": -79.70866
+ },
+ "OHL-19": {
+  "wiki": "North Bay Battalion",
+  "arena": "Boart Longyear Memorial Gardens",
+  "city": "North Bay, Ontario",
+  "affiliates": [
+   "Powassan Voodoos",
+   "Northern Ontario Junior Hockey League"
+  ],
+  "lat": 46.31419,
+  "lng": -79.44897
+ },
+ "OHL-2": {
+  "wiki": "Kingston Frontenacs",
+  "arena": "Slush Puppie Place",
+  "city": "Kingston, Ontario",
+  "affiliates": [
+   "Cobourg Cougars"
+  ],
+  "lat": 44.2334,
+  "lng": -76.4797
+ },
+ "OHL-20": {
+  "wiki": "Niagara IceDogs",
+  "arena": "Meridian Centre",
+  "city": "St. Catharines, Ontario",
+  "affiliates": [
+   "St. Catharines Falcons Jr. B"
+  ],
+  "lat": 43.15582,
+  "lng": -79.24422
+ },
+ "OHL-34": {
+  "wiki": "Saginaw Spirit",
+  "arena": "Dow Event Center",
+  "city": "Saginaw, Michigan",
+  "affiliates": [
+   "St. Catharines Falcons (1943–1947)"
+  ],
+  "lat": 43.43597,
+  "lng": -83.93689
+ },
+ "OHL-4": {
+  "wiki": "Oshawa Generals",
+  "arena": "Tribute Communities Centre",
+  "city": "Oshawa, Ontario",
+  "affiliates": [
+   "Haliburton County Huskies",
+   "Port Perry Lumberjacks"
+  ],
+  "lat": 43.89722,
+  "lng": -78.85972
+ },
+ "OHL-5": {
+  "wiki": "Ottawa 67's",
+  "arena": "TD Place Arena",
+  "city": "Ottawa, Ontario",
+  "affiliates": [],
+  "lat": 45.39889,
+  "lng": -75.68412
+ },
+ "OHL-6": {
+  "wiki": "Peterborough Petes",
+  "arena": "Peterborough Memorial Centre",
+  "city": "Peterborough, Ontario",
+  "affiliates": [
+   "Lindsay Muskies"
+  ],
+  "lat": 44.28861,
+  "lng": -78.31556
+ },
+ "OHL-64": {
+  "wiki": "Gatineau Olympiques",
+  "arena": "Centre Slush Puppie",
+  "city": "Gatineau, Quebec",
+  "affiliates": [],
+  "lat": 45.48333,
+  "lng": -75.65
+ },
+ "OHL-7": {
+  "wiki": "Barrie Colts",
+  "arena": "Sadlon Arena",
+  "city": "Barrie, Ontario",
+  "affiliates": [],
+  "lat": 44.33778,
+  "lng": -79.67806
+ },
+ "OHL-8": {
+  "wiki": "Erie Otters",
+  "arena": "Erie Insurance Arena",
+  "city": "Erie, Pennsylvania",
+  "affiliates": [],
+  "lat": 42.12806,
+  "lng": -80.08083
+ },
+ "OHL-9": {
+  "wiki": "Guelph Storm",
+  "arena": "Sleeman Centre",
+  "city": "Guelph, Ontario",
+  "affiliates": [
+   "Ayr Centennials"
+  ],
+  "lat": 43.54667,
+  "lng": -80.24639
+ },
+ "PWHL-1": {
+  "wiki": "Boston Fleet",
+  "arena": "Agganis Arena",
+  "city": "Boston, Massachusetts",
+  "affiliates": [],
+  "lat": 42.35223,
+  "lng": -71.11779
+ },
+ "PWHL-10": {
+  "wiki": "Detroit Clutch",
+  "arena": "Little Caesars Arena",
+  "city": "Detroit, Michigan",
+  "affiliates": [],
+  "lat": 42.34111,
+  "lng": -83.055
+ },
+ "PWHL-11": {
+  "wiki": "Hamilton Havoc",
+  "arena": "TD Coliseum",
+  "city": "Hamilton, Ontario",
+  "affiliates": [],
+  "lat": 43.25917,
+  "lng": -79.8725
+ },
+ "PWHL-12": {
+  "wiki": "Vegas Vanguards",
+  "arena": "T-Mobile Arena",
+  "city": "Paradise, Nevada",
+  "affiliates": [],
+  "lat": 36.10278,
+  "lng": -115.17833
+ },
+ "PWHL-13": {
+  "wiki": "San Jose Sea Lions",
+  "arena": "SAP Center",
+  "city": "San Jose, California",
+  "affiliates": [],
+  "lat": 37.33278,
+  "lng": -121.90111
+ },
+ "PWHL-2": {
+  "wiki": "Minnesota Frost",
+  "arena": "Grand Casino Arena",
+  "city": "Saint Paul, Minnesota",
+  "affiliates": [],
+  "lat": 44.94472,
+  "lng": -93.10111
+ },
+ "PWHL-3": {
+  "wiki": "Montreal Victoire",
+  "arena": "Place Bell",
+  "city": "Laval, Quebec",
+  "affiliates": [],
+  "lat": 45.5558,
+  "lng": -73.7218
+ },
+ "PWHL-4": {
+  "wiki": "New York Sirens",
+  "arena": "Prudential Center",
+  "city": "Newark, New Jersey",
+  "affiliates": [],
+  "lat": 40.73361,
+  "lng": -74.17111
+ },
+ "PWHL-5": {
+  "wiki": "Ottawa Charge",
+  "arena": "Canadian Tire Centre",
+  "city": "Ottawa, Ontario",
+  "affiliates": [],
+  "lat": 45.29694,
+  "lng": -75.92722
+ },
+ "PWHL-6": {
+  "wiki": "Toronto Sceptres",
+  "arena": "Coca-Cola Coliseum",
+  "city": "Toronto, Ontario",
+  "affiliates": [],
+  "lat": 43.63583,
+  "lng": -79.415
+ },
+ "PWHL-8": {
+  "wiki": "Seattle Torrent",
+  "arena": "Climate Pledge Arena",
+  "city": "Seattle, Washington",
+  "affiliates": [],
+  "lat": 47.622,
+  "lng": -122.354
+ },
+ "PWHL-9": {
+  "wiki": "Vancouver Goldeneyes",
+  "arena": "Pacific Coliseum",
+  "city": "Vancouver, British Columbia",
+  "affiliates": [],
+  "lat": 49.28583,
+  "lng": -123.04278
+ },
+ "QMJHL-1": {
+  "wiki": "Moncton Wildcats",
+  "arena": "Avenir Centre",
+  "city": "Moncton, New Brunswick",
+  "affiliates": [],
+  "lat": 46.0855,
+  "lng": -64.78492
+ },
+ "QMJHL-10": {
+  "wiki": "Chicoutimi Saguenéens",
+  "arena": "Centre Georges-Vézina",
+  "city": "Saguenay, Quebec, Canada",
+  "affiliates": [],
+  "lat": 48.41972,
+  "lng": -71.06
+ },
+ "QMJHL-11": {
+  "wiki": "Rouyn-Noranda Huskies",
+  "arena": "Aréna Glencore",
+  "city": "Rouyn-Noranda, Quebec",
+  "affiliates": [],
+  "lat": 48.24671,
+  "lng": -79.01891
+ },
+ "QMJHL-12": {
+  "wiki": "Gatineau Olympiques",
+  "arena": "Centre Slush Puppie",
+  "city": "Gatineau, Quebec",
+  "affiliates": [],
+  "lat": 45.48333,
+  "lng": -75.65
+ },
+ "QMJHL-13": {
+  "wiki": "Shawinigan Cataractes",
+  "arena": "Centre Gervais Auto",
+  "city": "Shawinigan, Quebec",
+  "affiliates": [],
+  "lat": 46.54175,
+  "lng": -72.7455
+ },
+ "QMJHL-14": {
+  "wiki": "Drummondville Voltigeurs",
+  "arena": "Centre Marcel Dionne",
+  "city": "Drummondville, Quebec",
+  "affiliates": [],
+  "lat": 45.88361,
+  "lng": -72.49306
+ },
+ "QMJHL-15": {
+  "wiki": "Val-d'Or Foreurs",
+  "arena": "Centre Agnico Eagle",
+  "city": "Val-d'Or, Quebec",
+  "affiliates": [],
+  "lat": 48.10528,
+  "lng": -77.78528
+ },
+ "QMJHL-16": {
+  "wiki": "Baie-Comeau Drakkar",
+  "arena": "Centre Henry-Leonard",
+  "city": "Baie-Comeau, Quebec",
+  "affiliates": [],
+  "lat": 49.21028,
+  "lng": -68.16278
+ },
+ "QMJHL-17": {
+  "wiki": "Victoriaville Tigres",
+  "arena": "Colisée Desjardins",
+  "city": "Victoriaville, Quebec",
+  "affiliates": [],
+  "lat": 46.05,
+  "lng": -71.96667
+ },
+ "QMJHL-18": {
+  "wiki": "Rimouski Océanic",
+  "arena": "Colisée Financière Sun Life",
+  "city": "Rimouski, Quebec",
+  "affiliates": [],
+  "lat": 48.44167,
+  "lng": -68.52028
+ },
+ "QMJHL-19": {
+  "wiki": "Blainville-Boisbriand Armada",
+  "arena": "Centre d'Excellence Sports Rousseau",
+  "city": "Boisbriand, Quebec",
+  "affiliates": [],
+  "lat": 45.63139,
+  "lng": -73.85861
+ },
+ "QMJHL-2": {
+  "wiki": "Royal Newfoundland Regiment",
+  "arena": null,
+  "city": null,
+  "affiliates": []
+ },
+ "QMJHL-3": {
+  "wiki": "Cape Breton Eagles",
+  "arena": "Centre 200",
+  "city": "Cape Breton Regional Municipality, Nova Scotia",
+  "affiliates": [],
+  "lat": 46.1375,
+  "lng": -60.19028
+ },
+ "QMJHL-5": {
+  "wiki": "Halifax Mooseheads",
+  "arena": "Scotiabank Centre",
+  "city": "Halifax, Nova Scotia",
+  "affiliates": [],
+  "lat": 44.64833,
+  "lng": -63.57667
+ },
+ "QMJHL-60": {
+  "wiki": null
+ },
+ "QMJHL-7": {
+  "wiki": "Charlottetown Islanders",
+  "arena": "Eastlink Centre",
+  "city": "Charlottetown, Prince Edward Island",
+  "affiliates": [],
+  "lat": 46.24556,
+  "lng": -63.11722
+ },
+ "QMJHL-8": {
+  "wiki": "Saint John Sea Dogs",
+  "arena": "TD Station",
+  "city": "Saint John, New Brunswick",
+  "affiliates": [],
+  "lat": 45.27611,
+  "lng": -66.06417
+ },
+ "QMJHL-9": {
+  "wiki": "Quebec Remparts",
+  "arena": "Centre Vidéotron",
+  "city": "Quebec City, Quebec",
+  "affiliates": [],
+  "lat": 46.829,
+  "lng": -71.248
+ },
+ "SPHL-1": {
+  "wiki": "Peoria Rivermen (SPHL)",
+  "arena": "Carver Arena",
+  "city": "Peoria, Illinois",
+  "affiliates": [],
+  "lat": 40.69167,
+  "lng": -89.59417
+ },
+ "SPHL-10": {
+  "wiki": "Macon Mayhem",
+  "arena": "Macon Coliseum",
+  "city": "Macon, Georgia",
+  "affiliates": [],
+  "lat": 32.84194,
+  "lng": -83.61972
+ },
+ "SPHL-2": {
+  "wiki": "Fayetteville Marksmen",
+  "arena": "Crown Coliseum",
+  "city": "Fayetteville, North Carolina",
+  "affiliates": [],
+  "lat": 35.01512,
+  "lng": -78.89171
+ },
+ "SPHL-27": {
+  "wiki": "Athens Rock Lobsters",
+  "arena": "Akins Ford Arena",
+  "city": "Athens, Georgia",
+  "affiliates": [],
+  "lat": 33.96114,
+  "lng": -83.37081
+ },
+ "SPHL-28": {
+  "wiki": "Pee Dee IceCats",
+  "arena": "Florence Center",
+  "city": "Florence, South Carolina",
+  "affiliates": [],
+  "lat": 34.18569,
+  "lng": -79.83789
+ },
+ "SPHL-3": {
+  "wiki": "Huntsville Havoc",
+  "arena": "Von Braun Center",
+  "city": "Huntsville, Alabama",
+  "affiliates": [],
+  "lat": 34.72699,
+  "lng": -86.59089
+ },
+ "SPHL-4": {
+  "wiki": "Pensacola Ice Flyers",
+  "arena": "Pensacola Bay Center",
+  "city": "Pensacola, Florida",
+  "affiliates": [],
+  "lat": 30.41649,
+  "lng": -87.20937
+ },
+ "SPHL-5": {
+  "wiki": "Evansville Thunderbolts",
+  "arena": "Ford Center",
+  "city": "Evansville, Indiana",
+  "affiliates": [],
+  "lat": 37.97219,
+  "lng": -87.56784
+ },
+ "SPHL-6": {
+  "wiki": "Knoxville Ice Bears",
+  "arena": "Knoxville Civic Auditorium and Coliseum",
+  "city": "Knoxville, Tennessee",
+  "affiliates": [],
+  "lat": 35.965,
+  "lng": -83.91139
+ },
+ "SPHL-7": {
+  "wiki": "Roanoke Rail Yard Dawgs",
+  "arena": "Berglund Center",
+  "city": "Roanoke, Virginia",
+  "affiliates": [],
+  "lat": 37.28017,
+  "lng": -79.93567
+ },
+ "SPHL-8": {
+  "wiki": "Quad City Storm",
+  "arena": "Vibrant Arena at The MARK",
+  "city": "Moline, Illinois",
+  "affiliates": [],
+  "lat": 41.50784,
+  "lng": -90.52044
+ },
+ "SPHL-9": {
+  "wiki": "Birmingham Bulls (SPHL)",
+  "arena": "Pelham Civic Center",
+  "city": "Pelham, Alabama",
+  "affiliates": [],
+  "lat": 33.329,
+  "lng": -86.789
+ },
+ "USHL-10": {
+  "wiki": "Cedar Rapids RoughRiders",
+  "arena": "ImOn Ice Arena",
+  "city": "Cedar Rapids, Iowa",
+  "affiliates": [],
+  "lat": 41.96583,
+  "lng": -91.68856
+ },
+ "USHL-11": {
+  "wiki": "Chicago Steel",
+  "arena": "USG Arena inside Blackhawks Ice Center",
+  "city": "Chicago, Illinois",
+  "affiliates": [],
+  "lat": 41.88194,
+  "lng": -87.62778
+ },
+ "USHL-12": {
+  "wiki": "Des Moines Buccaneers",
+  "arena": "MidAmerican Energy Company RecPlex",
+  "city": "Urbandale, Iowa",
+  "affiliates": [],
+  "lat": 41.63083,
+  "lng": -93.75417
+ },
+ "USHL-13": {
+  "wiki": "Dubuque Fighting Saints",
+  "arena": "ImOn Arena",
+  "city": "Dubuque, Iowa",
+  "affiliates": [],
+  "lat": 42.513,
+  "lng": -90.649
+ },
+ "USHL-14": {
+  "wiki": "Fargo Force",
+  "arena": "Scheels Arena",
+  "city": "Fargo, North Dakota",
+  "affiliates": [],
+  "lat": 46.83559,
+  "lng": -96.87615
+ },
+ "USHL-15": {
+  "wiki": "Green Bay Gamblers",
+  "arena": "Resch Center",
+  "city": "Green Bay, Wisconsin",
+  "affiliates": [],
+  "lat": 44.49955,
+  "lng": -88.05505
+ },
+ "USHL-16": {
+  "wiki": "Lincoln Stars",
+  "arena": "Ice Box",
+  "city": "Lincoln, Nebraska",
+  "affiliates": [],
+  "lat": 40.83278,
+  "lng": -96.69722
+ },
+ "USHL-17": {
+  "wiki": "Madison Capitols",
+  "arena": "Bob Suter's Capitol Ice Arena",
+  "city": "Middleton, Wisconsin",
+  "affiliates": [],
+  "lat": 43.06028,
+  "lng": -89.57167
+ },
+ "USHL-18": {
+  "wiki": "Muskegon Lumberjacks",
+  "arena": "Trinity Health Arena",
+  "city": "Muskegon, Michigan",
+  "affiliates": [],
+  "lat": 43.23444,
+  "lng": -86.25556
+ },
+ "USHL-19": {
+  "wiki": "Omaha Lancers",
+  "arena": "Liberty First Credit Union Arena",
+  "city": "Omaha, Nebraska",
+  "affiliates": [],
+  "lat": 41.20694,
+  "lng": -96.02694
+ },
+ "USHL-20": {
+  "wiki": "Sioux Falls Stampede",
+  "arena": "Denny Sanford Premier Center",
+  "city": "Sioux Falls, South Dakota",
+  "affiliates": [],
+  "lat": 43.56167,
+  "lng": -96.75
+ },
+ "USHL-21": {
+  "wiki": null
+ },
+ "USHL-22": {
+  "wiki": "Tri-City Storm",
+  "arena": "Viaero Center",
+  "city": "Kearney, Nebraska",
+  "affiliates": [],
+  "lat": 40.66701,
+  "lng": -99.09254
+ },
+ "USHL-23": {
+  "wiki": "Waterloo Black Hawks",
+  "arena": "Young Arena",
+  "city": "Waterloo, Iowa",
+  "affiliates": [],
+  "lat": 42.49889,
+  "lng": -92.34361
+ },
+ "USHL-24": {
+  "wiki": "Youngstown Phantoms",
+  "arena": "Covelli Centre",
+  "city": "Youngstown, Ohio",
+  "affiliates": [],
+  "lat": 41.09614,
+  "lng": -80.64794
+ },
+ "USHL-8": {
+  "wiki": "Sioux City Musketeers",
+  "arena": "Tyson Events Center",
+  "city": "Sioux City, Iowa",
+  "affiliates": [],
+  "lat": 42.49146,
+  "lng": -96.40723
+ },
+ "WHL-201": {
+  "wiki": "Brandon Wheat Kings",
+  "arena": "Assiniboine Credit Union Place",
+  "city": "Brandon, Manitoba, Canada",
+  "affiliates": [],
+  "lat": 49.83083,
+  "lng": -99.96
+ },
+ "WHL-202": {
+  "wiki": "Calgary Hitmen",
+  "arena": "Scotiabank Saddledome",
+  "city": "Calgary, Alberta",
+  "affiliates": [],
+  "lat": 51.0375,
+  "lng": -114.05194
+ },
+ "WHL-203": {
+  "wiki": "Kamloops Blazers",
+  "arena": "Sandman Centre",
+  "city": "Kamloops, British Columbia",
+  "affiliates": [],
+  "lat": 50.67833,
+  "lng": -120.33306
+ },
+ "WHL-204": {
+  "wiki": "Kelowna Rockets",
+  "arena": "Prospera Place",
+  "city": "Kelowna, British Columbia",
+  "affiliates": [],
+  "lat": 49.89278,
+  "lng": -119.49472
+ },
+ "WHL-205": {
+  "wiki": "Lethbridge Hurricanes",
+  "arena": "VisitLethbridge.com Arena",
+  "city": "Lethbridge, Alberta",
+  "affiliates": [],
+  "lat": 49.66695,
+  "lng": -112.80543
+ },
+ "WHL-206": {
+  "wiki": "Medicine Hat Tigers",
+  "arena": "Co-op Place",
+  "city": "Medicine Hat, Alberta",
+  "affiliates": [],
+  "lat": 50.06722,
+  "lng": -110.73472
+ },
+ "WHL-207": {
+  "wiki": "Moose Jaw Warriors",
+  "arena": "Temple Gardens Centre",
+  "city": "Moose Jaw, Saskatchewan",
+  "affiliates": [],
+  "lat": 50.3906,
+  "lng": -105.53859
+ },
+ "WHL-208": {
+  "wiki": "Portland Winterhawks",
+  "arena": "Veterans Memorial Coliseum",
+  "city": "Portland, Oregon",
+  "affiliates": [],
+  "lat": 45.53222,
+  "lng": -122.66944
+ },
+ "WHL-209": {
+  "wiki": "Prince Albert Raiders",
+  "arena": "Art Hauser Centre",
+  "city": "Prince Albert, Saskatchewan",
+  "affiliates": [],
+  "lat": 53.18417,
+  "lng": -105.73444
+ },
+ "WHL-210": {
+  "wiki": "Prince George Cougars",
+  "arena": "CN Centre",
+  "city": "Prince George, British Columbia",
+  "affiliates": [],
+  "lat": 53.90444,
+  "lng": -122.80194
+ },
+ "WHL-211": {
+  "wiki": "Red Deer Rebels",
+  "arena": "Marchant Crane Centrium",
+  "city": "Red Deer, Alberta",
+  "affiliates": [],
+  "lat": 52.22826,
+  "lng": -113.8059
+ },
+ "WHL-212": {
+  "wiki": "Regina Pats",
+  "arena": "Brandt Centre",
+  "city": "Regina, Saskatchewan",
+  "affiliates": [],
+  "lat": 50.45028,
+  "lng": -104.6375
+ },
+ "WHL-213": {
+  "wiki": "Saskatoon Blades",
+  "arena": "SaskTel Centre",
+  "city": "Saskatoon, Saskatchewan",
+  "affiliates": [],
+  "lat": 52.189,
+  "lng": -106.679
+ },
+ "WHL-214": {
+  "wiki": "Seattle Thunderbirds",
+  "arena": "accesso ShoWare Center",
+  "city": "Kent, Washington",
+  "affiliates": [],
+  "lat": 47.38833,
+  "lng": -122.24
+ },
+ "WHL-215": {
+  "wiki": "Spokane Chiefs",
+  "arena": "Numerica Veterans Arena",
+  "city": "Spokane, Washington",
+  "affiliates": [],
+  "lat": 47.666,
+  "lng": -117.423
+ },
+ "WHL-216": {
+  "wiki": "Swift Current Broncos",
+  "arena": "InnovationPlex",
+  "city": "Swift Current, Saskatchewan",
+  "affiliates": [],
+  "lat": 50.28665,
+  "lng": -107.7715
+ },
+ "WHL-217": {
+  "wiki": "Tri-City Americans",
+  "arena": "Toyota Center",
+  "city": "Kennewick, Washington",
+  "affiliates": [],
+  "lat": 46.22,
+  "lng": -119.217
+ },
+ "WHL-222": {
+  "wiki": "Wenatchee Wild",
+  "arena": "Town Toyota Center",
+  "city": "Wenatchee, Washington",
+  "affiliates": [],
+  "lat": 47.44233,
+  "lng": -120.32172
+ },
+ "WHL-223": {
+  "wiki": "Vancouver Giants",
+  "arena": "Langley Events Centre",
+  "city": "Langley, British Columbia",
+  "affiliates": [],
+  "lat": 49.14583,
+  "lng": -122.66611
+ },
+ "WHL-226": {
+  "wiki": "Everett Silvertips",
+  "arena": "Angel of the Winds Arena",
+  "city": "Everett, Washington",
+  "affiliates": [],
+  "lat": 47.97861,
+  "lng": -122.20361
+ },
+ "WHL-227": {
+  "wiki": "Victoria Royals",
+  "arena": "Save-On-Foods Memorial Centre",
+  "city": "Victoria, British Columbia, Canada",
+  "affiliates": [],
+  "lat": 48.43139,
+  "lng": -123.36056
+ },
+ "WHL-228": {
+  "wiki": "Edmonton Oil Kings",
+  "arena": "Rogers Place",
+  "city": "Edmonton, Alberta, Canada",
+  "affiliates": [],
+  "lat": 53.54694,
+  "lng": -113.49778
+ },
+ "WHL-277": {
+  "wiki": "Penticton Vees (WHL)",
+  "arena": "South Okanagan Events Centre",
+  "city": "Penticton, British Columbia",
+  "affiliates": [],
+  "lat": 49.49495,
+  "lng": -119.60654
+ }
+}

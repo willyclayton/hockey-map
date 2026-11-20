@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Hockey Atlas</title>
+  <meta name="description" content="Interactive map of every NHL, AHL, ECHL, CHL, USHL, SPHL and PWHL team: affiliates, rosters, player journeys and a connection rating for how interconnected each team is.">
+  <meta name="theme-color" content="#070c16">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23070c16' stroke='%237cc4ff' stroke-width='4'/%3E%3Cellipse cx='32' cy='36' rx='16' ry='6' fill='%23eef3fa'/%3E%3Crect x='16' y='28' width='32' height='8' fill='%23eef3fa'/%3E%3Cellipse cx='32' cy='28' rx='16' ry='6' fill='%23a9c8ef'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <div id="map" aria-label="Map of hockey teams"></div>
+
+    <header class="topbar">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="2" opacity=".5"/>
+          <circle cx="11" cy="14" r="2.6" fill="currentColor"/><circle cx="28" cy="11" r="2.6" fill="currentColor"/>
+          <circle cx="30" cy="26" r="2.6" fill="currentColor"/><circle cx="14" cy="28" r="2.6" fill="currentColor"/>
+          <circle cx="20" cy="20" r="3.4" fill="currentColor"/>
+          <path d="M11 14 20 20 28 11M20 20 30 26M20 20 14 28M11 14 14 28M28 11 30 26" stroke="currentColor" stroke-width="1.2" fill="none" opacity=".7"/>
+        </svg>
+        <div>
+          <h1>Hockey Atlas</h1>
+          <p class="tagline" id="tagline">Every team. Every connection.</p>
+        </div>
+      </div>
+
+      <div class="search" role="search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="search" type="search" placeholder="Search teams or players…" autocomplete="off" spellcheck="false" aria-label="Search teams or players">
+        <kbd>/</kbd>
+        <div id="search-results" class="search-results" role="listbox" hidden></div>
+      </div>
+
+      <div class="top-actions">
+        <button id="btn-leaderboard" class="btn" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10M12 20V4M19 20v-7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+          <span>Rankings</span>
+        </button>
+        <button id="btn-about" class="btn btn-icon" type="button" aria-label="How it works">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 11v6M12 7.5v.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <nav class="filters" aria-label="League filters">
+      <div class="filter-group" id="league-filters" role="group" aria-label="Leagues"></div>
+    </nav>
+
+    <section class="controls" id="controls" aria-label="Map settings">
+      <div class="ctl-row">
+        <span class="ctl-label">Layers</span>
+        <div class="filter-group" role="group" aria-label="Map layers">
+          <button class="chip layer" data-layer="aff" aria-pressed="true" type="button"><span class="swatch-line aff"></span>Affiliates</button>
+          <button class="chip layer" data-layer="web" aria-pressed="true" type="button"><span class="swatch-line web"></span>Player web</button>
+        </div>
+      </div>
+      <div class="ctl-row">
+        <span class="ctl-label">Color by</span>
+        <div class="seg" id="color-mode" role="group" aria-label="Color teams by">
+          <button type="button" data-mode="league" aria-pressed="true">League</button>
+          <button type="button" data-mode="rating" aria-pressed="false">Rating</button>
+        </div>
+      </div>
+      <div class="ctl-row">
+        <label class="ctl-label" for="min-shared">Min. shared</label>
+        <div class="slider" title="Hide web links with fewer shared players">
+          <input id="min-shared" type="range" min="1" max="8" value="1">
+          <output id="min-shared-out" for="min-shared">1 player</output>
+        </div>
+      </div>
+      <div class="legend" id="legend"></div>
+    </section>
+    <button class="btn ctl-toggle" id="btn-controls" type="button" aria-controls="controls" aria-expanded="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 3 8l9 5 9-5-9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/></svg>
+      <span>Layers</span>
+    </button>
+
+    <aside id="panel" class="panel" aria-live="polite" hidden>
+      <button class="panel-close" id="panel-close" type="button" aria-label="Close panel">
+        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+      </button>
+      <button class="panel-back" id="panel-back" type="button" hidden>
+        <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Back</span>
+      </button>
+      <div class="panel-grab" aria-hidden="true"></div>
+      <div id="panel-body" class="panel-body"></div>
+    </aside>
+
+    <div class="zoom-ctl">
+      <button type="button" id="zoom-in" aria-label="Zoom in">+</button>
+      <button type="button" id="zoom-out" aria-label="Zoom out">−</button>
+      <button type="button" id="zoom-reset" aria-label="Reset view">
+        <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+
+    <div id="tooltip" class="tooltip" role="tooltip" hidden></div>
+
+    <div id="modal" class="modal" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <button class="panel-close" data-close type="button" aria-label="Close">
+          <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </button>
+        <div id="modal-body"></div>
+      </div>
+    </div>
+
+    <div id="loading" class="loading">
+      <div class="puck"></div>
+      <p>Lacing up the skates…</p>
+    </div>
+  </div>
+
+  <script src="vendor/d3.v7.9.0.min.js"></script>
+  <script src="vendor/topojson-client.3.1.0.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

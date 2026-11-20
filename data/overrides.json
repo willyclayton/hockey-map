@@ -1,0 +1,9 @@
+{
+ "_note": "Manual fixes applied on top of data/reference.json (Wikipedia lookups). 'teams' entries win over lookups; affiliation pairs use team ids from data/hockey.json.",
+ "teams": {
+  "QMJHL-2": {"wiki": "Newfoundland Regiment (ice hockey)", "arena": "Mary Brown's Centre", "city": "St. John's, Newfoundland and Labrador", "lat": 47.56002, "lng": -52.71321, "affiliates": []},
+  "QMJHL-60": {"wiki": "Sherbrooke Phoenix", "arena": "Palais des Sports Léopold-Drolet", "city": "Sherbrooke, Quebec", "lat": 45.41056, "lng": -71.88333, "affiliates": []},
+  "USHL-21": {"wiki": "USA Hockey National Team Development Program", "arena": "USA Hockey Arena", "city": "Plymouth, Michigan", "lat": 42.38917, "lng": -83.50611, "affiliates": []}
+ },
+ "affiliations": {"add": [], "remove": []}
+}

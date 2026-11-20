@@ -1,0 +1,49 @@
+name: Refresh hockey data
+
+on:
+  schedule:
+    - cron: "17 10 * * *" # daily, 10:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Pillow (logo resizing)
+        run: pip install pillow
+
+      # Past seasons never change, so keep the download cache between runs.
+      - uses: actions/cache@v4
+        with:
+          path: .cache
+          key: hockey-cache-${{ github.run_id }}
+          restore-keys: hockey-cache-
+
+      - name: Build data
+        run: python3 scripts/build_data.py --refresh
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data assets
+          if git diff --cached --quiet; then
+            echo "No data changes."
+          else
+            git commit -m "Refresh hockey data ($(date -u +%Y-%m-%d))"
+            git push
+          fi
