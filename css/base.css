@@ -1,0 +1,73 @@
+/* base.css: design tokens, reset, shared components, loading — shared */
+:root {
+  color-scheme: dark;
+  --bg: #060b14;
+  --ocean: #08111f;
+  --ocean-2: #0c1a2e;
+  --land: #13233a;
+  --land-2: #172a45;
+  --land-stroke: #243c5e;
+  --country-stroke: #3a5b88;
+  --glass: rgba(11, 19, 33, 0.82);
+  --glass-strong: rgba(10, 17, 30, 0.94);
+  --glass-border: rgba(148, 182, 230, 0.14);
+  --text: #eef3fa;
+  --text-2: #b4c1d4;
+  --muted: #7d8ca3;
+  --faint: #4d5d75;
+  --accent: #7cc4ff;
+  --accent-2: #3987e5;
+  --hair: rgba(148, 182, 230, 0.12);
+  --chip: rgba(148, 182, 230, 0.08);
+  --chip-hover: rgba(148, 182, 230, 0.16);
+  --badge: #f3f6fb;
+  --radius: 14px;
+  --shadow: 0 12px 40px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.3);
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --display: "Barlow Condensed", "Inter", system-ui, sans-serif;
+  --panel-w: 420px;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font: 14px/1.45 var(--font); overflow: hidden; }
+button { font: inherit; color: inherit; }
+img { display: block; }
+#app { position: fixed; inset: 0; }
+
+
+/* ------------------------------------------------------------------ shared components */
+.lg-pill { display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 9px; border-radius: 999px; background: var(--chip); font: 600 11.5px var(--font); color: var(--text); white-space: nowrap; }
+.lg-pill i { width: 8px; height: 8px; border-radius: 50%; }
+.bar { height: 6px; border-radius: 3px; background: rgba(148, 182, 230, .1); margin-top: 4px; overflow: hidden; }
+.bar i { display: block; height: 100%; border-radius: 3px; background: var(--accent); transition: width .8s cubic-bezier(.2, .8, .2, 1); }
+.team-chip { display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px 4px 4px; border-radius: 999px; background: var(--chip); border: 1px solid transparent; cursor: pointer; font-weight: 600; font-size: 12.5px; max-width: 100%; text-align: left; }
+.team-chip:hover { background: var(--chip-hover); border-color: var(--hair); }
+.team-chip.self { border-color: var(--team-c); }
+.team-chip span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mini-logo { width: 26px; height: 26px; border-radius: 50%; background: var(--badge); display: grid; place-items: center; flex: none; border: 2px solid var(--c, #888); overflow: hidden; }
+.mini-logo img { width: 72%; height: 72%; object-fit: contain; }
+.mini-logo.sm { width: 20px; height: 20px; border-width: 1.5px; }
+.mini-logo b { font: 700 8px var(--display); color: #0b1627; }
+.note { color: var(--muted); font-size: 12px; margin: 2px 0 10px; }
+.avatar { width: 36px; height: 36px; border-radius: 50%; background: #1d2d46; flex: none; overflow: hidden; display: grid; place-items: center; font: 700 12px var(--display); color: var(--text-2); }
+.avatar img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.pchip { border: 0; background: var(--chip); border-radius: 999px; padding: 3px 10px; font-size: 12px; cursor: pointer; color: var(--text-2); }
+.pchip:hover { background: var(--chip-hover); color: var(--text); }
+.off-logo { width: 26px; height: 26px; border-radius: 50%; border: 1.5px dashed var(--faint); display: grid; place-items: center; flex: none; font: 700 8px var(--display); color: var(--muted); }
+
+/* ------------------------------------------------------------------ loading */
+.loading { position: fixed; inset: 0; z-index: 100; background: var(--bg); display: grid; place-content: center; justify-items: center; gap: 14px; color: var(--muted); transition: opacity .5s; }
+.loading.done { opacity: 0; pointer-events: none; }
+.puck { width: 54px; height: 54px; border-radius: 50%; border: 3px solid rgba(124, 196, 255, .2); border-top-color: var(--accent); animation: spin 0.9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+
+@media (max-width: 760px) {
+  :root { --panel-w: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001s !important; transition-duration: .001s !important; }
+}

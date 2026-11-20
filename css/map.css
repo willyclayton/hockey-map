@@ -1,0 +1,36 @@
+/* map.css: SVG map, badges, links, paths — map */
+/* ------------------------------------------------------------------ map */
+#map { position: absolute; inset: 0; background: radial-gradient(1200px 800px at 50% 40%, var(--ocean-2), var(--ocean) 60%, var(--bg)); }
+#map svg { width: 100%; height: 100%; display: block; cursor: grab; touch-action: none; }
+#map svg:active { cursor: grabbing; }
+.graticule { fill: none; stroke: rgba(124, 196, 255, 0.05); stroke-width: 0.6; }
+.country { fill: var(--land); stroke: var(--country-stroke); stroke-width: 0.8; vector-effect: non-scaling-stroke; }
+.country.other { fill: #101d31; stroke: #2a4366; }
+.state { fill: var(--land-2); stroke: var(--land-stroke); stroke-width: 0.5; vector-effect: non-scaling-stroke; transition: fill .3s; }
+.coast-glow { fill: none; stroke: rgba(124, 196, 255, 0.10); stroke-width: 6; vector-effect: non-scaling-stroke; filter: blur(3px); }
+
+.link { fill: none; stroke-linecap: round; pointer-events: none; }
+.link.aff { stroke: url(#aff-grad); }
+.link.web { mix-blend-mode: screen; }
+.link.hot { pointer-events: visibleStroke; cursor: pointer; }
+.flow { stroke-dasharray: 2 10; animation: flow 1.2s linear infinite; }
+@keyframes flow { to { stroke-dashoffset: -24; } }
+.path-line { fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 6px rgba(124,196,255,.8)); }
+.path-stop text { font: 700 11px var(--display); fill: #06101f; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.path-stop circle { fill: #fff; stroke: var(--accent); stroke-width: 2; }
+
+.anchor { fill: rgba(238, 243, 250, 0.55); pointer-events: none; }
+.leader { stroke: rgba(238, 243, 250, 0.28); stroke-width: 1; pointer-events: none; }
+.team { cursor: pointer; transition: opacity .25s; }
+.team .halo { fill: none; stroke-width: 6; opacity: 0; transition: opacity .2s; }
+.team .ring { stroke-width: 2.5; }
+.team .disc { fill: var(--badge); }
+.team .abbr { font: 700 9px var(--display); fill: #0b1627; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.team:hover .halo, .team.selected .halo, .team.kb .halo { opacity: .55; }
+.team.selected .ring { stroke-width: 3.5; }
+.team.dim { opacity: .16; }
+.team.dim:hover { opacity: .8; }
+.team-label { font: 600 12px var(--display); letter-spacing: .02em; fill: var(--text); paint-order: stroke; stroke: rgba(6, 11, 20, .92); stroke-width: 3.5px; pointer-events: none; text-anchor: middle; }
+.count-badge circle { fill: #0a1220; stroke-width: 1.5; }
+.count-badge text { font: 700 10px var(--display); fill: #fff; text-anchor: middle; dominant-baseline: central; }
+
