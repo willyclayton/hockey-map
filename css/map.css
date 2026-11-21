@@ -125,3 +125,4 @@
 .journey-mode .team-label:not(.stop) { opacity: 0 !important; }
 .journey-mode .geo { opacity: .7; transition: opacity .45s ease; }
 .team, .aff-layer, .web-layer, .web-glow-layer, .leaders, .geo { transition: opacity .45s ease; }
+.path-stop { pointer-events: none; }

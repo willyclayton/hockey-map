@@ -1,9 +1,9 @@
-import { buildModel, ensurePlayerScores } from './model.js?v=202611210334';
-import { HockeyMap } from './map.js?v=202611210334';
-import { M, map, state, actions, setModel, setMap } from './app.js?v=202611210334';
-import { $ } from './util.js?v=202611210334';
-import { renderTeamPanel, renderPlayerPanel, closePanel, wirePanel, getView, onPanelView, refreshHeader, switchTab, sheetInset, panelInsetRight, isSheet } from './panel.js?v=202611210334';
-import { buildFilters, buildLegend, teamTooltip, linkTooltip, wireSearch, wireChrome } from './chrome.js?v=202611210334';
+import { buildModel, ensurePlayerScores } from './model.js?v=202611210337';
+import { HockeyMap } from './map.js?v=202611210337';
+import { M, map, state, actions, setModel, setMap } from './app.js?v=202611210337';
+import { $ } from './util.js?v=202611210337';
+import { renderTeamPanel, renderPlayerPanel, closePanel, wirePanel, getView, onPanelView, refreshHeader, switchTab, sheetInset, panelInsetRight, isSheet } from './panel.js?v=202611210337';
+import { buildFilters, buildLegend, teamTooltip, linkTooltip, wireSearch, wireChrome } from './chrome.js?v=202611210337';
 
 Object.assign(actions, { selectTeam, selectPlayer, clearSelection, goBack, setTab, replayRoute });
 

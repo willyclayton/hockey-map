@@ -1,11 +1,11 @@
 // panel.js: the side panel (desktop) / bottom sheet (mobile) with team and player views.
 // Owns: view rendering, view-to-view transitions, the sticky header + breadcrumb, tabs,
 // per-view UI state (tab, scroll, filters) that main.js stores in history entries, and sheet drag.
-import { M, map, state, actions } from './app.js?v=202611210334';
-import { orgOf, pipelineLabel, seasonLabel, fold, ensurePlayerScores } from './model.js?v=202611210334';
-import { ratingColor } from './map.js?v=202611210334';
-import { $, esc, plural, logoHTML, leaguePill, avatarHTML, teamName, refLeague } from './util.js?v=202611210334';
-import { openAbout } from './chrome.js?v=202611210334';
+import { M, map, state, actions } from './app.js?v=202611210337';
+import { orgOf, pipelineLabel, seasonLabel, fold, ensurePlayerScores } from './model.js?v=202611210337';
+import { ratingColor } from './map.js?v=202611210337';
+import { $, esc, plural, logoHTML, leaguePill, avatarHTML, teamName, refLeague } from './util.js?v=202611210337';
+import { openAbout } from './chrome.js?v=202611210337';
 
 const selectTeam = (...a) => actions.selectTeam(...a);
 const selectPlayer = (...a) => actions.selectPlayer(...a);

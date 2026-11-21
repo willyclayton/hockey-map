@@ -733,7 +733,8 @@ export class HockeyMap {
     const se = st.enter().append('g').attr('class', 'path-stop');
     se.append('rect');
     se.append('text');
-    if (!calm) se.style('opacity', 0);
+    se.style('opacity', 0);
+    this.activeStop = null;
     this.stopSel = se.merge(st);
     this.stopSel.each(function (d) {
       this.style.setProperty('--c', teams[d.i].color);
@@ -753,10 +754,11 @@ export class HockeyMap {
     const at = (ms, fn) => this.jTimers.push(setTimeout(fn, ms));
     stops.forEach((d, n) => at(arrive[n], () => {
       const g = this.stopGroups.find((x) => x.i === d.i);
-      this.stopSel?.filter((x) => x === g).transition().duration(260).style('opacity', 1);
+      this.showStopTag(g);
       this.ping(d.i);
       this.journeyCard({ p, n, d });
     }));
+    segs.forEach((d) => at(d.delay - 120, () => this.showStopTag(null)));
     segs.forEach((d) => at(d.delay, () => {
       const path = this.pathSel?.filter((x) => x === d).select('.route-line').node();
       if (!path) return;
@@ -768,6 +770,7 @@ export class HockeyMap {
         });
       void self;
     }));
+    at(arrive[arrive.length - 1] + 1600, () => this.showStopTag(null));
     at(arrive[arrive.length - 1] + 900, () => { puck.transition().duration(300).style('opacity', 0).remove(); this.journeyCard({ p, done: true }); });
   }
 
@@ -786,6 +789,15 @@ export class HockeyMap {
       this._jKey = (e) => { if (this.svg.node().contains(document.activeElement) || e.target === document.body) off(); };
       window.addEventListener('keydown', this._jKey, true);
     }, 0);
+  }
+
+  // Only the stop the puck just reached carries its season tag; the rest of the time tags are hidden
+  // (the caption card and the panel carry the years), so they never sit on top of logos.
+  showStopTag(g) {
+    this.activeStop = g;
+    if (this.stopSel) this.stopSel.interrupt().transition().duration(g ? 260 : 200).style('opacity', (x) => (x === g ? 1 : 0));
+    this.placeStops();
+    this.placeLabels();
   }
 
   stopJourney() {
@@ -994,6 +1006,7 @@ export class HockeyMap {
   placeStops() {
     this.stopRects = [];
     for (const g of this.stopGroups) {
+      if (g !== this.activeStop) continue;
       const p = this.pos.get(g.i);
       if (!p) continue;
       let best = null;
