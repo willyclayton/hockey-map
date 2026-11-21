@@ -282,3 +282,12 @@
 @media (prefers-reduced-motion: reduce) {
   .panel { animation: none; }
 }
+
+.panel .hero-actions { display: flex; gap: 8px; margin-top: 14px; }
+.panel .act-btn { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 7px; height: 38px; padding: 0 14px; border-radius: var(--r-pill, 999px); border: 1px solid var(--glass-border); background: rgba(6, 11, 20, .45); color: var(--text-2); font: 600 13px var(--font); cursor: pointer; transition: background var(--t-fast, .14s), color var(--t-fast, .14s), border-color var(--t-fast, .14s); }
+.panel .act-btn svg { width: 15px; height: 15px; }
+.panel .act-btn:hover { background: var(--chip-hover); color: var(--text); }
+.panel .act-btn.primary { border-color: var(--accent-line, rgba(124, 196, 255, .45)); background: var(--accent-soft, rgba(124, 196, 255, .14)); color: var(--accent); }
+.panel .act-btn.primary:hover { background: rgba(124, 196, 255, .24); }
+.panel .act-btn.done { border-color: #0ca30c; color: #7ee07e; background: rgba(12, 163, 12, .14); }
+.panel .act-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

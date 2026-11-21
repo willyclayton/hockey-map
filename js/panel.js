@@ -33,6 +33,7 @@ const ICON = {
   chev: svg('<path d="m9 6 6 6-6 6" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'),
   down: svg('<path d="m7 10 5 5 5-5" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'),
   play: svg('<path d="M8 5.5v13l10.5-6.5L8 5.5Z" fill="currentColor"/>'),
+  share: svg('<path d="M12 3.5v11M7.5 8 12 3.5 16.5 8M5 12.5v6.5a1.5 1.5 0 0 0 1.5 1.5h11a1.5 1.5 0 0 0 1.5-1.5v-6.5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'),
   people: svg('<circle cx="9" cy="8.5" r="3.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5M15.5 5.6a3.2 3.2 0 0 1 0 5.8M17.5 14.3c1.6.6 2.7 2.1 3 4.7" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/>'),
   link: svg('<circle cx="6" cy="12" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="6.5" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="17.5" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8.4 10.8 7.2-3.4M8.4 13.2l7.2 3.4" stroke="currentColor" stroke-width="1.8"/>'),
   filter: svg('<path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>'),
@@ -508,7 +509,8 @@ function playerHTML(p) {
   let h = `<header class="hero"><div class="hero-row"><div class="hero-logo headshot">${p.img ? `<img src="${esc(p.img)}" alt="" onerror="this.remove()">` : ''}<b>${ini}</b></div>
     <div class="hero-text"><h2 class="hero-name" tabindex="-1">${esc(p.n)}</h2><div class="hero-sub">${esc(sub)}</div></div></div>
     ${cur.map((x) => `<button class="now-team" type="button" data-team="${x.i}" data-hl="${x.i}" style="--c:${x.color}">${logoHTML(x)}<span class="nt-text"><span class="nt-k">Plays for</span><span class="nt-name">${esc(x.name)}</span></span>${leaguePill(x.lg)}${ICON.chev}</button>`).join('')}
-    ${facts.length ? `<div class="facts">${facts.join('')}</div>` : ''}</header>`;
+    ${facts.length ? `<div class="facts">${facts.join('')}</div>` : ''}
+    <div class="hero-actions"><button class="act-btn primary" type="button" data-share>${ICON.share}<span>Share route</span></button><button class="act-btn" type="button" data-replay>${ICON.play}<span>Replay route</span></button></div></header>`;
 
   const seasons = new Set(p.c.map((c) => c[0]));
   const ys = [...seasons];
@@ -522,7 +524,7 @@ function playerHTML(p) {
   }
 
   const maxY = ys.length ? Math.max(...ys) : null;
-  h += `<section class="section"><h3>Career <button class="mini-btn" type="button" data-replay>${ICON.play}Replay route</button></h3><div class="tl">${stints(p).map((r) => {
+  h += `<section class="section"><h3>Career</h3><div class="tl">${stints(p).map((r) => {
     const lg = refLeague(r.ref);
     const on = r.ref >= 0;
     const color = M.leagueById.get(lg)?.color || 'var(--faint)';
@@ -568,6 +570,33 @@ function roomsSectionHTML(p) {
   }).join('');
   const more = list.length > shown.length ? `<button class="more-btn" data-more-rooms type="button">Show all ${list.length}</button>` : '';
   return `<section class="section rooms"><h3>Former teammates around the map <span class="count">${list.length}</span></h3><p class="note">Teams with someone who has played alongside ${esc(p.n.split(' ')[0])}.</p><div class="conn-list">${rows}${more}</div></section>`;
+}
+
+// Share a player's route: the native share sheet where there is one (phones), else copy the link.
+async function shareRoute(p, btn) {
+  const url = `${location.origin}${location.pathname}#p=${encodeURIComponent(p.id)}`;
+  const stops = new Set([...p.nodes, ...p.t]).size;
+  const now = M.teams[p.t[0]];
+  const text = `${p.n}'s hockey journey: ${stops} ${stops === 1 ? 'team' : 'teams'} on the map${now ? `, now with the ${now.name}` : ''}. Connection score ${p.score ?? '–'}.`;
+  if (navigator.share) {
+    try { await navigator.share({ title: `${p.n} · Hockey Atlas`, text, url }); return; }
+    catch (e) { if (e && e.name === 'AbortError') return; }
+  }
+  let ok = false;
+  try { await navigator.clipboard.writeText(`${text} ${url}`); ok = true; } catch {
+    const ta = document.createElement('textarea');
+    ta.value = `${text} ${url}`; ta.style.cssText = 'position:fixed;opacity:0';
+    document.body.append(ta); ta.select();
+    try { ok = document.execCommand('copy'); } catch { ok = false; }
+    ta.remove();
+  }
+  const label = btn.querySelector('span');
+  const prev = label.textContent;
+  label.textContent = ok ? 'Link copied' : 'Copy failed';
+  btn.classList.toggle('done', ok);
+  els.live.textContent = ok ? 'Link to this route copied' : 'Could not copy the link';
+  clearTimeout(btn.__t);
+  btn.__t = setTimeout(() => { label.textContent = prev; btn.classList.remove('done'); }, 1800);
 }
 
 // Consecutive seasons with the same team become one stint, even when a player shuttles between two clubs.
@@ -830,6 +859,8 @@ export function wirePanel() {
       return;
     }
     if (e.target.closest('[data-about]')) { openAbout(); return; }
+    const sh = e.target.closest('[data-share]');
+    if (sh && view.kind === 'player') { shareRoute(M.players[view.id], sh); return; }
     if (e.target.closest('[data-replay]')) {
       if (isSheet() && sheet.snap !== 'peek') snapSheet('peek'); // lower the sheet so the route is in view
       actions.replayRoute?.();
