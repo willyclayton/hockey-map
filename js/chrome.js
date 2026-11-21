@@ -1,9 +1,9 @@
 // App chrome: top bar + search, league filters, map settings dock, zoom, coach mark, tooltips, hints,
 // global shortcuts and the Rankings / About modals.
-import { M, map, state, actions } from './app.js?v=202611210359';
-import { fold, RATING_WEIGHTS, PLAYER_WEIGHTS, seasonLabel, ensurePlayerScores } from './model.js?v=202611210359';
-import { ratingColor, RATING_RAMP } from './map.js?v=202611210359';
-import { $, esc, plural, logoHTML, leaguePill, avatarHTML, animateGauges } from './util.js?v=202611210359';
+import { M, map, state, actions } from './app.js?v=202611210429';
+import { fold, RATING_WEIGHTS, PLAYER_WEIGHTS, seasonLabel, ensurePlayerScores } from './model.js?v=202611210429';
+import { ratingColor, RATING_RAMP } from './map.js?v=202611210429';
+import { $, esc, plural, logoHTML, leaguePill, avatarHTML, animateGauges } from './util.js?v=202611210429';
 
 const selectTeam = (...a) => actions.selectTeam(...a);
 const selectPlayer = (...a) => actions.selectPlayer(...a);
@@ -33,6 +33,7 @@ const legible = (c) => { const h = d3.hsl(c); h.l = Math.max(h.l, 0.64); return 
 const lgOrder = () => new Map(M.leagues.map((l, i) => [l.id, i]));
 
 const ICON = {
+  play: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5L8 5.5Z" fill="currentColor"/></svg>',
   reset: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v4h4" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   clock: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 8v4.5l3 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>',
   arrow: '<svg class="arr" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 1.5v7M2 5.5l3 3 3-3" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
@@ -858,6 +859,35 @@ function renderLbPlayers(tbody, order, animate) {
   if (animate) animateGauges();
 }
 
+// ------------------------------------------------------------------ welcome tour (15 s video)
+export function openTour() {
+  const phone = isMobileView();
+  const v = phone ? 'mobile' : 'desktop';
+  const skip = store.get('tour-skip', false);
+  openModal(`<div class="m-scroll tour-body">
+    <div class="m-head"><div class="m-eyebrow">Welcome</div><h2 id="modal-title">Hockey Atlas in 15 seconds</h2></div>
+    <div class="tour-video"><video src="assets/tour/tour-${v}.mp4" poster="assets/tour/tour-${v}.jpg" autoplay muted playsinline preload="auto" aria-label="Walkthrough: tap a team to see its player web, tap a player to replay their journey, search, rank and share"></video>
+      <button class="tour-replay" type="button" hidden>${ICON.play}<span>Watch again</span></button></div>
+    <div class="tour-foot">
+      <label class="tour-skip"><input type="checkbox" id="tour-skip"${skip ? ' checked' : ''}><span>Don't show this again</span></label>
+      <button class="tour-go" type="button" data-close>Explore the map</button>
+    </div></div>`, 'tour');
+  const vid = $('#modal-body video'), again = $('#modal-body .tour-replay');
+  vid.addEventListener('ended', () => { again.hidden = false; });
+  again.addEventListener('click', () => { again.hidden = true; vid.currentTime = 0; vid.play().catch(() => {}); });
+  vid.play?.().catch(() => { again.hidden = false; }); // autoplay can be refused; offer a play button
+  $('#tour-skip').addEventListener('change', (e) => store.set('tour-skip', e.target.checked));
+  store.set('coach-seen', true); // the tour covers what the first-visit hint says
+  $('#coach')?.setAttribute('hidden', '');
+}
+
+// Shown on load until "Don't show this again" is ticked; never over a shared team/player link.
+function maybeTour() {
+  if (store.get('tour-skip', false)) return;
+  if (/[#&](t|p)=/.test(location.hash)) return;
+  setTimeout(() => { if ($('#modal').hidden && !hasSelection()) openTour(); }, 900);
+}
+
 // ------------------------------------------------------------------ about
 export function openAbout() {
   const w = RATING_WEIGHTS;
@@ -875,6 +905,7 @@ export function openAbout() {
       <section class="about-card"><div class="ab-ico">${ICON.route}</div><h5>Player journeys</h5><p>Click a player to trace their route across the map, stop by stop, in the order they played.</p></section>
       <section class="about-card"><div class="ab-ico">${ICON.gauge}</div><h5>Connection rating</h5><p>A 0–100 score ranked within each league, so a 90 means “more connected than almost every team in its league”. Players get one too.</p></section>
     </div>
+    <button class="tour-open" type="button" data-tour>${ICON.play}<span>Watch the 15-second tour</span></button>
     <h4>What goes into the rating</h4>
     <div class="weights">
       ${weight('Reach', w.reach, 'How many teams on the map the roster is linked to.')}
@@ -915,6 +946,8 @@ export function wireChrome() {
   wireKeys();
   watchApp();
   $('#btn-leaderboard').addEventListener('click', openLeaderboard);
+  $('#modal').addEventListener('click', (e) => { if (e.target.closest('[data-tour]')) openTour(); });
+  maybeTour();
   $('#btn-about').addEventListener('click', openAbout);
   $('#brand').addEventListener('click', (e) => {
     e.preventDefault();
