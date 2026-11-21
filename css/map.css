@@ -118,3 +118,10 @@
 .journey .j-bar i { display: block; height: 100%; background: var(--accent, #7cc4ff); border-radius: 2px; transition: width .5s cubic-bezier(.2, .8, .2, 1); }
 @media (max-width: 760px) { .journey { width: calc(100% - 20px); padding: 8px 10px 7px; } .journey .j-logo { width: 30px; height: 30px; } }
 @media (prefers-reduced-motion: reduce) { .journey, .journey .j-bar i { transition: none; } }
+
+/* journey focus: only the route stays lit until the next interaction */
+.journey-mode .team:not(.on-route), .journey-mode .count-badge { opacity: .07 !important; transition: opacity .45s ease; }
+.journey-mode .aff-layer, .journey-mode .web-layer, .journey-mode .web-glow-layer, .journey-mode .preview-layer, .journey-mode .leaders { opacity: 0; transition: opacity .45s ease; }
+.journey-mode .team-label:not(.stop) { opacity: 0 !important; }
+.journey-mode .geo { opacity: .7; transition: opacity .45s ease; }
+.team, .aff-layer, .web-layer, .web-glow-layer, .leaders, .geo { transition: opacity .45s ease; }

@@ -741,8 +741,10 @@ export class HockeyMap {
       d3.select(this).select('text').text(d.text);
     });
 
-    if (!stops.length) { this.journeyCard(null); return; }
+    if (!stops.length) { this.journeyCard(null); this.focusJourney(false); return; }
     const p = players[s.player];
+    this.teamSel?.classed('on-route', (x) => this.pathSet?.has(x.i));
+    this.focusJourney(true);
     if (calm) { this.journeyCard({ p, done: true }); return; }
 
     // the puck rides the tip of each leg
@@ -767,6 +769,23 @@ export class HockeyMap {
       void self;
     }));
     at(arrive[arrive.length - 1] + 900, () => { puck.transition().duration(300).style('opacity', 0).remove(); this.journeyCard({ p, done: true }); });
+  }
+
+  // While a route plays, everything off the route fades back; the next touch, drag, scroll or key on
+  // the map brings it all back.
+  focusJourney(on) {
+    this.svg.classed('journey-mode', on);
+    if (this._jOff) { for (const [t, f] of this._jOff) this.el.removeEventListener(t, f, true); this._jOff = null; window.removeEventListener('keydown', this._jKey, true); }
+    if (!on) return;
+    const off = () => this.focusJourney(false);
+    // ignore the tap that started playback (it bubbles up after this runs)
+    setTimeout(() => {
+      if (!this.svg.classed('journey-mode')) return;
+      this._jOff = [['pointerdown', off], ['wheel', off]];
+      for (const [t, f] of this._jOff) this.el.addEventListener(t, f, { capture: true, passive: true });
+      this._jKey = (e) => { if (this.svg.node().contains(document.activeElement) || e.target === document.body) off(); };
+      window.addEventListener('keydown', this._jKey, true);
+    }, 0);
   }
 
   stopJourney() {
