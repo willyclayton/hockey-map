@@ -1,11 +1,11 @@
 // panel.js: the side panel (desktop) / bottom sheet (mobile) with team and player views.
 // Owns: view rendering, view-to-view transitions, the sticky header + breadcrumb, tabs,
 // per-view UI state (tab, scroll, filters) that main.js stores in history entries, and sheet drag.
-import { M, map, state, actions } from './app.js';
-import { orgOf, pipelineLabel, seasonLabel, fold, ensurePlayerScores } from './model.js';
-import { ratingColor } from './map.js';
-import { $, esc, plural, logoHTML, leaguePill, avatarHTML, teamName, refLeague } from './util.js';
-import { openAbout } from './chrome.js';
+import { M, map, state, actions } from './app.js?v=202611210323';
+import { orgOf, pipelineLabel, seasonLabel, fold, ensurePlayerScores } from './model.js?v=202611210323';
+import { ratingColor } from './map.js?v=202611210323';
+import { $, esc, plural, logoHTML, leaguePill, avatarHTML, teamName, refLeague } from './util.js?v=202611210323';
+import { openAbout } from './chrome.js?v=202611210323';
 
 const selectTeam = (...a) => actions.selectTeam(...a);
 const selectPlayer = (...a) => actions.selectPlayer(...a);
@@ -177,6 +177,11 @@ function cancelClose() {
 // ------------------------------------------------------------------ header (breadcrumb + compact title)
 
 function updateHeader(o) {
+  if (els.share) {
+    const lbl = view.kind === 'player' ? 'Share this route' : 'Share this team';
+    els.share.setAttribute('aria-label', lbl);
+    els.share.title = lbl;
+  }
   const prev = state.stack[state.stack.length - 1];
   let crumb = null;
   if (prev?.player != null && M.players[prev.player]) crumb = { short: M.players[prev.player].n, full: M.players[prev.player].n };
@@ -516,8 +521,7 @@ function playerHTML(p) {
   let h = `<header class="hero"><div class="hero-row"><div class="hero-logo headshot">${p.img ? `<img src="${esc(p.img)}" alt="" onerror="this.remove()">` : ''}<b>${ini}</b></div>
     <div class="hero-text"><h2 class="hero-name" tabindex="-1">${esc(p.n)}</h2><div class="hero-sub">${esc(sub)}</div></div></div>
     ${cur.map((x) => `<button class="now-team" type="button" data-team="${x.i}" data-hl="${x.i}" style="--c:${x.color}">${logoHTML(x)}<span class="nt-text"><span class="nt-k">Plays for</span><span class="nt-name">${esc(x.name)}</span></span>${leaguePill(x.lg)}${ICON.chev}</button>`).join('')}
-    ${facts.length ? `<div class="facts">${facts.join('')}</div>` : ''}
-    <div class="hero-actions"><button class="act-btn primary" type="button" data-share>${ICON.share}<span>Share route</span></button><button class="act-btn" type="button" data-replay>${ICON.play}<span>Replay route</span></button></div></header>`;
+    ${facts.length ? `<div class="facts">${facts.join('')}</div>` : ''}</header>`;
 
   const seasons = new Set(p.c.map((c) => c[0]));
   const ys = [...seasons];
@@ -531,7 +535,7 @@ function playerHTML(p) {
   }
 
   const maxY = ys.length ? Math.max(...ys) : null;
-  h += `<section class="section"><h3>Career</h3><div class="tl">${stints(p).map((r) => {
+  h += `<section class="section"><h3>Career <button class="mini-btn" type="button" data-replay>${ICON.play}Replay route</button></h3><div class="tl">${stints(p).map((r) => {
     const lg = refLeague(r.ref);
     const on = r.ref >= 0;
     const color = M.leagueById.get(lg)?.color || 'var(--faint)';
@@ -579,14 +583,21 @@ function roomsSectionHTML(p) {
   return `<section class="section rooms"><h3>Former teammates around the map <span class="count">${list.length}</span></h3><p class="note">Teams with someone who has played alongside ${esc(p.n.split(' ')[0])}.</p><div class="conn-list">${rows}${more}</div></section>`;
 }
 
-// Share a player's route: the native share sheet where there is one (phones), else copy the link.
-async function shareRoute(p, btn) {
-  const url = `${location.origin}${location.pathname}#p=${encodeURIComponent(p.id)}`;
+// Share links: the native share sheet where there is one (phones), else copy the message + link.
+function shareRoute(p, btn) {
   const stops = new Set([...p.nodes, ...p.t]).size;
   const now = M.teams[p.t[0]];
-  const text = `${p.n}'s hockey journey: ${stops} ${stops === 1 ? 'team' : 'teams'} on the map${now ? `, now with the ${now.name}` : ''}. Connection score ${p.score ?? '–'}.`;
+  share(btn, `#p=${encodeURIComponent(p.id)}`, `${p.n} · Hockey Atlas`,
+    `${p.n}'s hockey journey: ${stops} ${stops === 1 ? 'team' : 'teams'} on the map${now ? `, now with the ${now.name}` : ''}. Connection score ${p.score ?? '–'}.`);
+}
+function shareTeam(t, btn) {
+  share(btn, `#t=${encodeURIComponent(t.id)}`, `${t.name} · Hockey Atlas`,
+    `The ${t.name}' player web: linked to ${t.m.reach} teams on the map. Connection rating ${t.rating} (#${t.leagueRank} in the ${t.lg}).`);
+}
+async function share(btn, hash, title, text) {
+  const url = `${location.origin}${location.pathname}${hash}`;
   if (navigator.share) {
-    try { await navigator.share({ title: `${p.n} · Hockey Atlas`, text, url }); return; }
+    try { await navigator.share({ title, text, url }); return; }
     catch (e) { if (e && e.name === 'AbortError') return; }
   }
   let ok = false;
@@ -597,13 +608,11 @@ async function shareRoute(p, btn) {
     try { ok = document.execCommand('copy'); } catch { ok = false; }
     ta.remove();
   }
-  const label = btn.querySelector('span');
-  const prev = label.textContent;
-  label.textContent = ok ? 'Link copied' : 'Copy failed';
-  btn.classList.toggle('done', ok);
-  els.live.textContent = ok ? 'Link to this route copied' : 'Could not copy the link';
+  btn.querySelector('.share-tip').textContent = ok ? 'Link copied' : 'Copy failed';
+  btn.classList.add('done');
+  els.live.textContent = ok ? 'Link copied' : 'Could not copy the link';
   clearTimeout(btn.__t);
-  btn.__t = setTimeout(() => { label.textContent = prev; btn.classList.remove('done'); }, 1800);
+  btn.__t = setTimeout(() => btn.classList.remove('done'), 1600);
 }
 
 // Consecutive seasons with the same team become one stint, even when a player shuttles between two clubs.
@@ -818,11 +827,17 @@ export function wirePanel() {
   close.innerHTML = ICON.close;
   close.setAttribute('aria-label', 'Close panel');
   close.title = 'Close';
+  const share = Object.assign(document.createElement('button'), { type: 'button', className: 'panel-share' });
+  share.innerHTML = `${ICON.share}<span class="share-tip" aria-hidden="true"></span>`;
+  share.addEventListener('click', () => {
+    if (view.kind === 'player') shareRoute(M.players[view.id], share);
+    else if (view.kind === 'team') shareTeam(M.teams[view.id], share);
+  });
   const title = document.createElement('div');
   title.className = 'pt-title';
   title.setAttribute('aria-hidden', 'true');
   title.title = 'Back to top';
-  top.append(back, title, close);
+  top.append(back, title, share, close);
   let grab = panel.querySelector('.panel-grab');
   if (!grab) { grab = document.createElement('div'); grab.className = 'panel-grab'; grab.setAttribute('aria-hidden', 'true'); }
   panel.insertBefore(grab, body);
@@ -831,7 +846,7 @@ export function wirePanel() {
   live.className = 'sr-only';
   live.setAttribute('aria-live', 'polite');
   panel.append(live);
-  Object.assign(els, { top, back, backLabel: back.querySelector('.crumb-label'), close, title, grab, live });
+  Object.assign(els, { top, back, backLabel: back.querySelector('.crumb-label'), close, share, title, grab, live });
 
   close.addEventListener('click', () => clearSelection());
   back.addEventListener('click', () => goBack());
@@ -866,8 +881,6 @@ export function wirePanel() {
       return;
     }
     if (e.target.closest('[data-about]')) { openAbout(); return; }
-    const sh = e.target.closest('[data-share]');
-    if (sh && view.kind === 'player') { shareRoute(M.players[view.id], sh); return; }
     if (e.target.closest('[data-replay]')) {
       if (isSheet() && sheet.snap !== 'peek') snapSheet('peek'); // lower the sheet so the route is in view
       actions.replayRoute?.();
