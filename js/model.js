@@ -106,7 +106,14 @@ export function buildModel(data) {
       if (!r) byRef.set(g.ref, (r = { ref: g.ref, players: new Set(), seasons: new Set(), pairs: new Set() }));
       for (const p of arr) r.players.add(p);
       r.seasons.add(g.season);
-      for (let x = 0; x < arr.length; x++) for (let y = x + 1; y < arr.length; y++) r.pairs.add(arr[x] * 100000 + arr[y]);
+      r.pairSeasons ||= new Map(); // pair key -> seasons that pair shared on this team
+      for (let x = 0; x < arr.length; x++) for (let y = x + 1; y < arr.length; y++) {
+        const pk = arr[x] * 100000 + arr[y];
+        r.pairs.add(pk);
+        let ss = r.pairSeasons.get(pk);
+        if (!ss) r.pairSeasons.set(pk, (ss = []));
+        ss.push(g.season);
+      }
     }
     m.reunions = pairSet.size;
     t.reunions = [...byRef.values()].sort((a, b) => b.players.size - a.players.size || b.pairs.size - a.pairs.size);

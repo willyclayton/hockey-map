@@ -465,16 +465,23 @@ function updateConn() {
 
 function reunionsHTML(t) {
   if (!t.reunions.length) return empty(ICON.people, 'No current teammates have played together elsewhere.');
-  return `<p class="note tab-note">Current ${esc(t.short)} teammates who were teammates before, somewhere else.</p>` + t.reunions.slice(0, 50).map((r) => {
-    const seasons = [...r.seasons].sort();
-    const span = seasons.length > 1 ? `${seasonLabel(seasons[0])} – ${seasonLabel(seasons[seasons.length - 1])}` : seasonLabel(seasons[0]);
+  const span = (ys) => {
+    ys = [...ys].sort((a, b) => a - b);
+    // consecutive seasons collapse into ranges: 2021-22 – 2023-24, 2025-26
+    const runs = [];
+    for (const y of ys) { const r = runs[runs.length - 1]; if (r && y === r[1] + 1) r[1] = y; else runs.push([y, y]); }
+    return runs.map(([a, b]) => (a === b ? seasonLabel(a) : `${seasonLabel(a)} – ${seasonLabel(b)}`)).join(', ');
+  };
+  const last = (n) => n.split(' ').slice(1).join(' ') || n;
+  return `<p class="note tab-note">Current ${esc(t.short)} who were on the same team in the same season somewhere else.</p>` + t.reunions.slice(0, 50).map((r) => {
     const lg = refLeague(r.ref);
     const on = r.ref >= 0;
     const logo = on ? logoHTML(M.teams[r.ref]) : `<span class="off-logo">${esc(lg.slice(0, 4))}</span>`;
-    const players = [...r.players].map((pi) => M.players[pi]);
     const name = on ? `<button class="rh-link" type="button" data-team="${r.ref}" data-hl="${r.ref}">${esc(teamName(r.ref))}</button>` : `<span>${esc(teamName(r.ref))}</span>`;
-    return `<div class="reunion"><div class="reunion-head">${logo}<span class="rh-name">${name}<span class="rh-sub">${esc(lg)} · ${span} · ${plural(r.pairs.size, 'pair')}</span></span></div>
-      <div class="reunion-players">${players.map((p) => `<button class="pchip" data-player="${p.i}" type="button">${esc(p.n)}</button>`).join('')}</div></div>`;
+    const pairs = [...r.pairSeasons.entries()].map(([pk, ys]) => ({ a: M.players[Math.floor(pk / 100000)], b: M.players[pk % 100000], ys }))
+      .sort((x, y) => Math.max(...y.ys) - Math.max(...x.ys) || y.ys.length - x.ys.length);
+    return `<div class="reunion"><div class="reunion-head">${logo}<span class="rh-name">${name}<span class="rh-sub">${esc(lg)} · ${plural(pairs.length, 'pair')}</span></span></div>
+      <ul class="pair-list">${pairs.map((q) => `<li><span class="pr-names"><button class="pr-p" type="button" data-player="${q.a.i}">${esc(last(q.a.n))}</button><span class="pr-amp">&amp;</span><button class="pr-p" type="button" data-player="${q.b.i}">${esc(last(q.b.n))}</button></span><span class="pr-yrs">${span(q.ys)}</span></li>`).join('')}</ul></div>`;
   }).join('');
 }
 

@@ -291,3 +291,12 @@
 .panel .act-btn.primary:hover { background: rgba(124, 196, 255, .24); }
 .panel .act-btn.done { border-color: #0ca30c; color: #7ee07e; background: rgba(12, 163, 12, .14); }
 .panel .act-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.panel .pair-list { list-style: none; margin: 8px 0 0; padding: 0 0 0 38px; display: flex; flex-direction: column; gap: 2px; }
+.panel .pair-list li { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 5px 0; border-bottom: 1px solid rgba(148, 182, 230, .06); }
+.panel .pair-list li:last-child { border-bottom: 0; }
+.panel .pr-names { display: flex; align-items: baseline; gap: 6px; min-width: 0; flex-wrap: wrap; }
+.panel .pr-p { border: 0; background: none; padding: 0; color: var(--text); font: 600 13px var(--font); cursor: pointer; }
+.panel .pr-p:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.panel .pr-amp { color: var(--muted); font-size: 12px; }
+.panel .pr-yrs { flex: none; color: var(--text-2); font-size: 12px; font-variant-numeric: tabular-nums; text-align: right; }
