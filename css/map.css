@@ -115,7 +115,17 @@
 .journey .j-step { flex: none; font: 600 12px var(--font); color: var(--accent, #7cc4ff); font-variant-numeric: tabular-nums; }
 .journey .j-bar { height: 3px; margin-top: 10px; border-radius: 2px; background: rgba(148, 182, 230, .14); overflow: hidden; }
 .journey .j-bar i { display: block; height: 100%; width: 0; background: var(--accent, #7cc4ff); border-radius: 2px; transition: width .6s cubic-bezier(.2, .8, .2, 1); }
-@media (max-width: 760px) { .journey { width: 210px; padding: 10px 12px 9px; } .journey .j-yr { font-size: 24px; } }
+@media (max-width: 760px) {
+  /* phone: a slim one-line strip sitting on top of the bottom sheet */
+  .journey { left: 10px; width: auto; display: flex; align-items: center; gap: 10px; padding: 7px 12px 9px; border-radius: 12px; }
+  .journey .j-yr { font-size: 18px; flex: none; }
+  .journey .j-row { margin-top: 0; flex: 1; min-width: 0; gap: 8px; }
+  .journey .j-logo { width: 24px; height: 24px; }
+  .journey .j-main { flex-direction: row; align-items: baseline; gap: 6px; }
+  .journey .j-name { font-size: 13px; }
+  .journey .j-sub { flex: none; }
+  .journey .j-bar { position: absolute; left: 12px; right: 12px; bottom: 4px; margin: 0; height: 2px; }
+}
 @media (prefers-reduced-motion: reduce) { .journey, .journey .j-bar i { transition: none; } }
 
 /* journey focus: only the route stays lit until the next interaction */

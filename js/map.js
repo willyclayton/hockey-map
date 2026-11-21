@@ -862,7 +862,7 @@ export class HockeyMap {
     const sheet = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sheet-h')) || 0;
     const panel = document.getElementById('panel');
     const panelOpen = document.body.classList.contains('panel-open') && panel && !panel.hidden;
-    if (this.w < MOBILE) { right = 10; bottom = (panelOpen ? sheet : 0) + 10; }
+    if (this.w < MOBILE) { right = 10; bottom = (panelOpen ? sheet : 0) + 8; }
     else {
       if (panelOpen) right = mr.right - panel.getBoundingClientRect().left + 14;
       const dock = document.getElementById('dock');
@@ -1405,6 +1405,8 @@ export class HockeyMap {
     if (raw) return { x0: 0, y0: chrome, x1: this.w - (!mobile && padRight ? padRight - 12 : 0), y1: this.h0 - (padBottom || 0) };
     if (!mobile && padRight) right = Math.max(right, padRight + 44); // + the zoom buttons beside the panel
     if (padBottom) bottom = Math.max(bottom, padBottom + 12);
+    // a player's route keeps clear of the journey card (bottom right / strip on top of the sheet)
+    if (this.sel.player != null) bottom += mobile ? 50 : 150;
     let y1 = this.h0 - bottom;
     if (y1 - top < 90) y1 = Math.min(this.h0, top + 90);
     return { x0: left, x1: Math.max(left + 120, this.w - right), y0: top, y1 };
