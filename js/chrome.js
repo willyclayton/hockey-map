@@ -1,9 +1,9 @@
 // App chrome: top bar + search, league filters, map settings dock, zoom, coach mark, tooltips, hints,
 // global shortcuts and the Rankings / About modals.
-import { M, map, state, actions } from './app.js?v=202611210337';
-import { fold, RATING_WEIGHTS, PLAYER_WEIGHTS, seasonLabel, ensurePlayerScores } from './model.js?v=202611210337';
-import { ratingColor, RATING_RAMP } from './map.js?v=202611210337';
-import { $, esc, plural, logoHTML, leaguePill, avatarHTML, animateGauges } from './util.js?v=202611210337';
+import { M, map, state, actions } from './app.js?v=202611210341';
+import { fold, RATING_WEIGHTS, PLAYER_WEIGHTS, seasonLabel, ensurePlayerScores } from './model.js?v=202611210341';
+import { ratingColor, RATING_RAMP } from './map.js?v=202611210341';
+import { $, esc, plural, logoHTML, leaguePill, avatarHTML, animateGauges } from './util.js?v=202611210341';
 
 const selectTeam = (...a) => actions.selectTeam(...a);
 const selectPlayer = (...a) => actions.selectPlayer(...a);
@@ -708,12 +708,13 @@ const lb = { kind: 'teams', lg: 'ALL', sort: 'rating', dir: -1, limit: 150 };
 const LB_COLS = {
   name: 'Team', lg: 'League', rating: 'Rating', reach: 'Reach', strength: 'Links', reunions: 'Reunions', pipeline: 'Pipeline',
 };
-const LBP_COLS = { pname: 'Player', lg: 'League', score: 'Score', mates: 'Teammates', rooms: 'Rooms', teams: 'Teams' };
+const LBP_COLS = { pname: 'Player', lg: 'League', score: 'Score', mates: 'Teammates', stops: 'Stops', rooms: 'Rooms', teams: 'Teams' };
 const LBP_TIPS = {
   score: 'Connection score, 0–100 among players in the same league',
   mates: 'Active players they have played with (before or elsewhere)',
   rooms: 'Other teams with one of their former teammates now',
   teams: 'Teams on the map they have played for',
+  stops: 'Stops on their route across the map (a return to an old team counts again)',
 };
 const LB_TIPS = {
   rating: 'Connection rating, 0–100 within the league',
@@ -727,7 +728,7 @@ const lbHead = () => {
   const th = (k, cls = '') => `<th scope="col" class="${cls}" data-col="${k}"><button class="th-sort" type="button" data-sort="${k}"${tips[k] ? ` data-tip="${esc(tips[k])}"` : ''}>${cols[k]}${ICON.arrow}</button></th>`;
   const first = `<th scope="col" class="rank num"><span class="th-plain">#</span></th>`;
   return lb.kind === 'players'
-    ? `<tr>${first}${th('pname')}${th('lg', 'hide-sm')}${th('score')}${th('mates', 'num')}${th('rooms', 'num hide-sm')}${th('teams', 'num hide-sm')}</tr>`
+    ? `<tr>${first}${th('pname')}${th('lg', 'hide-sm')}${th('score')}${th('mates', 'num c-mates')}${th('stops', 'num c-stops')}${th('rooms', 'num hide-sm')}${th('teams', 'num hide-sm')}</tr>`
     : `<tr>${first}${th('name')}${th('lg', 'hide-sm')}${th('rating')}${th('reach', 'num hide-sm')}${th('strength', 'num hide-sm')}${th('reunions', 'num')}${th('pipeline', 'num hide-sm')}</tr>`;
 };
 
@@ -834,7 +835,8 @@ function renderLb(animate) {
 }
 
 function renderLbPlayers(tbody, order, animate) {
-  const val = (p) => ({ score: p.score, pname: p.n, mates: p.sm.mates, rooms: p.sm.rooms, teams: p.sm.teams, lg: order.get(p.lg) }[lb.sort]);
+  tbody.closest('table').dataset.sort = lb.sort;
+  const val = (p) => ({ score: p.score, pname: p.n, mates: p.sm.mates, stops: p.sm.stops, rooms: p.sm.rooms, teams: p.sm.teams, lg: order.get(p.lg) }[lb.sort]);
   const ps = M.players.filter((p) => p.score != null && (lb.lg === 'ALL' || p.lg === lb.lg)).sort((a, b) => {
     const x = val(a), y = val(b);
     return (typeof x === 'string' ? x.localeCompare(y) : x - y) * lb.dir || b.score - a.score || b.sm.mates - a.sm.mates;
@@ -849,7 +851,7 @@ function renderLbPlayers(tbody, order, animate) {
       <td><span class="lb-team">${avatarHTML(p)}<span class="nm-wrap"><span class="nm">${esc(p.n)}</span><span class="lb-ptm">${t ? `${logoHTML(t, 'sm')}${esc(t.short)}` : ''}</span></span></span></td>
       <td class="hide-sm">${leaguePill(p.lg)}</td>
       <td><span class="lb-rating"><b style="color:${legible(ratingColor(p.score))}">${p.score}</b><span class="bar"><i style="width:${animate ? 0 : w};background:${ratingColor(p.score)}" data-w="${w}"></i></span></span></td>
-      <td class="num">${p.sm.mates}</td><td class="num hide-sm">${p.sm.rooms}</td><td class="num hide-sm">${p.sm.teams}</td></tr>`;
+      <td class="num c-mates">${p.sm.mates}</td><td class="num c-stops">${p.sm.stops}</td><td class="num hide-sm">${p.sm.rooms}</td><td class="num hide-sm">${p.sm.teams}</td></tr>`;
   }).join('');
   $('#lb-more').innerHTML = ps.length > shown.length ? `<button class="more-btn" type="button" data-lb-more>Show more · ${shown.length.toLocaleString()} of ${ps.length.toLocaleString()}</button>` : '';
   const dirLabel = lb.sort === 'pname' ? (lb.dir > 0 ? 'A–Z' : 'Z–A') : lb.dir < 0 ? 'highest first' : 'lowest first';

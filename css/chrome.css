@@ -465,3 +465,8 @@ th[aria-sort="ascending"] .th-sort .arr { transform: rotate(180deg); }
   .lb-table th[data-col="mates"] .th-sort::before { content: "Mates"; font-size: 10.5px; }
   .lb-table th[data-col="reunions"] .th-sort::before { content: "Reun."; font-size: 10.5px; }
 }
+@media (max-width: 760px) {
+  .lb-table td .lb-team > .avatar { display: none; }  /* players table: room for names next to three number columns */
+  .lb-table .lb-team .nm { white-space: normal; overflow: visible; text-overflow: clip; line-height: 1.2; overflow-wrap: anywhere; }
+  .lb-table td.num, .lb-table th.num { padding-left: 6px; padding-right: 6px; }
+}

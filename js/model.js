@@ -215,6 +215,11 @@ export function ensurePlayerScores(M) {
     p.mates = mates;
     p.rooms = rooms;
     p.sm = { mates: mates.size, rooms: rooms.size, teams: onMap.size, leagues: new Set([...onMap].map((i) => teams[i].lg)).size };
+    // stops on the map route (as the journey playback draws it): consecutive seasons at one team are one stop
+    let stops = 0, last = null;
+    for (const c of p.c) { if (c[1] < 0) continue; if (c[1] !== last) stops++; last = c[1]; }
+    for (const ti of p.t) if (!p.c.some((c) => c[1] === ti)) stops++;
+    p.sm.stops = stops;
   }
   const byPlayerLeague = d3.group(players.filter((p) => p.lg), (p) => p.lg);
   for (const [, ps] of byPlayerLeague) {
