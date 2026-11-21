@@ -717,9 +717,14 @@ export class HockeyMap {
 
     const ps = this.gPath.selectAll('g.seg').data(segs, (d) => d.key);
     ps.exit().remove();
+    // legs travelled more than once (either direction) are drawn thicker
+    const legN = new Map();
+    const legKey = (d) => (d.a < d.b ? `${d.a}-${d.b}` : `${d.b}-${d.a}`);
+    for (const d of segs) legN.set(legKey(d), (legN.get(legKey(d)) || 0) + 1);
+    for (const d of segs) d.times = legN.get(legKey(d));
     const pe = ps.enter().append('g').attr('class', 'seg');
-    pe.append('path').attr('class', 'route-glow');
-    pe.append('path').attr('class', 'route-line');
+    pe.append('path').attr('class', 'route-glow').style('stroke-width', (d) => `${10 + (Math.min(d.times, 5) - 1) * 3}px`);
+    pe.append('path').attr('class', 'route-line').style('stroke-width', (d) => `${2.8 + (Math.min(d.times, 5) - 1) * 1.3}px`);
     if (!calm) {
       pe.selectAll('path').attr('pathLength', 1).attr('stroke-dasharray', '1 1').attr('stroke-dashoffset', 1)
         .transition().delay((d) => d.delay).duration((d) => d.dur)
@@ -1406,7 +1411,7 @@ export class HockeyMap {
     if (!mobile && padRight) right = Math.max(right, padRight + 44); // + the zoom buttons beside the panel
     if (padBottom) bottom = Math.max(bottom, padBottom + 12);
     // a player's route keeps clear of the journey card (bottom right / strip on top of the sheet)
-    if (this.sel.player != null) bottom += mobile ? 50 : 150;
+    if (this.sel.player != null) bottom += mobile ? 50 : 180;
     let y1 = this.h0 - bottom;
     if (y1 - top < 90) y1 = Math.min(this.h0, top + 90);
     return { x0: left, x1: Math.max(left + 120, this.w - right), y0: top, y1 };
