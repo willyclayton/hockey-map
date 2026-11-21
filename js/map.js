@@ -720,11 +720,19 @@ export class HockeyMap {
     // legs travelled more than once (either direction) are drawn thicker
     const legN = new Map();
     const legKey = (d) => (d.a < d.b ? `${d.a}-${d.b}` : `${d.b}-${d.a}`);
-    for (const d of segs) legN.set(legKey(d), (legN.get(legKey(d)) || 0) + 1);
-    for (const d of segs) d.times = legN.get(legKey(d));
+    for (const d of segs) { d.leg = legKey(d); d.nth = (legN.get(d.leg) || 0) + 1; legN.set(d.leg, d.nth); }
+    const glowW = (n) => `${10 + (Math.min(n, 5) - 1) * 3}px`, lineW = (n) => `${2.8 + (Math.min(n, 5) - 1) * 1.3}px`;
+    // every leg starts thin; a repeat trip thickens that leg as it is travelled (finished route: final widths)
+    const w0 = (d) => (calm ? legN.get(d.leg) : 1);
     const pe = ps.enter().append('g').attr('class', 'seg');
-    pe.append('path').attr('class', 'route-glow').style('stroke-width', (d) => `${10 + (Math.min(d.times, 5) - 1) * 3}px`);
-    pe.append('path').attr('class', 'route-line').style('stroke-width', (d) => `${2.8 + (Math.min(d.times, 5) - 1) * 1.3}px`);
+    pe.append('path').attr('class', 'route-glow').style('stroke-width', (d) => glowW(w0(d)));
+    pe.append('path').attr('class', 'route-line').style('stroke-width', (d) => lineW(w0(d)));
+    this.thickenLeg = (d) => {
+      if (d.nth < 2 || !this.pathSel) return;
+      const same = this.pathSel.filter((x) => x.leg === d.leg && x.n <= d.n);
+      same.select('.route-glow').transition('w').duration(d.dur).style('stroke-width', glowW(d.nth));
+      same.select('.route-line').transition('w').duration(d.dur).style('stroke-width', lineW(d.nth));
+    };
     if (!calm) {
       pe.selectAll('path').attr('pathLength', 1).attr('stroke-dasharray', '1 1').attr('stroke-dashoffset', 1)
         .transition().delay((d) => d.delay).duration((d) => d.dur)
@@ -764,6 +772,7 @@ export class HockeyMap {
       this.journeyCard({ p, n, d });
     }));
     segs.forEach((d) => at(d.delay - 120, () => this.showStopTag(null)));
+    segs.forEach((d) => at(d.delay, () => this.thickenLeg?.(d)));
     segs.forEach((d) => at(d.delay, () => {
       const path = this.pathSel?.filter((x) => x === d).select('.route-line').node();
       if (!path) return;
