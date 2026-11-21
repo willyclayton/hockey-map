@@ -13,7 +13,8 @@ export const RATING_RAMP = RAMP;
 const K_MIN = 0.8, K_MAX = 14;
 const LEVEL = 0.25;          // layout cache spacing, in log2(zoom)
 const SEL_F = 1.35;          // selected badge scale
-const PATH_F = 1.5;          // badges on the open player's route
+const PATH_F = 1.5;
+const SHOW_COUNTS = false;          // badges on the open player's route
 const MOBILE = 760;
 const LABEL_K = { NHL: 1.45, PWHL: 2.1, AHL: 2.2 }; // zoom at which a league's names start to appear
 const LABEL_K_REST = 3.1;
@@ -1025,7 +1026,8 @@ export class HockeyMap {
   placeCounts() {
     const out = [];
     this.countRects = [];
-    if (this.sel.team != null) {
+    // shared-player count badges are off: the counts live in the panel's Links tab
+    if (SHOW_COUNTS && this.sel.team != null) {
       const mobile = this.w < MOBILE, minR = mobile ? 8 : 6, cap = mobile ? 14 : 60;
       for (const d of this.hotLinks) {
         if (out.length >= cap) break;

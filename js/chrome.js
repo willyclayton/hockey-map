@@ -1,9 +1,9 @@
 // App chrome: top bar + search, league filters, map settings dock, zoom, coach mark, tooltips, hints,
 // global shortcuts and the Rankings / About modals.
-import { M, map, state, actions } from './app.js?v=202611210356';
-import { fold, RATING_WEIGHTS, PLAYER_WEIGHTS, seasonLabel, ensurePlayerScores } from './model.js?v=202611210356';
-import { ratingColor, RATING_RAMP } from './map.js?v=202611210356';
-import { $, esc, plural, logoHTML, leaguePill, avatarHTML, animateGauges } from './util.js?v=202611210356';
+import { M, map, state, actions } from './app.js?v=202611210359';
+import { fold, RATING_WEIGHTS, PLAYER_WEIGHTS, seasonLabel, ensurePlayerScores } from './model.js?v=202611210359';
+import { ratingColor, RATING_RAMP } from './map.js?v=202611210359';
+import { $, esc, plural, logoHTML, leaguePill, avatarHTML, animateGauges } from './util.js?v=202611210359';
 
 const selectTeam = (...a) => actions.selectTeam(...a);
 const selectPlayer = (...a) => actions.selectPlayer(...a);
@@ -174,7 +174,6 @@ export function buildLegend() {
   const L = map.layers || { aff: true, web: true };
   const badge = (s, label) => `<span class="sz"><i style="width:${s}px;height:${s}px"></i>${label}</span>`;
   const webSw = '<svg width="24" height="12" viewBox="0 0 24 12" aria-hidden="true"><path d="M2 11Q12 -2 22 11" stroke="#7cc4ff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".85"/><path d="M2 11Q12 5 22 11" stroke="#7cc4ff" stroke-width="1.1" fill="none" stroke-linecap="round" opacity=".55"/></svg>';
-  const cntSw = '<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="7.5" fill="#0a1220" stroke="#3987e5" stroke-width="1.5"/><text x="9" y="9.5" text-anchor="middle" dominant-baseline="central" font-family="Barlow Condensed, sans-serif" font-weight="700" font-size="10" fill="#fff">4</text></svg>';
   let h = `<div class="lg-row"><span class="ctl-label">Badge size</span><span class="sizes">${badge(17, 'NHL')}${badge(13, 'AHL')}${badge(10, 'Other')}</span></div>`;
   if (rating) {
     h += `<div class="lg-row"><span class="ctl-label">Ring</span><span class="ramp-wrap"><span class="ramp" style="background:linear-gradient(90deg,${RATING_RAMP.join(',')})" role="img" aria-label="Connection rating from 0, least connected, to 100, most connected"></span><span class="ramp-labels"><span>0 · least</span><span>most · 100</span></span></span></div>`;
@@ -183,8 +182,7 @@ export function buildLegend() {
   }
   const affSw = '<svg width="24" height="10" viewBox="0 0 24 10" aria-hidden="true"><path d="M2 5h20" stroke="#e6eef9" stroke-width="1.8" stroke-linecap="round" opacity=".9"/></svg>';
   h += `<div class="lg-row"><span class="ctl-label">Lines</span><span class="lg-item ${L.aff === false ? 'off' : ''}"><span class="lg-k">${affSw}</span>Affiliates</span><span class="lg-item ${L.web === false ? 'off' : ''}"><span class="lg-k">${webSw}</span>Player web</span></div>
-    <div class="lg-row lg-note"><span class="ctl-label"></span>Thicker = more shared players</div>
-    <div class="lg-row"><span class="ctl-label"></span><span class="lg-k">${cntSw}</span>Shared with the open team</div>`;
+    <div class="lg-row lg-note"><span class="ctl-label"></span>Thicker = more shared players</div>`;
   el.innerHTML = h;
   updateCtlDot();
 }
