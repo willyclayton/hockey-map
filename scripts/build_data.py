@@ -9,7 +9,7 @@ Sources
   * AHL, ECHL, OHL, WHL, QMJHL, USHL, SPHL, PWHL: HockeyTech/LeagueStat feeds (rosters for every season)
   * Wikipedia: arena coordinates + NHL/AHL/ECHL affiliations (cached in data/reference.json)
 
-Players are linked across leagues by (last name, birth date) and within a league by its player id.
+Players are linked across leagues by last name + birth date + compatible first names and within a league by its player id.
 """
 import argparse
 import concurrent.futures as cf
@@ -39,6 +39,8 @@ CUR_TTL = 60 if args.refresh else DAY / 2
 
 INTL_LEAGUES = re.compile(r"^(WC|OG|OGQ|WJC|WJ|WHC|U-?1\d|U-?20|WCH|WCUP|4N|IIHF|OLY|EYOF|YOG|HG|WCA|WJAC|"
                           r"INTL|INT|FRIENDLY|EUROTOUR|EHT|5N|WCQ|OGQUAL|WC-A|WC-B|DCQ|DC)", re.I)
+INTL_EVENTS = re.compile(r"hlinka|gretzky cup|world (junior|championship|cup)|olympic|four nations|"
+                         r"\b(team )?(usa|canada) u-?\d\d\b|\bu-?1[78] (team|wc)|challenge cup|ivan hlinka", re.I)
 NHL_ABBR_FIX = {"LA": "LAK", "NJ": "NJD", "SJ": "SJS", "TB": "TBL", "MON": "MTL", "CLB": "CBJ", "NAS": "NSH",
                 "VEG": "VGK", "LV": "VGK", "UTAH": "UTA", "UTH": "UTA", "CAL": "CGY", "WAS": "WSH",
                 "NYR ": "NYR", "PHX": "ARI", "FLO": "FLA", "STL ": "STL", "WIN": "WPG", "MIN ": "MIN"}
@@ -95,8 +97,45 @@ def union(a, b):
         parent[rb] = ra
 
 
-def pkey(last, dob):
-    return f"K:{norm(last)}|{dob}" if valid_dob(dob) and norm(last) else None
+# Cross-league identity: same surname + birth date, AND compatible first names (one a prefix of the
+# other, or a common nickname pair). That keeps twins apart (Tyler/Jesse Tucker, Mackie/Madison
+# Samoskevich) while still matching "Matt"/"Matthew" or "Jake"/"Jacob". Women's and men's leagues never link.
+NICK = {"jake": "jacob", "jakob": "jacob", "mitch": "mitchell", "zach": "zachary", "zack": "zachary", "zak": "zachary",
+        "nick": "nicholas", "nic": "nicholas", "nicolas": "nicholas", "alex": "alexander", "aleksander": "alexander",
+        "alexandre": "alexander", "matt": "matthew", "mathew": "matthew", "mike": "michael", "mikey": "michael",
+        "tony": "anthony", "will": "william", "bill": "william", "billy": "william", "liam": "william", "bob": "robert",
+        "rob": "robert", "bobby": "robert", "robbie": "robert", "chris": "christopher", "dan": "daniel",
+        "danny": "daniel", "sam": "samuel", "tom": "thomas", "tommy": "thomas", "joe": "joseph", "joey": "joseph",
+        "ben": "benjamin", "josh": "joshua", "nate": "nathan", "andy": "andrew", "drew": "andrew",
+        "jon": "jonathan", "johnny": "john", "jack": "john", "dave": "david", "steve": "steven", "stephen": "steven",
+        "pat": "patrick", "ed": "edward", "eddie": "edward", "ted": "edward", "teddy": "theodore", "theo": "theodore",
+        "max": "maxim", "maxime": "maxim", "maximilian": "maxim", "gabe": "gabriel", "vince": "vincent",
+        "jim": "james", "jimmy": "james", "jamie": "james", "cam": "cameron", "fred": "frederick", "freddy": "frederick",
+        "greg": "gregory", "jeff": "jeffrey", "ken": "kenneth", "kenny": "kenneth", "ron": "ronald", "russ": "russell",
+        "zac": "zachary", "tim": "timothy", "timmy": "timothy", "brad": "bradley", "dom": "dominic", "dominik": "dominic"}
+WOMEN = {"PWHL"}
+name_groups = defaultdict(list)  # (gender, surname, dob) -> [(element, first name)]
+
+
+def same_first(a, b):
+    if not a or not b:
+        return False
+    if a.startswith(b) or b.startswith(a):
+        return True
+    return NICK.get(a, a) == NICK.get(b, b)
+
+
+def note_identity(el, league, first, last, dob):
+    if valid_dob(dob) and norm(last) and norm(first):
+        name_groups[("W" if league in WOMEN else "M", norm(last), dob)].append((el, norm(first)))
+
+
+def link_identities():
+    for members in name_groups.values():
+        for x in range(len(members)):
+            for y in range(x + 1, len(members)):
+                if members[x][0] != members[y][0] and same_first(members[x][1], members[y][1]):
+                    union(members[x][0], members[y][0])
 
 
 # ---------------------------------------------------------------- NHL
@@ -273,9 +312,7 @@ for (y, ab), d in rosters_nhl.items():
     for grp in ("forwards", "defensemen", "goalies"):
         for p in d.get(grp, []):
             el = f"NHL:{p['id']}"
-            k = pkey(p["lastName"]["default"], p.get("birthDate"))
-            if k:
-                union(el, k)
+            note_identity(el, "NHL", p["firstName"]["default"], p["lastName"]["default"], p.get("birthDate"))
             ref = nid if nid else f"off:{sref('NHL|' + tname)}"
             nm = tname if nid and tname != nodes[nid]["name"] else None
             add_stint(el, y, ref, nm=nm)
@@ -293,9 +330,7 @@ for (L, y, sid, tid), roster in ht_rosters.items():
     for p in roster:
         el = f"{L}:{p['player_id']}"
         dob = p.get("rawbirthdate") or p.get("birthdate") or ""
-        k = pkey(p.get("last_name", ""), dob)
-        if k:
-            union(el, k)
+        note_identity(el, L, p.get("first_name", ""), p.get("last_name", ""), dob)
         ref = nid if nid else f"off:{sref(L + '|' + tname)}"
         nm = tname if nid and norm(tname) != norm(nodes[nid]["name"]) else None
         add_stint(el, y, ref, nm=nm)
@@ -305,6 +340,9 @@ for (L, y, sid, tid), roster in ht_rosters.items():
                 rows_by_elem[el] = (L, p)
 
 # merge stints by identity root
+for g in name_groups.values():  # dedupe repeated rows (same player, many seasons) before pairing
+    g[:] = list(dict.fromkeys(g))
+link_identities()
 person_stints = defaultdict(dict)
 person_elems = defaultdict(set)
 for el, ss in stints.items():
@@ -383,7 +421,7 @@ for pid, d in landings.items():
         y = int(str(s["season"])[:4])
         lg = (s.get("leagueAbbrev") or "").strip()
         tn = (s.get("teamName") or {}).get("default", "").strip()
-        if not tn or INTL_LEAGUES.match(lg):
+        if not tn or INTL_LEAGUES.match(lg) or INTL_EVENTS.search(f"{lg} {tn}"):
             continue
         nid = map_team(lg, tn)
         Lc = LEAGUE_ALIAS.get(lg)
