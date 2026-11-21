@@ -1,9 +1,10 @@
 // App chrome: top bar + search, league filters, map settings dock, zoom, coach mark, tooltips, hints,
 // global shortcuts and the Rankings / About modals.
-import { M, map, state, actions } from './app.js?v=202611210429';
-import { fold, RATING_WEIGHTS, PLAYER_WEIGHTS, seasonLabel, ensurePlayerScores } from './model.js?v=202611210429';
-import { ratingColor, RATING_RAMP } from './map.js?v=202611210429';
-import { $, esc, plural, logoHTML, leaguePill, avatarHTML, animateGauges } from './util.js?v=202611210429';
+import { M, map, state, actions } from './app.js?v=202611210441';
+import { fold, RATING_WEIGHTS, PLAYER_WEIGHTS, seasonLabel, ensurePlayerScores } from './model.js?v=202611210441';
+import { ratingColor, RATING_RAMP } from './map.js?v=202611210441';
+import { openTour, maybeTour } from './tour.js?v=202611210441';
+import { $, esc, plural, logoHTML, leaguePill, avatarHTML, animateGauges } from './util.js?v=202611210441';
 
 const selectTeam = (...a) => actions.selectTeam(...a);
 const selectPlayer = (...a) => actions.selectPlayer(...a);
@@ -859,35 +860,6 @@ function renderLbPlayers(tbody, order, animate) {
   if (animate) animateGauges();
 }
 
-// ------------------------------------------------------------------ welcome tour (15 s video)
-export function openTour() {
-  const phone = isMobileView();
-  const v = phone ? 'mobile' : 'desktop';
-  const skip = store.get('tour-skip', false);
-  openModal(`<div class="m-scroll tour-body">
-    <div class="m-head"><div class="m-eyebrow">Welcome</div><h2 id="modal-title">Hockey Atlas in 15 seconds</h2></div>
-    <div class="tour-video"><video src="assets/tour/tour-${v}.mp4" poster="assets/tour/tour-${v}.jpg" autoplay muted playsinline preload="auto" aria-label="Walkthrough: tap a team to see its player web, tap a player to replay their journey, search, rank and share"></video>
-      <button class="tour-replay" type="button" hidden>${ICON.play}<span>Watch again</span></button></div>
-    <div class="tour-foot">
-      <label class="tour-skip"><input type="checkbox" id="tour-skip"${skip ? ' checked' : ''}><span>Don't show this again</span></label>
-      <button class="tour-go" type="button" data-close>Explore the map</button>
-    </div></div>`, 'tour');
-  const vid = $('#modal-body video'), again = $('#modal-body .tour-replay');
-  vid.addEventListener('ended', () => { again.hidden = false; });
-  again.addEventListener('click', () => { again.hidden = true; vid.currentTime = 0; vid.play().catch(() => {}); });
-  vid.play?.().catch(() => { again.hidden = false; }); // autoplay can be refused; offer a play button
-  $('#tour-skip').addEventListener('change', (e) => store.set('tour-skip', e.target.checked));
-  store.set('coach-seen', true); // the tour covers what the first-visit hint says
-  $('#coach')?.setAttribute('hidden', '');
-}
-
-// Shown on load until "Don't show this again" is ticked; never over a shared team/player link.
-function maybeTour() {
-  if (store.get('tour-skip', false)) return;
-  if (/[#&](t|p)=/.test(location.hash)) return;
-  setTimeout(() => { if ($('#modal').hidden && !hasSelection()) openTour(); }, 900);
-}
-
 // ------------------------------------------------------------------ about
 export function openAbout() {
   const w = RATING_WEIGHTS;
@@ -946,8 +918,8 @@ export function wireChrome() {
   wireKeys();
   watchApp();
   $('#btn-leaderboard').addEventListener('click', openLeaderboard);
-  $('#modal').addEventListener('click', (e) => { if (e.target.closest('[data-tour]')) openTour(); });
-  maybeTour();
+  $('#modal').addEventListener('click', (e) => { if (e.target.closest('[data-tour]')) { closeModal({ restore: false }); openTour(); } });
+  maybeTour(() => $('#modal').hidden && !hasSelection());
   $('#btn-about').addEventListener('click', openAbout);
   $('#brand').addEventListener('click', (e) => {
     e.preventDefault();

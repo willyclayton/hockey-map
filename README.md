@@ -9,7 +9,7 @@ An interactive map of every NHL, AHL, ECHL, SPHL, OHL, WHL, QMJHL, USHL and PWHL
 - **Reunions.** Current teammates who already played together somewhere else.
 - **Connection Rating (0–100).** How interconnected a roster is, ranked within its league. Every player gets a connection score too. See *Rankings* in the app.
 - **Filters.** League toggles (double-click one to show only that league), layer toggles, color by league or rating, a minimum-shared-players slider, and search across every team and player (press `/`).
-- **15-second welcome tour.** A short video plays on first load (and each load until “Don't show this again” is ticked; never on shared links). Re-record it with `node scripts/record_walkthrough.js` while the site is served on :8765.
+- **15-second welcome tour.** Five story-style slides (tap to skip, hold to pause) built from stills of the real site and animated with CSS. Shown on load until “Don't show this again” is ticked, never on shared links, and replayable from About. Refresh the stills with `node scripts/make_tour.js` while the site is served on :8765.
 - **Shareable URLs.** `#t=NHL-TOR` opens a team and `#p=n8478402` opens a player.
 
 ## Connection Rating

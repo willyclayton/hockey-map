@@ -471,24 +471,5 @@ th[aria-sort="ascending"] .th-sort .arr { transform: rotate(180deg); }
   .lb-table td.num, .lb-table th.num { padding-left: 6px; padding-right: 6px; }
 }
 
-/* ------------------------------------------------------------------ welcome tour */
-.modal-card[data-kind="tour"] { width: min(820px, 100%); }
-.tour-body { padding-bottom: 18px; }
-.tour-video { position: relative; margin: 4px 0 0; border-radius: 14px; overflow: hidden; background: #060b14; border: 1px solid var(--glass-border); display: grid; place-items: center; }
-.tour-video video { display: block; width: 100%; height: auto; max-height: 62vh; object-fit: contain; }
-.tour-replay { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px 0 14px; border-radius: 999px; border: 1px solid var(--accent-line, rgba(124,196,255,.45)); background: rgba(8, 14, 26, .88); color: var(--text); font: 600 14px var(--font); cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,.5); }
-.tour-replay svg { width: 15px; height: 15px; color: var(--accent); }
-.tour-replay[hidden] { display: none; }
-.tour-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 14px 0 0; }
-.tour-skip { display: inline-flex; align-items: center; gap: 9px; color: var(--text-2); font: 500 13.5px var(--font); cursor: pointer; user-select: none; }
-.tour-skip input { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; margin: 0; }
-.tour-go { height: 40px; padding: 0 20px; border-radius: 999px; border: 1px solid var(--accent-line, rgba(124,196,255,.45)); background: var(--accent-soft, rgba(124,196,255,.14)); color: var(--accent); font: 600 14px var(--font); cursor: pointer; }
-.tour-go:hover { background: rgba(124, 196, 255, .24); }
 .tour-open { display: inline-flex; align-items: center; gap: 8px; height: 36px; margin: 6px 0 4px; padding: 0 16px 0 12px; border-radius: 999px; border: 1px solid var(--accent-line, rgba(124,196,255,.45)); background: var(--accent-soft, rgba(124,196,255,.14)); color: var(--accent); font: 600 13px var(--font); cursor: pointer; }
 .tour-open svg { width: 13px; height: 13px; }
-@media (max-width: 760px) {
-  .tour-video { margin: 4px 0 0; }
-  .tour-video video { max-height: 58vh; width: auto; max-width: 100%; }
-  .tour-foot { margin: 12px 0 0; }
-  .tour-go { flex: 1; }
-}

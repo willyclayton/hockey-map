@@ -1,0 +1,58 @@
+{
+ "made": "2026-11-21",
+ "desktop": {
+  "w": 1280,
+  "h": 800,
+  "pts": {
+   "gauge": [
+    82.5,
+    60.1
+   ],
+   "team": [
+    50.94,
+    55.7
+   ],
+   "start": [
+    51.93,
+    48.12
+   ]
+  },
+  "player": "Henry Thrun",
+  "imgs": [
+   "map",
+   "after",
+   "before",
+   "route0",
+   "route1",
+   "rank"
+  ]
+ },
+ "mobile": {
+  "w": 390,
+  "h": 844,
+  "pts": {
+   "gauge": [
+    50,
+    52.21
+   ],
+   "team": [
+    83.73,
+    28.82
+   ],
+   "start": [
+    83.72,
+    39.91
+   ]
+  },
+  "player": "Henry Thrun",
+  "imgs": [
+   "map",
+   "after",
+   "before",
+   "rating",
+   "route0",
+   "route1",
+   "rank"
+  ]
+ }
+}
