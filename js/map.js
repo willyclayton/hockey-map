@@ -13,6 +13,7 @@ export const RATING_RAMP = RAMP;
 const K_MIN = 0.8, K_MAX = 14;
 const LEVEL = 0.25;          // layout cache spacing, in log2(zoom)
 const SEL_F = 1.35;          // selected badge scale
+const PATH_F = 1.5;          // badges on the open player's route
 const MOBILE = 760;
 const LABEL_K = { NHL: 1.45, PWHL: 2.1, AHL: 2.2 }; // zoom at which a league's names start to appear
 const LABEL_K_REST = 3.1;
@@ -25,6 +26,8 @@ const mq = (q) => (window.matchMedia ? window.matchMedia(q) : { matches: false }
 const reducedMQ = mq('(prefers-reduced-motion: reduce)');
 const coarseMQ = mq('(pointer: coarse)');
 const reduced = () => reducedMQ.matches;
+// "2018-19" for one season, "2018–21" for a run, "Now" for the current team with no past seasons here
+const yearSpan = (a, b) => (a == null ? 'Now' : a === b ? `${a}-${String(a + 1).slice(2)}` : `${a}–${String(b + 1).slice(2)}`);
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const r1 = (v) => Math.round(v * 10) / 10;
 const overlaps = (a, b) => a.x0 < b.x1 && a.x1 > b.x0 && a.y0 < b.y1 && a.y1 > b.y0;
@@ -292,8 +295,11 @@ export class HockeyMap {
   radius(t) {
     const p = this.pos.get(t.i);
     if (p) return p.r;
-    return t.baseR * this.sizeScale * this.zf(this.transform.k) * (this.sel.team === t.i ? SEL_F : 1);
+    return t.baseR * this.sizeScale * this.zf(this.transform.k) * this.sizeF(t.i);
   }
+
+  // badge scale: the selected team, and every stop on an open player's route, are drawn bigger
+  sizeF(i) { return i === this.sel.team ? SEL_F : this.pathSet?.has(i) ? PATH_F : 1; }
 
   pathTeams() {
     const p = this.sel.player != null ? this.model.players[this.sel.player] : null;
@@ -307,6 +313,7 @@ export class HockeyMap {
     for (const [i, p] of this.pos) from.set(i, { dx: p.x - p.ax, dy: p.y - p.ay, f: p.f });
     this.seed = new Map([...from].map(([i, o]) => [i, [o.dx, o.dy]]));
     this.cache.clear();
+    this.pathSet = this.sel.player != null ? this.pathTeams() : null;
     this.visList = this.visibleTeams();
     this.visSet = new Set(this.visList.map((t) => t.i));
     for (const i of [...this.pos.keys()]) if (!this.visSet.has(i)) this.pos.delete(i);
@@ -327,7 +334,7 @@ export class HockeyMap {
       AX[i] = t.xy[0] * k; AY[i] = t.xy[1] * k;
       const sd = seed?.get(t.i);
       X[i] = AX[i] + (sd ? sd[0] : 0); Y[i] = AY[i] + (sd ? sd[1] : 0);
-      R[i] = t.baseR * this.sizeScale * zf * (t.i === sel ? SEL_F : 1) + 1;
+      R[i] = t.baseR * this.sizeScale * zf * this.sizeF(t.i) + 1;
       W[i] = t.i === sel ? 0.06 : 1;
       PULL[i] = t.i === sel ? 0.5 : 0.1;
       if (R[i] > maxR) maxR = R[i];
@@ -403,7 +410,7 @@ export class HockeyMap {
     for (const t of this.visList) {
       const a = m0.get(t.i), b = m1.get(t.i) || a;
       let dx = a ? a[0] + (b[0] - a[0]) * fr : 0, dy = a ? a[1] + (b[1] - a[1]) * fr : 0;
-      let f = t.i === sel ? SEL_F : 1;
+      let f = this.sizeF(t.i);
       if (tw) {
         const s = tw.from.get(t.i);
         if (s) { dx = s.dx + (dx - s.dx) * tau; dy = s.dy + (dy - s.dy) * tau; f = s.f + (f - s.f) * tau; }
@@ -653,9 +660,12 @@ export class HockeyMap {
     this.updateLinks(true);
   }
 
+  // A player's career as a journey: legs draw one at a time with a puck riding the tip, each stop
+  // pauses, pulses and gets a season tag, and a caption card follows along.
   renderPath() {
     const { players, teams } = this.model;
     const s = this.sel;
+    this.stopJourney();
     let stops = [];
     if (s.player != null) {
       const p = players[s.player];
@@ -670,35 +680,39 @@ export class HockeyMap {
       stops = seq;
     }
     this.stops = stops;
-    // one numbered pill per team, listing every visit
+    // one tag per team, listing the seasons of every visit
     const groups = new Map();
     stops.forEach((d, n) => {
       let g = groups.get(d.i);
-      if (!g) groups.set(d.i, (g = { i: d.i, nums: [], first: n, ang: STOP_ANGLES[0], sup: 0 }));
-      g.nums.push(n + 1);
+      if (!g) groups.set(d.i, (g = { i: d.i, ys: new Set(), first: n, ang: STOP_ANGLES[0], sup: 0 }));
+      if (d.from != null) for (let y = d.from; y <= d.to; y++) g.ys.add(y);
     });
     for (const g of groups.values()) {
-      const ns = g.nums;
-      g.text = ns.length > 3 ? `${ns[0]}·${ns[1]}…${ns[ns.length - 1]}` : ns.join('·');
-      g.w = Math.max(17, textWidth(g.text, 700, 11) + 10);
-      g.h = 17;
+      // every season at this team, collapsed into runs: "2018–21", or "2017-18 · 2022-23" for a return
+      const ys = [...g.ys].sort((a, b) => a - b), runs = [];
+      for (const y of ys) { const r = runs[runs.length - 1]; if (r && y === r[1] + 1) r[1] = y; else runs.push([y, y]); }
+      const spans = runs.map(([a, b]) => yearSpan(a, b));
+      g.text = !spans.length ? 'Now' : spans.length > 2 ? `${spans[0]} · ${spans[spans.length - 1]}` : spans.join(' · ');
+      g.w = Math.max(20, textWidth(g.text, 700, 11) + 12);
+      g.h = 18;
     }
     this.stopGroups = [...groups.values()];
     const key = s.player;
     const segs = stops.slice(1).map((d, n) => ({ a: stops[n].i, b: d.i, n, key: `${key}:${n}` }));
 
-    // timing: the route draws stop by stop, faster for long careers
+    // timing: about a second per leg (longer legs a bit slower) plus a pause at every stop
+    const calm = reduced();
     const P = (i) => this.pos.get(i);
-    const lens = segs.map((d) => (P(d.a) && P(d.b) ? Math.hypot(P(d.b).x - P(d.a).x, P(d.b).y - P(d.a).y) : 100));
-    const total = Math.min(2600, 380 + segs.length * 300);
-    const sumLen = d3.sum(lens) || 1;
-    let t = 280;
-    const at = [t];
-    segs.forEach((d, n) => {
-      d.delay = t;
-      d.dur = Math.max(140, (lens[n] / sumLen) * total * 0.7 + (total * 0.3) / Math.max(1, segs.length));
-      t += d.dur;
-      at.push(t);
+    const DWELL = 520;
+    let t = 350;
+    const arrive = [t];
+    segs.forEach((d) => {
+      const pa = P(d.a), pb = P(d.b);
+      const len = pa && pb ? Math.hypot(pb.x - pa.x, pb.y - pa.y) : 200;
+      d.delay = t + DWELL;
+      d.dur = Math.max(650, Math.min(1300, 520 + len * 1.1));
+      t = d.delay + d.dur;
+      arrive.push(t);
     });
 
     const ps = this.gPath.selectAll('g.seg').data(segs, (d) => d.key);
@@ -706,7 +720,7 @@ export class HockeyMap {
     const pe = ps.enter().append('g').attr('class', 'seg');
     pe.append('path').attr('class', 'route-glow');
     pe.append('path').attr('class', 'route-line');
-    if (!reduced()) {
+    if (!calm) {
       pe.selectAll('path').attr('pathLength', 1).attr('stroke-dasharray', '1 1').attr('stroke-dashoffset', 1)
         .transition().delay((d) => d.delay).duration((d) => d.dur)
         .ease(d3.easeCubicInOut).attr('stroke-dashoffset', 0)
@@ -719,24 +733,88 @@ export class HockeyMap {
     const se = st.enter().append('g').attr('class', 'path-stop');
     se.append('rect');
     se.append('text');
-    if (!reduced()) se.style('opacity', 0).transition().delay((d) => (d.first === 0 ? at[0] : at[d.first]) - 60).duration(260).style('opacity', 1);
+    if (!calm) se.style('opacity', 0);
     this.stopSel = se.merge(st);
     this.stopSel.each(function (d) {
       this.style.setProperty('--c', teams[d.i].color);
       d3.select(this).select('rect').attr('x', -d.w / 2).attr('y', -d.h / 2).attr('width', d.w).attr('height', d.h).attr('rx', d.h / 2);
       d3.select(this).select('text').text(d.text);
     });
+
+    if (!stops.length) { this.journeyCard(null); return; }
+    const p = players[s.player];
+    if (calm) { this.journeyCard({ p, done: true }); return; }
+
+    // the puck rides the tip of each leg
+    const puck = this.gPath.append('circle').attr('class', 'route-puck').attr('r', 5.5).style('opacity', 0);
+    const self = this;
+    const at = (ms, fn) => this.jTimers.push(setTimeout(fn, ms));
+    stops.forEach((d, n) => at(arrive[n], () => {
+      const g = this.stopGroups.find((x) => x.i === d.i);
+      this.stopSel?.filter((x) => x === g).transition().duration(260).style('opacity', 1);
+      this.ping(d.i);
+      this.journeyCard({ p, n, d });
+    }));
+    segs.forEach((d) => at(d.delay, () => {
+      const path = this.pathSel?.filter((x) => x === d).select('.route-line').node();
+      if (!path) return;
+      puck.style('opacity', 1).interrupt().transition().duration(d.dur).ease(d3.easeCubicInOut)
+        .attrTween('transform', () => (u) => {
+          const L = path.getTotalLength();
+          const q = path.getPointAtLength(L * u);
+          return `translate(${q.x},${q.y})`;
+        });
+      void self;
+    }));
+    at(arrive[arrive.length - 1] + 900, () => { puck.transition().duration(300).style('opacity', 0).remove(); this.journeyCard({ p, done: true }); });
+  }
+
+  stopJourney() {
+    for (const id of this.jTimers || []) clearTimeout(id);
+    this.jTimers = [];
+    this.gPath.selectAll('.route-puck').interrupt().remove();
+  }
+
+  // Caption that follows the journey: current stop, its seasons, progress. HTML overlay on the map.
+  journeyCard(o) {
+    let el = this.jCard;
+    if (!o) { if (el) el.classList.remove('on'); return; }
+    if (!el) {
+      el = this.jCard = document.createElement('div');
+      el.className = 'journey';
+      el.setAttribute('aria-live', 'polite');
+      this.el.appendChild(el);
+    }
+    const { teams } = this.model;
+    const total = this.stops.length;
+    const esc = (x) => String(x ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const logo = (t) => `<span class="j-logo" style="--c:${t.color}">${t.logo ? `<img src="${esc(t.logo)}" alt="">` : `<b>${esc(t.abbr || t.short)}</b>`}</span>`;
+    if (o.done) {
+      const ys = o.p.c.map((c) => c[0]);
+      const span = ys.length ? `${Math.min(...ys)}–${String(Math.max(...ys) + 1).slice(2)}` : '';
+      el.innerHTML = `<div class="j-row"><span class="j-step">Journey</span><span class="j-main"><span class="j-name">${esc(o.p.n)}</span><span class="j-sub">${total} ${total === 1 ? 'stop' : 'stops'} on the map${span ? ` · ${span}` : ''}</span></span></div><div class="j-bar"><i style="width:100%"></i></div>`;
+    } else {
+      const t = teams[o.d.i];
+      const nm = o.d.from != null ? (this.model.players[this.sel.player]?.c.find((c) => c[1] === o.d.i && c[0] === o.d.from)?.[3]) : null;
+      const name = nm != null ? this.model.strings[nm] : t.name;
+      const yrs = o.d.from == null ? 'Now' : o.d.from === o.d.to ? `${o.d.from}-${String(o.d.from + 1).slice(2)}` : `${o.d.from}-${String(o.d.from + 1).slice(2)} – ${o.d.to}-${String(o.d.to + 1).slice(2)}`;
+      el.innerHTML = `<div class="j-row">${logo(t)}<span class="j-main"><span class="j-name">${esc(name)}</span><span class="j-sub">${esc(yrs)} · ${esc(t.lg)}</span></span><span class="j-step">${o.n + 1}<small>/${total}</small></span></div><div class="j-bar"><i style="width:${((o.n + 1) / total) * 100}%"></i></div>`;
+    }
+    const R = this.viewRect({ raw: true });
+    el.style.top = `${Math.round(R.y0 + 4)}px`;
+    el.style.left = `${Math.round((R.x0 + R.x1) / 2)}px`;
+    el.classList.add('on');
   }
 
   // ------------------------------------------------------------------ per-frame DOM updates
   updatePositions() {
-    const P = this.pos, sel = this.sel.team, tinyR = this.tinyR || 6.5;
+    const P = this.pos, sel = this.sel.team, tinyR = this.tinyR || 6.5, pathSet = this.pathSet;
     if (this.teamSel) {
       this.teamSel.each(function (d) {
         const p = P.get(d.i);
         if (!p) return;
         this.setAttribute('transform', `translate(${r1(p.x)},${r1(p.y)}) scale(${p.s.toFixed(3)})`);
-        const tiny = p.r < tinyR && d.i !== sel;
+        const tiny = p.r < tinyR && d.i !== sel && !pathSet?.has(d.i);
         if (this.__tiny !== tiny) { this.__tiny = tiny; this.classList.toggle('tiny', tiny); }
       });
     }
