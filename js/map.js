@@ -696,7 +696,7 @@ export class HockeyMap {
       g.w = Math.max(20, textWidth(g.text, 700, 11) + 12);
       g.h = 18;
     }
-    this.stopGroups = [...groups.values()];
+    this.stopGroups = []; // seasons live in the journey card (bottom right), not on the map
     const key = s.player;
     const segs = stops.slice(1).map((d, n) => ({ a: stops[n].i, b: d.i, n, key: `${key}:${n}` }));
 
@@ -778,6 +778,7 @@ export class HockeyMap {
   // the map brings it all back.
   focusJourney(on) {
     this.svg.classed('journey-mode', on);
+    if (!on) this.journeyCard(null);
     if (this._jOff) { for (const [t, f] of this._jOff) this.el.removeEventListener(t, f, true); this._jOff = null; window.removeEventListener('keydown', this._jKey, true); }
     if (!on) return;
     const off = () => this.focusJourney(false);
@@ -806,7 +807,8 @@ export class HockeyMap {
     this.gPath.selectAll('.route-puck').interrupt().remove();
   }
 
-  // Caption that follows the journey: current stop, its seasons, progress. HTML overlay on the map.
+  // The journey card: pinned bottom right of the visible map, updating in place as the puck arrives
+  // (season, team, stop n of N, progress). It fades away with the route focus on the next map move.
   journeyCard(o) {
     let el = this.jCard;
     if (!o) { if (el) el.classList.remove('on'); return; }
@@ -814,28 +816,63 @@ export class HockeyMap {
       el = this.jCard = document.createElement('div');
       el.className = 'journey';
       el.setAttribute('aria-live', 'polite');
+      el.innerHTML = '<div class="j-yr"></div><div class="j-row"><span class="j-logo"></span><span class="j-main"><span class="j-name"></span><span class="j-sub"></span></span><span class="j-step"></span></div><div class="j-bar"><i></i></div>';
       this.el.appendChild(el);
     }
     const { teams } = this.model;
     const total = this.stops.length;
-    const esc = (x) => String(x ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-    const logo = (t) => `<span class="j-logo" style="--c:${t.color}">${t.logo ? `<img src="${esc(t.logo)}" alt="">` : `<b>${esc(t.abbr || t.short)}</b>`}</span>`;
+    const q = (c) => el.querySelector(c);
+    const setText = (c, v) => {
+      const n = q(c);
+      if (n.textContent === v) return;
+      n.textContent = v;
+      if (!reduced()) n.animate([{ opacity: 0, transform: 'translateY(4px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'cubic-bezier(.2,.8,.2,1)' });
+    };
+    const logo = q('.j-logo');
     if (o.done) {
       const ys = o.p.c.map((c) => c[0]);
-      const span = ys.length ? `${Math.min(...ys)}–${String(Math.max(...ys) + 1).slice(2)}` : '';
-      el.innerHTML = `<div class="j-row"><span class="j-step">Journey</span><span class="j-main"><span class="j-name">${esc(o.p.n)}</span><span class="j-sub">${total} ${total === 1 ? 'stop' : 'stops'} on the map${span ? ` · ${span}` : ''}</span></span></div><div class="j-bar"><i style="width:100%"></i></div>`;
+      setText('.j-yr', ys.length ? `${Math.min(...ys)}–${String(Math.max(...ys) + 1).slice(2)}` : '');
+      setText('.j-name', o.p.n);
+      setText('.j-sub', `${total} ${total === 1 ? 'stop' : 'stops'} on the map`);
+      setText('.j-step', '');
+      logo.hidden = true;
+      q('.j-bar i').style.width = '100%';
     } else {
       const t = teams[o.d.i];
-      const nm = o.d.from != null ? (this.model.players[this.sel.player]?.c.find((c) => c[1] === o.d.i && c[0] === o.d.from)?.[3]) : null;
-      const name = nm != null ? this.model.strings[nm] : t.name;
-      const yrs = o.d.from == null ? 'Now' : o.d.from === o.d.to ? `${o.d.from}-${String(o.d.from + 1).slice(2)}` : `${o.d.from}-${String(o.d.from + 1).slice(2)} – ${o.d.to}-${String(o.d.to + 1).slice(2)}`;
-      el.innerHTML = `<div class="j-row">${logo(t)}<span class="j-main"><span class="j-name">${esc(name)}</span><span class="j-sub">${esc(yrs)} · ${esc(t.lg)}</span></span><span class="j-step">${o.n + 1}<small>/${total}</small></span></div><div class="j-bar"><i style="width:${((o.n + 1) / total) * 100}%"></i></div>`;
+      const nm = o.d.from != null ? this.model.players[this.sel.player]?.c.find((c) => c[1] === o.d.i && c[0] === o.d.from)?.[3] : null;
+      setText('.j-yr', o.d.from == null ? 'Now' : yearSpan(o.d.from, o.d.to));
+      setText('.j-name', nm != null ? this.model.strings[nm] : t.name);
+      setText('.j-sub', t.lg);
+      setText('.j-step', `${o.n + 1} / ${total}`);
+      logo.hidden = false;
+      logo.style.setProperty('--c', t.color);
+      logo.innerHTML = t.logo ? `<img src="${t.logo}" alt="">` : '';
+      q('.j-bar i').style.width = `${((o.n + 1) / total) * 100}%`;
     }
-    const R = this.viewRect({ raw: true });
-    el.style.top = `${Math.round(R.y0 + 4)}px`;
-    el.style.left = `${Math.round((R.x0 + R.x1) / 2)}px`;
+    this.placeJourneyCard();
     el.classList.add('on');
   }
+
+  // bottom right of the uncovered map: above the zoom/settings dock (desktop) or the bottom sheet (phone)
+  placeJourneyCard() {
+    const el = this.jCard;
+    if (!el) return;
+    const mr = this.el.getBoundingClientRect();
+    let right = 14, bottom = 14;
+    const sheet = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sheet-h')) || 0;
+    const panel = document.getElementById('panel');
+    const panelOpen = document.body.classList.contains('panel-open') && panel && !panel.hidden;
+    if (this.w < MOBILE) { right = 10; bottom = (panelOpen ? sheet : 0) + 10; }
+    else {
+      if (panelOpen) right = mr.right - panel.getBoundingClientRect().left + 14;
+      const dock = document.getElementById('dock');
+      const dr = dock && dock.getClientRects().length ? dock.getBoundingClientRect() : null;
+      if (dr && dr.width) bottom = mr.bottom - dr.top + 10;
+    }
+    el.style.right = `${Math.round(right)}px`;
+    el.style.bottom = `${Math.round(bottom)}px`;
+  }
+
 
   // ------------------------------------------------------------------ per-frame DOM updates
   updatePositions() {

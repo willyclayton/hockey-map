@@ -99,24 +99,23 @@
 .route-glow { stroke-width: 10; stroke-opacity: .22; }
 .route-puck { fill: #fff; stroke: var(--accent); stroke-width: 3; filter: drop-shadow(0 0 6px rgba(124, 196, 255, .95)); pointer-events: none; }
 
-/* journey caption that follows a player's route */
-.journey { position: absolute; z-index: 14; top: 120px; left: 50%; width: min(340px, calc(100% - 24px)); transform: translate(-50%, -6px); opacity: 0; pointer-events: none;
-  padding: 10px 12px 9px; border-radius: 14px; background: rgba(10, 17, 30, .9); border: 1px solid var(--glass-border, rgba(160, 190, 235, .13));
-  box-shadow: 0 10px 30px rgba(0, 0, 0, .45); transition: opacity .25s, transform .25s; }
-.journey.on { opacity: 1; transform: translate(-50%, 0); }
-.journey .j-row { display: flex; align-items: center; gap: 10px; }
-.journey .j-logo { width: 34px; height: 34px; border-radius: 50%; background: #f3f6fb; border: 2.5px solid var(--c); display: grid; place-items: center; flex: none; overflow: hidden; }
+/* journey card: pinned bottom right, updates in place, fades on the next map move */
+.journey { position: absolute; z-index: 14; right: 14px; bottom: 14px; width: 260px; opacity: 0; transform: translateY(8px); pointer-events: none;
+  padding: 12px 14px 11px; border-radius: 16px; background: rgba(10, 17, 30, .9); border: 1px solid var(--glass-border, rgba(160, 190, 235, .13));
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .5); transition: opacity .35s ease, transform .35s ease, right .3s ease, bottom .3s ease; }
+.journey.on { opacity: 1; transform: none; }
+.journey .j-yr { font: 700 30px/1 var(--display); letter-spacing: .01em; color: var(--text, #eef3fa); font-variant-numeric: tabular-nums; }
+.journey .j-row { display: flex; align-items: center; gap: 9px; margin-top: 8px; }
+.journey .j-logo { width: 28px; height: 28px; border-radius: 50%; background: #f3f6fb; border: 2px solid var(--c, #7cc4ff); display: grid; place-items: center; flex: none; overflow: hidden; }
+.journey .j-logo[hidden] { display: none; }
 .journey .j-logo img { width: 72%; height: 72%; object-fit: contain; }
-.journey .j-logo b { font: 700 10px var(--display); color: #0b1627; }
 .journey .j-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-.journey .j-name { font: 700 16px/1.15 var(--display); letter-spacing: .01em; color: var(--text, #eef3fa); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.journey .j-sub { font: 500 12px var(--font); color: var(--text-2, #b4c1d4); font-variant-numeric: tabular-nums; }
-.journey .j-step { flex: none; font: 700 20px/1 var(--display); color: var(--accent, #7cc4ff); font-variant-numeric: tabular-nums; }
-.journey .j-step small { font-size: 12px; color: var(--muted, #8796ad); margin-left: 1px; }
-.journey .j-row > .j-step:first-child { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
-.journey .j-bar { height: 3px; margin-top: 8px; border-radius: 2px; background: rgba(148, 182, 230, .14); overflow: hidden; }
-.journey .j-bar i { display: block; height: 100%; background: var(--accent, #7cc4ff); border-radius: 2px; transition: width .5s cubic-bezier(.2, .8, .2, 1); }
-@media (max-width: 760px) { .journey { width: calc(100% - 20px); padding: 8px 10px 7px; } .journey .j-logo { width: 30px; height: 30px; } }
+.journey .j-name { font: 600 13.5px/1.2 var(--font); color: var(--text, #eef3fa); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.journey .j-sub { font: 500 11.5px var(--font); color: var(--muted, #8796ad); }
+.journey .j-step { flex: none; font: 600 12px var(--font); color: var(--accent, #7cc4ff); font-variant-numeric: tabular-nums; }
+.journey .j-bar { height: 3px; margin-top: 10px; border-radius: 2px; background: rgba(148, 182, 230, .14); overflow: hidden; }
+.journey .j-bar i { display: block; height: 100%; width: 0; background: var(--accent, #7cc4ff); border-radius: 2px; transition: width .6s cubic-bezier(.2, .8, .2, 1); }
+@media (max-width: 760px) { .journey { width: 210px; padding: 10px 12px 9px; } .journey .j-yr { font-size: 24px; } }
 @media (prefers-reduced-motion: reduce) { .journey, .journey .j-bar i { transition: none; } }
 
 /* journey focus: only the route stays lit until the next interaction */
