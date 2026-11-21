@@ -302,3 +302,6 @@
 .panel-share.done .share-tip { opacity: 1; transform: none; }
 .panel-top .panel-share + .panel-close { margin-left: 0; }
 @media (max-width: 760px) { .panel-share { width: 34px; height: 34px; } }
+.panel-play { color: var(--accent); border-color: var(--accent-line, rgba(124, 196, 255, .45)); }
+.panel-play svg { width: 13px; height: 13px; margin-left: 2px; }
+.panel-play[hidden] { display: none; }

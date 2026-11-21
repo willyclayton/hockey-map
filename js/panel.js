@@ -1,11 +1,11 @@
 // panel.js: the side panel (desktop) / bottom sheet (mobile) with team and player views.
 // Owns: view rendering, view-to-view transitions, the sticky header + breadcrumb, tabs,
 // per-view UI state (tab, scroll, filters) that main.js stores in history entries, and sheet drag.
-import { M, map, state, actions } from './app.js?v=202611210323';
-import { orgOf, pipelineLabel, seasonLabel, fold, ensurePlayerScores } from './model.js?v=202611210323';
-import { ratingColor } from './map.js?v=202611210323';
-import { $, esc, plural, logoHTML, leaguePill, avatarHTML, teamName, refLeague } from './util.js?v=202611210323';
-import { openAbout } from './chrome.js?v=202611210323';
+import { M, map, state, actions } from './app.js?v=202611210326';
+import { orgOf, pipelineLabel, seasonLabel, fold, ensurePlayerScores } from './model.js?v=202611210326';
+import { ratingColor } from './map.js?v=202611210326';
+import { $, esc, plural, logoHTML, leaguePill, avatarHTML, teamName, refLeague } from './util.js?v=202611210326';
+import { openAbout } from './chrome.js?v=202611210326';
 
 const selectTeam = (...a) => actions.selectTeam(...a);
 const selectPlayer = (...a) => actions.selectPlayer(...a);
@@ -177,6 +177,7 @@ function cancelClose() {
 // ------------------------------------------------------------------ header (breadcrumb + compact title)
 
 function updateHeader(o) {
+  if (els.play) els.play.hidden = view.kind !== 'player';
   if (els.share) {
     const lbl = view.kind === 'player' ? 'Share this route' : 'Share this team';
     els.share.setAttribute('aria-label', lbl);
@@ -833,11 +834,19 @@ export function wirePanel() {
     if (view.kind === 'player') shareRoute(M.players[view.id], share);
     else if (view.kind === 'team') shareTeam(M.teams[view.id], share);
   });
+  const play = Object.assign(document.createElement('button'), { type: 'button', className: 'panel-share panel-play' });
+  play.innerHTML = ICON.play;
+  play.setAttribute('aria-label', 'Replay route');
+  play.title = 'Replay route';
+  play.addEventListener('click', () => {
+    if (isSheet() && sheet.snap !== 'peek') snapSheet('peek'); // lower the sheet so the route is in view
+    actions.replayRoute?.();
+  });
   const title = document.createElement('div');
   title.className = 'pt-title';
   title.setAttribute('aria-hidden', 'true');
   title.title = 'Back to top';
-  top.append(back, title, share, close);
+  top.append(back, title, play, share, close);
   let grab = panel.querySelector('.panel-grab');
   if (!grab) { grab = document.createElement('div'); grab.className = 'panel-grab'; grab.setAttribute('aria-hidden', 'true'); }
   panel.insertBefore(grab, body);
@@ -846,7 +855,7 @@ export function wirePanel() {
   live.className = 'sr-only';
   live.setAttribute('aria-live', 'polite');
   panel.append(live);
-  Object.assign(els, { top, back, backLabel: back.querySelector('.crumb-label'), close, share, title, grab, live });
+  Object.assign(els, { top, back, backLabel: back.querySelector('.crumb-label'), close, share, play, title, grab, live });
 
   close.addEventListener('click', () => clearSelection());
   back.addEventListener('click', () => goBack());
