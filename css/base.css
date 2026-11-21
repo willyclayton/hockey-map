@@ -16,7 +16,7 @@
   --glass-strong: rgba(10, 17, 30, 0.95);
   --glass-border: rgba(160, 190, 235, 0.13);
   --glass-highlight: rgba(255, 255, 255, 0.055);   /* use as: box-shadow: inset 0 1px 0 var(--glass-highlight) */
-  --blur: blur(18px) saturate(160%);
+  --blur: blur(10px) saturate(150%);   /* kept small: every blurred layer is re-filtered each map frame */
   --scrim: rgba(3, 6, 12, 0.62);
 
   /* ---- text (contrast vs --glass-strong: text 16:1, text-2 10:1, muted 5.9:1) */

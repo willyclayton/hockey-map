@@ -804,7 +804,7 @@ export class HockeyMap {
       const p = this.pos.get(i);
       if (!p) continue;
       const [x, y] = this.labelXY(p, o.side, o.fs);
-      o.el.setAttribute('x', r1(x));
+      o.el.setAttribute('x', r1(x + (o.dx || 0)));
       o.el.setAttribute('y', r1(y));
     }
   }
@@ -970,8 +970,13 @@ export class HockeyMap {
       }
       if (!best && forced) best = { side: 0, rect: this.labelRect(p, 0, w, fs), bo: 0 };
       if (!best || (c.kind === 'zoom' && best.bo > 0) || (c.kind === 'rel' && best.bo > 2)) continue;
+      // a must-show label hanging off the visible area slides sideways back inside it
+      let dx = 0;
+      if (best.rect.x0 < B.x0 + 2) dx = B.x0 + 2 - best.rect.x0;
+      else if (best.rect.x1 > B.x1 - 2) dx = B.x1 - 2 - best.rect.x1;
+      if (dx) best.rect = { ...best.rect, x0: best.rect.x0 + dx, x1: best.rect.x1 + dx };
       placed.push(best.rect);
-      out.push({ i: c.i, side: best.side, text, fs, kind: c.kind });
+      out.push({ i: c.i, side: best.side, text, fs, kind: c.kind, dx });
     }
     this.applyLabels(out);
   }
@@ -994,6 +999,7 @@ export class HockeyMap {
       if (o.side !== L.side) o.el.setAttribute('text-anchor', ANCHOR[L.side]);
       o.side = L.side;
       o.fs = L.fs;
+      o.dx = L.dx || 0;
       o.on = true;
       keep.add(L.i);
     }

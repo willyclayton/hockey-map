@@ -441,3 +441,27 @@ th[aria-sort="ascending"] .th-sort .arr { transform: rotate(180deg); }
 @media (prefers-reduced-motion: reduce) {
   .dock, .controls, .ctl-wrap, .filters { transition: none !important; }
 }
+
+/* ------------------------------------------------------------------ rankings: teams / players */
+.m-title-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.lb-kind { flex: none; }
+.lb-kind button { min-width: 68px; }
+.lb-ptm { display: inline-flex; align-items: center; gap: 5px; font-size: var(--fs-xs, 11.5px); color: var(--muted); font-weight: 500; }
+.lb-ptm .mini-logo { width: 16px; height: 16px; border-width: 1px; }
+.lb-table .avatar { width: 30px; height: 30px; }
+.lb-more-wrap { display: flex; justify-content: center; padding: 14px 0 4px; }
+.lb-more-wrap:empty { display: none; }
+.more-btn { height: 34px; padding: 0 16px; border-radius: var(--r-pill, 999px); border: 1px solid var(--glass-border); background: var(--chip); color: var(--text-2); font: 600 var(--fs-sm, 12.5px) var(--font); cursor: pointer; transition: background var(--t-fast, .14s), color var(--t-fast, .14s); }
+.more-btn:hover { background: var(--chip-hover); color: var(--text); }
+.lb-team .nm-wrap:has(.lb-ptm) { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; min-width: 0; }
+.lb-ptm { white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 760px) {
+  .lb-table .lb-rating .bar { display: none; }
+  .lb-table { table-layout: auto; width: 100%; }
+  .lb-table th:not([data-col="name"]):not([data-col="pname"]), .lb-table td:not(:has(.lb-team)) { width: 1%; white-space: nowrap; }
+  .lb-table td:has(.lb-team) { max-width: 0; }
+  .lb-team .nm-wrap, .lb-team .nm { max-width: 100%; }
+  .lb-table th[data-col="mates"] .th-sort, .lb-table th[data-col="reunions"] .th-sort { font-size: 0; }
+  .lb-table th[data-col="mates"] .th-sort::before { content: "Mates"; font-size: 10.5px; }
+  .lb-table th[data-col="reunions"] .th-sort::before { content: "Reun."; font-size: 10.5px; }
+}

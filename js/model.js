@@ -1,6 +1,9 @@
 // Data model: indexes, the shared-player graph and the Connection Rating.
 
 export const RATING_WEIGHTS = { reach: 0.35, strength: 0.25, reunions: 0.25, pipeline: 0.15 };
+// Player connection score: active players they've played with, other locker rooms with a former
+// teammate in them now, teams on the map, and leagues on the map. Each ranked within the player's league.
+export const PLAYER_WEIGHTS = { mates: 0.4, rooms: 0.3, teams: 0.2, leagues: 0.1 };
 const AFFILIATED = new Set(['NHL', 'AHL', 'ECHL']);
 const JUNIOR = new Set(['OHL', 'WHL', 'QMJHL', 'USHL']);
 const BASE_R = { NHL: 15, AHL: 12, ECHL: 10, SPHL: 9, PWHL: 10, OHL: 9, WHL: 9, QMJHL: 9, USHL: 8 };
@@ -171,6 +174,60 @@ function age(dob) {
 
 export function seasonLabel(y) {
   return `${y}-${String(y + 1).slice(2)}`;
+}
+
+// ---- player connection score (computed once, on first need; ~100ms, so main.js runs it in idle time)
+// Who has each player shared a locker room with? Every (season, team) stint is grouped, then each
+// player collects the active players from their groups. The current season on their current team is
+// skipped, so "teammates" means people they played with before or elsewhere (current teammates who also
+// played with them somewhere else still count, through that other stint).
+export function ensurePlayerScores(M) {
+  if (M.playerScores) return;
+  const { players, teams } = M;
+  const CUR = parseInt(M.season, 10);
+  const skip = (p, c) => c[0] === CUR && p.t.includes(c[1]);
+  const gkey = (c) => c[0] * 100000 + (c[1] + 50000);
+  const stintGroups = new Map();
+  for (const p of players) {
+    for (const c of p.c) {
+      const k = gkey(c);
+      let g = stintGroups.get(k);
+      if (!g) stintGroups.set(k, (g = []));
+      g.push(p.i);
+    }
+  }
+  for (const p of players) {
+    const mates = new Set();
+    for (const c of p.c) {
+      if (skip(p, c)) continue;
+      for (const q of stintGroups.get(gkey(c))) if (q !== p.i) mates.add(q);
+    }
+    const rooms = new Map(); // current team -> former teammates there now
+    for (const q of mates) for (const ti of players[q].t) if (!p.t.includes(ti)) rooms.set(ti, (rooms.get(ti) || 0) + 1);
+    const onMap = new Set([...p.nodes, ...p.t]);
+    p.mates = mates;
+    p.rooms = rooms;
+    p.sm = { mates: mates.size, rooms: rooms.size, teams: onMap.size, leagues: new Set([...onMap].map((i) => teams[i].lg)).size };
+  }
+  const byPlayerLeague = d3.group(players.filter((p) => p.lg), (p) => p.lg);
+  for (const [, ps] of byPlayerLeague) {
+    for (const key of Object.keys(PLAYER_WEIGHTS)) {
+      const vals = ps.map((p) => p.sm[key]).sort((a, b) => a - b);
+      for (const p of ps) {
+        const v = p.sm[key];
+        const lo = d3.bisectLeft(vals, v), hi = d3.bisectRight(vals, v);
+        (p.spct ||= {})[key] = ps.length > 1 ? (lo + (hi - lo - 1) / 2) / (ps.length - 1) : 0.5;
+      }
+    }
+    for (const p of ps) {
+      let s = 0;
+      for (const [k, w] of Object.entries(PLAYER_WEIGHTS)) s += w * p.spct[k];
+      p.score = Math.round(s * 100);
+    }
+    [...ps].sort((a, b) => b.score - a.score || b.sm.mates - a.sm.mates).forEach((p, i) => { p.leagueRank = i + 1; p.leagueSize = ps.length; });
+  }
+
+  M.playerScores = true;
 }
 
 // The team's organization: itself plus its direct affiliates, grouped by league.

@@ -1,7 +1,7 @@
 // App chrome: top bar + search, league filters, map settings dock, zoom, coach mark, tooltips, hints,
 // global shortcuts and the Rankings / About modals.
 import { M, map, state, actions } from './app.js';
-import { fold, RATING_WEIGHTS, seasonLabel } from './model.js';
+import { fold, RATING_WEIGHTS, PLAYER_WEIGHTS, seasonLabel, ensurePlayerScores } from './model.js';
 import { ratingColor, RATING_RAMP } from './map.js';
 import { $, esc, plural, logoHTML, leaguePill, avatarHTML, animateGauges } from './util.js';
 
@@ -673,14 +673,18 @@ function wireModal() {
   const modal = $('#modal');
   modal.addEventListener('click', (e) => {
     if (e.target === modal || e.target.closest('[data-close]')) { closeModal(); return; }
+    if (e.target.closest('[data-lb-more]')) { lb.limit += 150; renderLb(false); return; }
+    const prow = e.target.closest('[data-player]');
+    if (prow) { closeModal({ restore: false }); selectPlayer(+prow.dataset.player); return; }
     const row = e.target.closest('[data-team]');
     if (row) { closeModal({ restore: false }); selectTeam(+row.dataset.team); }
   });
   modal.addEventListener('keydown', (e) => {
-    if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('tr[data-team]')) {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('tr[data-team], tr[data-player]')) {
       e.preventDefault();
       closeModal({ restore: false });
-      selectTeam(+e.target.dataset.team);
+      if (e.target.dataset.player != null) selectPlayer(+e.target.dataset.player);
+      else selectTeam(+e.target.dataset.team);
     }
   });
   // focus can't wander behind the dialog
@@ -700,9 +704,16 @@ function wireModal() {
 }
 
 // ------------------------------------------------------------------ rankings
-const lb = { lg: 'ALL', sort: 'rating', dir: -1 };
+const lb = { kind: 'teams', lg: 'ALL', sort: 'rating', dir: -1, limit: 150 };
 const LB_COLS = {
   name: 'Team', lg: 'League', rating: 'Rating', reach: 'Reach', strength: 'Links', reunions: 'Reunions', pipeline: 'Pipeline',
+};
+const LBP_COLS = { pname: 'Player', lg: 'League', score: 'Score', mates: 'Teammates', rooms: 'Rooms', teams: 'Teams' };
+const LBP_TIPS = {
+  score: 'Connection score, 0–100 among players in the same league',
+  mates: 'Active players they have played with (before or elsewhere)',
+  rooms: 'Other teams with one of their former teammates now',
+  teams: 'Teams on the map they have played for',
 };
 const LB_TIPS = {
   rating: 'Connection rating, 0–100 within the league',
@@ -711,27 +722,50 @@ const LB_TIPS = {
   reunions: 'Pairs of current teammates who played together before',
   pipeline: 'Share of the roster that came through the pipeline',
 };
+const lbHead = () => {
+  const cols = lb.kind === 'players' ? LBP_COLS : LB_COLS, tips = lb.kind === 'players' ? LBP_TIPS : LB_TIPS;
+  const th = (k, cls = '') => `<th scope="col" class="${cls}" data-col="${k}"><button class="th-sort" type="button" data-sort="${k}"${tips[k] ? ` data-tip="${esc(tips[k])}"` : ''}>${cols[k]}${ICON.arrow}</button></th>`;
+  const first = `<th scope="col" class="rank num"><span class="th-plain">#</span></th>`;
+  return lb.kind === 'players'
+    ? `<tr>${first}${th('pname')}${th('lg', 'hide-sm')}${th('score')}${th('mates', 'num')}${th('rooms', 'num hide-sm')}${th('teams', 'num hide-sm')}</tr>`
+    : `<tr>${first}${th('name')}${th('lg', 'hide-sm')}${th('rating')}${th('reach', 'num hide-sm')}${th('strength', 'num hide-sm')}${th('reunions', 'num')}${th('pipeline', 'num hide-sm')}</tr>`;
+};
 
 export function openLeaderboard() {
+  ensurePlayerScores(M);
   const counts = d3.rollup(M.teams, (v) => v.length, (t) => t.lg);
   const tab = (id, label, n, color) => `<button class="lb-tab" role="tab" type="button" data-lb-lg="${esc(id)}" aria-selected="false" tabindex="-1" aria-label="${esc(label)}, ${n} teams">${color ? `<span class="dot" style="background:${color}"></span>` : ''}${esc(label)}</button>`;
-  const th = (k, cls = '') => `<th scope="col" class="${cls}" data-col="${k}"><button class="th-sort" type="button" data-sort="${k}"${LB_TIPS[k] ? ` data-tip="${esc(LB_TIPS[k])}"` : ''}>${LB_COLS[k]}${ICON.arrow}</button></th>`;
   openModal(`<div class="m-head">
       <div class="m-eyebrow">Rankings</div>
-      <h2 id="modal-title">Connection rankings</h2>
-      <p class="lead">How tangled is each roster in the web of hockey? Ratings compare each team with the rest of its own league, from 0 to 100.</p>
+      <div class="m-title-row"><h2 id="modal-title">Connection rankings</h2>
+        <div class="seg lb-kind" role="group" aria-label="Rank"><button type="button" data-lb-kind="teams" aria-pressed="${lb.kind === 'teams'}">Teams</button><button type="button" data-lb-kind="players" aria-pressed="${lb.kind === 'players'}">Players</button></div></div>
+      <p class="lead" id="lb-lead"></p>
       <div class="lb-tabs" role="tablist" aria-label="League">${tab('ALL', 'All leagues', M.teams.length)}${M.leagues.map((l) => tab(l.id, l.id, counts.get(l.id) || 0, l.color)).join('')}</div>
     </div>
     <div class="m-scroll" id="lb-scroll">
       <div class="lb-sub" id="lb-sub"></div>
-      <table class="lb-table" aria-describedby="lb-sub"><thead><tr><th scope="col" class="rank num"><span class="th-plain">#</span></th>${th('name')}${th('lg', 'hide-sm')}${th('rating')}${th('reach', 'num hide-sm')}${th('strength', 'num hide-sm')}${th('reunions', 'num')}${th('pipeline', 'num hide-sm')}</tr></thead><tbody id="lb-body"></tbody></table>
+      <table class="lb-table" aria-describedby="lb-sub"><thead id="lb-head">${lbHead()}</thead><tbody id="lb-body"></tbody></table>
+      <div class="lb-more-wrap" id="lb-more"></div>
       <section class="lb-pairs"><h4 id="lb-pairs-title">Strongest non-affiliate links</h4><div class="pairs" id="lb-pairs"></div></section>
     </div>`, 'rankings');
   const body = $('#modal-body');
+  body.querySelector('.lb-kind').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-lb-kind]');
+    if (!b || b.dataset.lbKind === lb.kind) return;
+    lb.kind = b.dataset.lbKind;
+    lb.sort = lb.kind === 'players' ? 'score' : 'rating';
+    lb.dir = -1;
+    lb.limit = 150;
+    body.querySelectorAll('[data-lb-kind]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    $('#lb-head').innerHTML = lbHead();
+    $('#lb-scroll').scrollTop = 0;
+    renderLb(true);
+  });
   body.querySelector('.lb-tabs').addEventListener('click', (e) => {
     const b = e.target.closest('[data-lb-lg]');
     if (!b || b.dataset.lbLg === lb.lg) return;
     lb.lg = b.dataset.lbLg;
+    lb.limit = 150;
     $('#lb-scroll').scrollTop = 0;
     renderLb(true);
   });
@@ -752,7 +786,7 @@ export function openLeaderboard() {
     if (!b) return;
     const k = b.dataset.sort;
     if (lb.sort === k) lb.dir *= -1;
-    else { lb.sort = k; lb.dir = k === 'name' || k === 'lg' ? 1 : -1; }
+    else { lb.sort = k; lb.dir = k === 'name' || k === 'pname' || k === 'lg' ? 1 : -1; }
     renderLb(false);
   });
   const tabsEl = body.querySelector('.lb-tabs');
@@ -771,6 +805,11 @@ function renderLb(animate) {
     if (th.dataset.col === lb.sort) th.setAttribute('aria-sort', lb.dir < 0 ? 'descending' : 'ascending');
     else th.removeAttribute('aria-sort');
   });
+  $('#lb-lead').textContent = lb.kind === 'players'
+    ? 'Who has played with the most of today’s players, all over the map? Scores compare each player with the rest of their league, from 0 to 100.'
+    : 'How tangled is each roster in the web of hockey? Ratings compare each team with the rest of its own league, from 0 to 100.';
+  if (lb.kind === 'players') { renderLbPlayers(tbody, order, animate); return; }
+  $('#lb-more').innerHTML = '';
   const val = (t) => ({ rating: t.rating, name: t.name, reach: t.m.reach, strength: t.m.strength, reunions: t.m.reunions, pipeline: t.m.pipeline, lg: order.get(t.lg) }[lb.sort]);
   const ts = M.teams.filter((t) => lb.lg === 'ALL' || t.lg === lb.lg).sort((a, b) => {
     const x = val(a), y = val(b);
@@ -794,6 +833,31 @@ function renderLb(animate) {
   if (animate) animateGauges();
 }
 
+function renderLbPlayers(tbody, order, animate) {
+  const val = (p) => ({ score: p.score, pname: p.n, mates: p.sm.mates, rooms: p.sm.rooms, teams: p.sm.teams, lg: order.get(p.lg) }[lb.sort]);
+  const ps = M.players.filter((p) => p.score != null && (lb.lg === 'ALL' || p.lg === lb.lg)).sort((a, b) => {
+    const x = val(a), y = val(b);
+    return (typeof x === 'string' ? x.localeCompare(y) : x - y) * lb.dir || b.score - a.score || b.sm.mates - a.sm.mates;
+  });
+  const shown = ps.slice(0, lb.limit);
+  const cur = state.player;
+  tbody.innerHTML = shown.map((p, i) => {
+    const t = M.teams[p.t[0]];
+    const w = `${Math.max(3, p.score)}%`;
+    return `<tr class="click${p.i === cur ? ' is-current' : ''}" data-player="${p.i}" tabindex="0" aria-label="${esc(p.n)}, score ${p.score}">
+      <td class="rk num">${i + 1}</td>
+      <td><span class="lb-team">${avatarHTML(p)}<span class="nm-wrap"><span class="nm">${esc(p.n)}</span><span class="lb-ptm">${t ? `${logoHTML(t, 'sm')}${esc(t.short)}` : ''}</span></span></span></td>
+      <td class="hide-sm">${leaguePill(p.lg)}</td>
+      <td><span class="lb-rating"><b style="color:${legible(ratingColor(p.score))}">${p.score}</b><span class="bar"><i style="width:${animate ? 0 : w};background:${ratingColor(p.score)}" data-w="${w}"></i></span></span></td>
+      <td class="num">${p.sm.mates}</td><td class="num hide-sm">${p.sm.rooms}</td><td class="num hide-sm">${p.sm.teams}</td></tr>`;
+  }).join('');
+  $('#lb-more').innerHTML = ps.length > shown.length ? `<button class="more-btn" type="button" data-lb-more>Show more · ${shown.length.toLocaleString()} of ${ps.length.toLocaleString()}</button>` : '';
+  const dirLabel = lb.sort === 'pname' ? (lb.dir > 0 ? 'A–Z' : 'Z–A') : lb.dir < 0 ? 'highest first' : 'lowest first';
+  $('#lb-sub').innerHTML = `<span>${ps.length.toLocaleString()} players · ${esc(LBP_COLS[lb.sort].toLowerCase())}, ${dirLabel}</span>${lb.lg === 'ALL' ? '<span>Scores are relative to each league</span>' : ''}`;
+  $('#lb-pairs-title').parentElement.hidden = true;
+  if (animate) animateGauges();
+}
+
 // ------------------------------------------------------------------ about
 export function openAbout() {
   const w = RATING_WEIGHTS;
@@ -809,7 +873,7 @@ export function openAbout() {
     <div class="about-grid">
       <section class="about-card"><div class="ab-ico">${ICON.web}</div><h5>The player web</h5><p>Two teams are linked when a player currently on one has played for the other. Thicker lines mean more shared players.</p></section>
       <section class="about-card"><div class="ab-ico">${ICON.route}</div><h5>Player journeys</h5><p>Click a player to trace their route across the map, stop by stop, in the order they played.</p></section>
-      <section class="about-card"><div class="ab-ico">${ICON.gauge}</div><h5>Connection rating</h5><p>A 0–100 score ranked within each league, so a 90 means “more connected than almost every team in its league”.</p></section>
+      <section class="about-card"><div class="ab-ico">${ICON.gauge}</div><h5>Connection rating</h5><p>A 0–100 score ranked within each league, so a 90 means “more connected than almost every team in its league”. Players get one too.</p></section>
     </div>
     <h4>What goes into the rating</h4>
     <div class="weights">
@@ -818,6 +882,14 @@ export function openAbout() {
       ${weight('Reunions', w.reunions, 'Pairs of current teammates who already played together on another team, in the same season.')}
       ${weight('Pipeline', w.pipeline, 'For NHL/AHL/ECHL clubs, the share of the roster that came through the team’s affiliates. For junior clubs, the share that’s NHL-drafted or has pro experience. For SPHL/PWHL, the share that has played for another team on the map.')}
     </div>
+    <h4>What goes into a player’s score</h4>
+    <div class="weights">
+      ${weight('Teammates', PLAYER_WEIGHTS.mates, 'How many of today’s players they have shared a locker room with, on any team, in any season (not counting this season’s current team).')}
+      ${weight('Locker rooms', PLAYER_WEIGHTS.rooms, 'How many other teams on the map have one of their former teammates right now.')}
+      ${weight('Map teams', PLAYER_WEIGHTS.teams, 'How many teams on the map they have played for.')}
+      ${weight('Leagues', PLAYER_WEIGHTS.leagues, 'How many of the map’s leagues they have played in.')}
+    </div>
+    <p class="note">Each is ranked against players in the same league, so juniors aren’t compared with 12-year veterans.</p>
     <h4>Data</h4>
     <p>Rosters for ${esc(M.season)} plus every season back to ${seasonLabel(M.firstSeason)} come from NHL.com and the league stat feeds. NHL players carry their full career history. Everyone else is matched across leagues by name and birth date, so careers before ${seasonLabel(M.firstSeason)} or outside these leagues (college, Europe) only show up for NHL players. Arenas and affiliations come from Wikipedia. Last updated ${esc(M.generated.slice(0, 10))}.</p>
     <h4>Tips &amp; shortcuts</h4>

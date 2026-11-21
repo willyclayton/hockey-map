@@ -2,7 +2,7 @@
 // Owns: view rendering, view-to-view transitions, the sticky header + breadcrumb, tabs,
 // per-view UI state (tab, scroll, filters) that main.js stores in history entries, and sheet drag.
 import { M, map, state, actions } from './app.js';
-import { orgOf, pipelineLabel, seasonLabel, fold } from './model.js';
+import { orgOf, pipelineLabel, seasonLabel, fold, ensurePlayerScores } from './model.js';
 import { ratingColor } from './map.js';
 import { $, esc, plural, logoHTML, leaguePill, avatarHTML, teamName, refLeague } from './util.js';
 import { openAbout } from './chrome.js';
@@ -20,8 +20,8 @@ const calm = () => motionMQ.matches;
 const EASE = 'cubic-bezier(.2, .8, .2, 1)';
 const EASE_IN = 'cubic-bezier(.4, 0, 1, 1)';
 
-const TABS = ['roster', 'conn', 'reun'];
-const SORTS = [['pos', 'Position'], ['num', 'Number'], ['name', 'Name'], ['age', 'Age'], ['travel', 'Most traveled']];
+const TABS = ['over', 'roster', 'conn', 'reun'];
+const SORTS = [['pos', 'Position'], ['score', 'Connection score'], ['num', 'Number'], ['name', 'Name'], ['age', 'Age'], ['travel', 'Most traveled']];
 const POS_GROUP = { C: 'F', LW: 'F', RW: 'F', F: 'F', W: 'F', D: 'D', LD: 'D', RD: 'D', G: 'G' };
 const POS_NAME = { C: 'Center', LW: 'Left wing', RW: 'Right wing', F: 'Forward', W: 'Wing', D: 'Defense', LD: 'Defense', RD: 'Defense', G: 'Goalie' };
 
@@ -39,7 +39,7 @@ const ICON = {
 };
 
 // What the panel shows, plus the per-view UI state that history entries remember.
-const view = { kind: null, id: null, tab: 'roster', scroll: {}, q: '', sort: 'pos', lg: 'ALL', all: false };
+const view = { kind: null, id: null, tab: 'over', scroll: {}, q: '', sort: 'pos', lg: 'ALL', all: false, allRooms: false };
 const els = {};
 let heroH = 0, stickY = Infinity, hl = null, viewHook = null, closeAnim = null, closeTimer = null;
 let keyboardNav = false; // was the last interaction a key press (vs pointer)?
@@ -216,9 +216,9 @@ function onScroll() {
 
 // ------------------------------------------------------------------ meters (gauge, bars)
 
-function gauge(value, color) {
+function gauge(value, color, what = 'Connection rating') {
   const R = 46, C = 2 * Math.PI * R;
-  return `<div class="gauge" role="img" aria-label="Connection rating ${value} out of 100"><svg viewBox="0 0 112 112" aria-hidden="true"><circle class="g-bg" cx="56" cy="56" r="${R}"/><circle class="g-fg" cx="56" cy="56" r="${R}" stroke="${color}" stroke-dasharray="${C}" stroke-dashoffset="${C}" data-target="${C * (1 - value / 100)}"/></svg><div class="g-val" aria-hidden="true"><div><b data-count="${value}">${value}</b><span>of 100</span></div></div></div>`;
+  return `<div class="gauge" role="img" aria-label="${what} ${value} out of 100"><svg viewBox="0 0 112 112" aria-hidden="true"><circle class="g-bg" cx="56" cy="56" r="${R}"/><circle class="g-fg" cx="56" cy="56" r="${R}" stroke="${color}" stroke-dasharray="${C}" stroke-dashoffset="${C}" data-target="${C * (1 - value / 100)}"/></svg><div class="g-val" aria-hidden="true"><div><b data-count="${value}">${value}</b><span>of 100</span></div></div></div>`;
 }
 
 function animateMeters(v, instant) {
@@ -250,10 +250,11 @@ function animateMeters(v, instant) {
  * tab: initial tab, snap: initial sheet snap ('peek'|'half'|'full') if the sheet was closed }.
  */
 export function renderTeamPanel(t, o = {}) {
+  ensurePlayerScores(M);
   const v = o.view || {};
   view.kind = 'team';
   view.id = t.i;
-  view.tab = TABS.includes(v.tab) ? v.tab : TABS.includes(o.tab) ? o.tab : 'roster';
+  view.tab = TABS.includes(v.tab) ? v.tab : TABS.includes(o.tab) ? o.tab : 'over';
   view.scroll = { ...(v.scroll || {}) };
   view.q = v.q || '';
   view.sort = SORTS.some(([k]) => k === v.sort) ? v.sort : view.sort || 'pos';
@@ -268,6 +269,24 @@ export function renderTeamPanel(t, o = {}) {
 }
 
 function teamHTML(t) {
+  const facts = [];
+  if (t.arena) facts.push(`<span><b>${esc(t.arena)}</b></span>`);
+  if (t.loc || t.city) facts.push(`<span>${esc(t.loc || t.city)}</span>`);
+  if (t.rec) facts.push(`<span><b>${esc(t.rec)}</b> · ${t.pts} pts</span>`);
+  const rc = ratingColor(t.rating);
+  let h = `<header class="hero"><div class="hero-row"><div class="hero-logo">${t.logo ? `<img src="${esc(t.logo)}" alt="">` : `<b>${esc(t.abbr || t.short)}</b>`}</div>
+    <div class="hero-text"><h2 class="hero-name" tabindex="-1">${esc(t.name)}</h2><div class="hero-sub">${leaguePill(t.lg)}${t.div ? `<span>${esc(t.div)}</span>` : ''}</div></div>
+    <button class="score-pill" type="button" data-goto-tab="over" style="--c:${rc}" title="Connection rating: #${t.leagueRank} of ${t.leagueSize} in the ${esc(t.lg)}"><b>${t.rating}</b><span>rating</span></button></div>
+    ${facts.length ? `<div class="facts">${facts.join('')}</div>` : ''}</header>`;
+  const k = TABS.indexOf(view.tab);
+  const tab = (id, label, n) => `<button class="tab" role="tab" id="tab-${id}" data-tab="${id}" aria-controls="tab-body" aria-selected="${view.tab === id}" tabindex="${view.tab === id ? 0 : -1}" type="button">${label}${n != null ? `<span class="tab-n">${n}</span>` : ''}</button>`;
+  h += `<div class="tabs-anchor"></div><div class="tabs" role="tablist" aria-label="Team details" style="--i:${k}"><span class="tab-ind" aria-hidden="true"></span>
+    ${tab('over', 'Overview')}${tab('roster', 'Roster', t.roster.length)}${tab('conn', 'Links', t.links.size)}${tab('reun', 'Reunions', t.reunions.length)}</div>
+    <div class="tab-body" id="tab-body" role="tabpanel" aria-labelledby="tab-${view.tab}">${tabHTML(t)}</div>`;
+  return h;
+}
+
+function overviewHTML(t) {
   const pl = pipelineLabel(t.lg);
   const comps = [
     ['reach', 'Reach', `${t.m.reach} teams`, 'Teams on the map linked to this roster through shared players (either direction).'],
@@ -275,20 +294,18 @@ function teamHTML(t) {
     ['reunions', 'Reunions', plural(t.m.reunions, 'pair'), 'Pairs of current teammates who played together somewhere else before.'],
     ['pipeline', pl.name, `${Math.round(t.m.pipeline * 100)}%`, `The ${pl.desc}.`],
   ];
-  const facts = [];
-  if (t.arena) facts.push(`<span><b>${esc(t.arena)}</b></span>`);
-  if (t.loc || t.city) facts.push(`<span>${esc(t.loc || t.city)}</span>`);
-  if (t.rec) facts.push(`<span><b>${esc(t.rec)}</b> · ${t.pts} pts</span>`);
-
-  let h = `<header class="hero"><div class="hero-row"><div class="hero-logo">${t.logo ? `<img src="${esc(t.logo)}" alt="">` : `<b>${esc(t.abbr || t.short)}</b>`}</div>
-    <div class="hero-text"><h2 class="hero-name" tabindex="-1">${esc(t.name)}</h2><div class="hero-sub">${leaguePill(t.lg)}${t.div ? `<span>${esc(t.div)}</span>` : ''}</div></div></div>
-    ${facts.length ? `<div class="facts">${facts.join('')}</div>` : ''}</header>`;
-
-  h += `<section class="section"><h3>Connection rating <button class="info" type="button" data-about>How it works</button></h3><div class="rating">${gauge(t.rating, ratingColor(t.rating))}
+  let h = `<section class="section first"><h3>Connection rating <button class="info" type="button" data-about>How it works</button></h3><div class="rating">${gauge(t.rating, ratingColor(t.rating))}
     <div class="rating-side"><div class="rating-rank"><b>#${t.leagueRank}</b> <span>of ${t.leagueSize} in the ${esc(t.lg)}</span></div>
     ${comps.map(([k, name, val, tip]) => `<div class="comp" title="${esc(tip)}"><div class="comp-top"><span>${name}</span><b>${val}</b></div><div class="bar"><i style="width:0;background:${ratingColor(t.pct[k] * 100)}" data-w="${Math.max(3, t.pct[k] * 100)}%"></i></div></div>`).join('')}
     <div class="comp-note">Bars rank each measure within the ${esc(t.lg)}</div>
     </div></div></section>`;
+
+  // most-connected players on this roster
+  const top = t.roster.map((i) => M.players[i]).filter((p) => p.score != null).sort((a, b) => b.score - a.score).slice(0, 3);
+  if (top.length) {
+    h += `<section class="section"><h3>Most connected players <button class="info" type="button" data-goto-tab="roster" data-sort="score">See all</button></h3>
+      <div class="mates">${top.map((p) => `<button class="prow" data-player="${p.i}" type="button">${avatarHTML(p)}<span class="pmain"><span class="pname">${esc(p.n)}</span><span class="psub">${esc(`Played with ${p.sm.mates} active players · ${p.sm.teams} map teams`)}</span></span>${scoreChip(p)}</button>`).join('')}</div></section>`;
+  }
 
   const org = orgOf(M, t);
   if (org.nhl.length + org.ahl.length + org.echl.length > 1) {
@@ -301,16 +318,16 @@ function teamHTML(t) {
     const byTeam = d3.groups(t.prospects, (pi) => M.players[pi].t[0]).sort((a, b) => b[1].length - a[1].length);
     h += `<section class="section"><h3>Prospects in junior <span class="count">${t.prospects.length}</span></h3><p class="note">${esc(t.short)} draft picks now playing in the OHL, WHL, QMJHL or USHL.</p><div class="org-teams">${byTeam.slice(0, 14).map(([ti, ps]) => `<button class="team-chip" data-team="${ti}" data-hl="${ti}" type="button" title="${esc(ps.map((pi) => M.players[pi].n).join(', '))}">${logoHTML(M.teams[ti], 'sm')}<span>${esc(M.teams[ti].name)}</span><em>${ps.length}</em></button>`).join('')}</div></section>`;
   }
-
-  const k = TABS.indexOf(view.tab);
-  const tab = (id, label, n) => `<button class="tab" role="tab" id="tab-${id}" data-tab="${id}" aria-controls="tab-body" aria-selected="${view.tab === id}" tabindex="${view.tab === id ? 0 : -1}" type="button">${label}<span class="tab-n">${n}</span></button>`;
-  h += `<div class="tabs-anchor"></div><div class="tabs" role="tablist" aria-label="Team details" style="--i:${k}"><span class="tab-ind" aria-hidden="true"></span>
-    ${tab('roster', 'Roster', t.roster.length)}${tab('conn', 'Connections', t.links.size)}${tab('reun', 'Reunions', t.reunions.length)}</div>
-    <div class="tab-body" id="tab-body" role="tabpanel" aria-labelledby="tab-${view.tab}">${tabHTML(t)}</div>`;
   return h;
 }
 
+function scoreChip(p) {
+  if (p.score == null) return '';
+  return `<span class="pscore" style="--c:${ratingColor(p.score)}" title="Connection score ${p.score}: #${p.leagueRank} of ${p.leagueSize} in the ${esc(p.lg)}">${p.score}</span>`;
+}
+
 export function tabHTML(t) {
+  if (view.tab === 'over') return overviewHTML(t);
   if (view.tab === 'conn') return connHTML(t);
   if (view.tab === 'reun') return reunionsHTML(t);
   return rosterHTML(t);
@@ -334,6 +351,7 @@ export function switchTab(tab) {
   });
   tb.setAttribute('aria-labelledby', `tab-${tab}`);
   tb.innerHTML = tabHTML(M.teams[view.id]);
+  animateMeters(tb, true);
   // tabs pinned: bring the new tab to where it was left (or its top). Not pinned: stay put, unless the
   // tab bar sits low in the visible panel, then glide it up so the new tab's content is in view.
   const visible = isSheet() && sheet.snap ? geom().vis[sheet.snap] : body.clientHeight;
@@ -375,7 +393,7 @@ function rosterList(t) {
   const ps = q ? all.filter((p) => fold(p.n).includes(q) || (p.no != null && String(p.no) === q)) : all;
   if (!ps.length) return empty(ICON.search, `No players match “${esc(raw)}”.`, '<button class="pchip" type="button" data-clear-q>Clear filter</button>');
   const base = (p) => [p.p, p.age ? `${p.age} yrs` : null, p.fr].filter(Boolean).join(' · ');
-  const row = (p, sub) => `<button class="prow" data-player="${p.i}" type="button">${avatarHTML(p)}<span class="pmain"><span class="pname">${p.no != null ? `<span class="num">${p.no}</span>` : ''}${esc(p.n)}</span><span class="psub">${esc(sub)}</span></span>${trailHTML(p, t.i)}</button>`;
+  const row = (p, sub) => `<button class="prow" data-player="${p.i}" type="button">${avatarHTML(p)}<span class="pmain"><span class="pname">${p.no != null ? `<span class="num">${p.no}</span>` : ''}${esc(p.n)}</span><span class="psub">${esc(sub)}</span></span>${trailHTML(p, t.i)}${scoreChip(p)}</button>`;
   let h = q ? `<div class="list-meta">${ps.length} of ${plural(all.length, 'player')}</div>` : '';
   if (view.sort === 'pos') {
     for (const [label, g] of [['Forwards', 'F'], ['Defense', 'D'], ['Goalies', 'G'], ['Other', undefined]]) {
@@ -389,8 +407,10 @@ function rosterList(t) {
     name: (a, b) => lastFirst(a).localeCompare(lastFirst(b)),
     age: (a, b) => (a.age ?? 1e9) - (b.age ?? 1e9) || (b.dob || '').localeCompare(a.dob || ''),
     travel: (a, b) => mapTeams(b) - mapTeams(a) || b.c.length - a.c.length,
+    score: (a, b) => (b.score ?? -1) - (a.score ?? -1) || b.sm.mates - a.sm.mates,
   }[view.sort];
-  const sub = view.sort === 'travel' ? (p) => [`${plural(mapTeams(p), 'team')} on the map`, p.p].filter(Boolean).join(' · ') : base;
+  const sub = view.sort === 'travel' ? (p) => [`${plural(mapTeams(p), 'team')} on the map`, p.p].filter(Boolean).join(' · ')
+    : view.sort === 'score' ? (p) => [`Played with ${p.sm.mates} active players`, `${plural(p.sm.rooms, 'other team')}`].join(' · ') : base;
   return h + [...ps].sort(cmp).map((p) => row(p, sub(p))).join('');
 }
 
@@ -461,7 +481,9 @@ function reunionsHTML(t) {
 
 /** Render a player. opts: { dir, view, snap } as for renderTeamPanel. */
 export function renderPlayerPanel(p, o = {}) {
+  ensurePlayerScores(M);
   view.kind = 'player';
+  view.allRooms = false;
   view.id = p.i;
   view.scroll = { ...(o.view?.scroll || {}) };
   const t0 = M.teams[p.t[0]];
@@ -488,13 +510,10 @@ function playerHTML(p) {
     ${cur.map((x) => `<button class="now-team" type="button" data-team="${x.i}" data-hl="${x.i}" style="--c:${x.color}">${logoHTML(x)}<span class="nt-text"><span class="nt-k">Plays for</span><span class="nt-name">${esc(x.name)}</span></span>${leaguePill(x.lg)}${ICON.chev}</button>`).join('')}
     ${facts.length ? `<div class="facts">${facts.join('')}</div>` : ''}</header>`;
 
-  const onMap = new Set([...p.nodes, ...p.t]);
   const seasons = new Set(p.c.map((c) => c[0]));
-  const leagues = new Set(p.c.map((c) => refLeague(c[1])).filter(Boolean));
   const ys = [...seasons];
-  h += `<section class="section"><h3>Journey on the map <button class="mini-btn" type="button" data-replay>${ICON.play}Replay route</button></h3>
-    <div class="stats"><div class="stat"><b>${onMap.size}</b><span>${onMap.size === 1 ? 'team' : 'teams'} on the map</span></div><div class="stat"><b>${seasons.size}</b><span>${seasons.size === 1 ? 'season' : 'seasons'}${ys.length ? ` since ${Math.min(...ys)}` : ''}</span></div><div class="stat"><b>${leagues.size}</b><span>${leagues.size === 1 ? 'league' : 'leagues'}</span></div></div>
-    <p class="note">The numbered route on the map traces each stop in order.</p></section>`;
+  h += scoreSectionHTML(p);
+  h += roomsSectionHTML(p);
 
   const mates = matesOf(p);
   if (mates.length) {
@@ -503,7 +522,7 @@ function playerHTML(p) {
   }
 
   const maxY = ys.length ? Math.max(...ys) : null;
-  h += `<section class="section"><h3>Career</h3><div class="tl">${stints(p).map((r) => {
+  h += `<section class="section"><h3>Career <button class="mini-btn" type="button" data-replay>${ICON.play}Replay route</button></h3><div class="tl">${stints(p).map((r) => {
     const lg = refLeague(r.ref);
     const on = r.ref >= 0;
     const color = M.leagueById.get(lg)?.color || 'var(--faint)';
@@ -516,6 +535,39 @@ function playerHTML(p) {
   }).join('')}</div>
   <p class="note tl-note">${p.id.startsWith('n') ? 'Full career from NHL.com.' : `Seasons since ${seasonLabel(M.firstSeason)}, matched across league rosters by name and birth date.`}</p></section>`;
   return h;
+}
+
+function scoreSectionHTML(p) {
+  if (p.score == null) return '';
+  const first = esc(p.n.split(' ')[0]);
+  const comps = [
+    ['mates', 'Teammates', `${p.sm.mates} players`, `Active players ${first} has shared a locker room with, before or elsewhere.`],
+    ['rooms', 'Locker rooms', `${p.sm.rooms} teams`, `Other teams on the map that have at least one of ${first}'s former teammates right now.`],
+    ['teams', 'Map teams', `${p.sm.teams}`, `Teams on the map ${first} has played for.`],
+    ['leagues', 'Leagues', `${p.sm.leagues}`, `Leagues on the map ${first} has played in.`],
+  ];
+  return `<section class="section"><h3>Connection score <button class="info" type="button" data-about>How it works</button></h3><div class="rating">${gauge(p.score, ratingColor(p.score), 'Connection score')}
+    <div class="rating-side"><div class="rating-rank"><b>#${p.leagueRank}</b> <span>of ${p.leagueSize.toLocaleString()} ${esc(p.lg)} players</span></div>
+    ${comps.map(([k, name, val, tip]) => `<div class="comp" title="${esc(tip)}"><div class="comp-top"><span>${name}</span><b>${val}</b></div><div class="bar"><i style="width:0;background:${ratingColor(p.spct[k] * 100)}" data-w="${Math.max(3, p.spct[k] * 100)}%"></i></div></div>`).join('')}
+    <div class="comp-note">Bars rank each measure among ${esc(p.lg)} players</div>
+    </div></div></section>`;
+}
+
+// Teams that have one of p's former teammates on them right now.
+function roomsSectionHTML(p) {
+  if (!p.rooms || !p.rooms.size) return '';
+  const list = [...p.rooms.entries()].sort((a, b) => b[1] - a[1] || M.teams[a[0]].baseR - M.teams[b[0]].baseR);
+  const max = list[0][1];
+  const shown = view.allRooms ? list : list.slice(0, 6);
+  const rows = shown.map(([ti, n]) => {
+    const t = M.teams[ti];
+    const names = [];
+    for (const qi of t.roster) if (p.mates.has(qi)) names.push(M.players[qi].n.split(' ').slice(-1)[0]);
+    const label = names.slice(0, 4).join(', ') + (names.length > 4 ? ` +${names.length - 4}` : '');
+    return `<button class="crow" data-team="${ti}" data-hl="${ti}" type="button">${logoHTML(t)}<span class="cmain"><span class="cname"><span class="cn">${esc(t.name)}</span><span class="tag">${t.lg}</span></span><span class="cdesc">${plural(n, 'former teammate')}</span><span class="cnames">${esc(label)}</span></span><span class="cside"><span class="cnum">${n}</span><span class="cbar"><i style="width:${Math.max(6, (n / max) * 100)}%;background:${t.color}"></i></span></span></button>`;
+  }).join('');
+  const more = list.length > shown.length ? `<button class="more-btn" data-more-rooms type="button">Show all ${list.length}</button>` : '';
+  return `<section class="section rooms"><h3>Former teammates around the map <span class="count">${list.length}</span></h3><p class="note">Teams with someone who has played alongside ${esc(p.n.split(' ')[0])}.</p><div class="conn-list">${rows}${more}</div></section>`;
 }
 
 // Consecutive seasons with the same team become one stint, even when a player shuttles between two clubs.
@@ -754,6 +806,20 @@ export function wirePanel() {
     const tab = e.target.closest('[role="tab"]');
     if (tab) { switchTab(tab.dataset.tab); return; }
     if (e.target.closest('[data-more-conn]')) { view.all = true; syncState(); updateConn(); viewChanged(); return; }
+    if (e.target.closest('[data-more-rooms]')) {
+      view.allRooms = true;
+      const sec = curView()?.querySelector('.section.rooms');
+      if (sec && view.kind === 'player') sec.outerHTML = roomsSectionHTML(M.players[view.id]);
+      return;
+    }
+    const goto = e.target.closest('[data-goto-tab]');
+    if (goto) {
+      if (goto.dataset.sort) { view.sort = goto.dataset.sort; view.q = ''; }
+      if (view.tab === goto.dataset.gotoTab) { if (goto.dataset.sort) updateRoster(); }
+      else switchTab(goto.dataset.gotoTab);
+      viewChanged();
+      return;
+    }
     const lg = e.target.closest('[data-conn-lg]');
     if (lg) { view.lg = lg.dataset.connLg; updateConn(); viewChanged(); return; }
     if (e.target.closest('[data-clear-q]')) {

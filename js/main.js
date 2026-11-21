@@ -1,4 +1,4 @@
-import { buildModel } from './model.js';
+import { buildModel, ensurePlayerScores } from './model.js';
 import { HockeyMap } from './map.js';
 import { M, map, state, actions, setModel, setMap } from './app.js';
 import { $ } from './util.js';
@@ -37,6 +37,10 @@ async function init() {
   onPanelView(saveViewSoon);
   requestAnimationFrame(() => $('#loading').classList.add('done'));
   setTimeout(() => $('#loading')?.remove(), 700);
+  // Player connection scores take ~100ms; compute them once the map is on screen (panels call
+  // ensurePlayerScores too, so an early click still gets them).
+  const idle = window.requestIdleCallback || ((f) => setTimeout(f, 300));
+  idle(() => ensurePlayerScores(M), { timeout: 2000 });
 }
 
 // ------------------------------------------------------------------ navigation model
