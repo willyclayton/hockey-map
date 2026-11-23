@@ -130,8 +130,8 @@ for lg, grp in (("FBS", 80), ("FCS", 81)):
 details = pool(lambda tid: team_info("college-football", tid), list(college_ids))
 for tid, lg in college_ids.items():
     t = details.get(tid)
-    if not t or not t.get("isActive", True):
-        continue
+    if not t or not t.get("isActive", True) or re.search(r"all-?stars?\b|\ball star|^team ", t.get("displayName", ""), re.I):
+        continue  # all-star game squads are listed alongside schools
     nid = f"{lg}-{tid}"
     rec = (t.get("record") or {}).get("items") or []
     nodes[nid] = {"id": nid, "league": lg, "espn": tid, "abbr": t.get("abbreviation", ""), "name": t["displayName"],

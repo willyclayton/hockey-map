@@ -131,7 +131,7 @@ def find_title(node, league_links, suffix=""):
     if nick:
         cands = {tgt for tgt, txt in league_links if strip(norm(base(tgt))).endswith(nick) or norm(txt).endswith(nick)}
         if len(cands) > 1 and city:
-            cands = {c for c in cands if city[:5] in norm(c)} or cands
+            cands = {c for c in cands if city[:5] in norm(c)} or {c for c in cands if norm(c).startswith(city[:3])} or cands
         if len(cands) == 1:
             return cands.pop()
     return None
