@@ -130,7 +130,7 @@ for lg, grp in (("FBS", 80), ("FCS", 81)):
 details = pool(lambda tid: team_info("college-football", tid), list(college_ids))
 for tid, lg in college_ids.items():
     t = details.get(tid)
-    if not t or not t.get("isActive", True) or re.search(r"all-?stars?\b|\ball star|^team ", t.get("displayName", ""), re.I):
+    if not t or not t.get("isActive", True) or re.search(r"all-?stars?\b|\ball star|\bstars$|^team |^(american|national|tba)$", t.get("displayName", ""), re.I):
         continue  # all-star game squads are listed alongside schools
     nid = f"{lg}-{tid}"
     rec = (t.get("record") or {}).get("items") or []
@@ -161,6 +161,16 @@ for nid, d in rosters.items():
             if pid not in people or nodes[nid]["league"] == "NFL":
                 people[pid] = a
 CUR = CUR or datetime.date.today().year
+# anything listed as a team but carrying (almost) no roster is not a program (all-star squads, placeholders)
+for nid in [nid for nid in nodes if sum(1 for ns in current.values() if nid in ns) < 15]:
+    log(f"  dropping {nid} {nodes[nid]['name']} (no roster)")
+    del nodes[nid]
+    for pid in list(current):
+        current[pid] = [n for n in current[pid] if n != nid]
+        if not current[pid]:
+            del current[pid]
+            people.pop(pid, None)
+by_espn = {("NFL" if n["league"] == "NFL" else "NCAA", n["espn"]): nid for nid, n in nodes.items()}
 log(f"  {len(people)} players on {len(nodes)} rosters, season {CUR}")
 
 # ---------------------------------------------------------------- careers
