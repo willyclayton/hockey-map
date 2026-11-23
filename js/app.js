@@ -6,3 +6,7 @@ export const state = { team: null, player: null, stack: [], tab: 'roster', showA
 export const actions = {};
 export function setModel(m) { M = m; }
 export function setMap(m) { map = m; }
+
+// Which sport the page shows: ?sport=football switches the whole app to NFL + NCAA football data.
+export const SPORT = new URLSearchParams(location.search).get('sport') === 'football' ? 'football' : 'hockey';
+export const APP_NAME = SPORT === 'football' ? 'Football Atlas' : 'Hockey Atlas';

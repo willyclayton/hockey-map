@@ -16,7 +16,7 @@ const SEL_F = 1.35;          // selected badge scale
 const PATH_F = 1.5;
 const SHOW_COUNTS = false;          // badges on the open player's route
 const MOBILE = 760;
-const LABEL_K = { NHL: 1.45, PWHL: 2.1, AHL: 2.2 }; // zoom at which a league's names start to appear
+const LABEL_K = { NHL: 1.45, PWHL: 2.1, AHL: 2.2, NFL: 1.45, FBS: 2.2 }; // zoom at which a league's names start to appear
 const LABEL_K_REST = 3.1;
 const LABEL_FONT = { sel: [700, 14], hot: [600, 13], stop: [600, 12], rel: [600, 12], zoom: [600, 11.5] };
 const ANCHOR = ['middle', 'middle', 'start', 'end']; // label sides: below, above, right, left
@@ -28,7 +28,9 @@ const reducedMQ = mq('(prefers-reduced-motion: reduce)');
 const coarseMQ = mq('(pointer: coarse)');
 const reduced = () => reducedMQ.matches;
 // "2018-19" for one season, "2018–21" for a run, "Now" for the current team with no past seasons here
-const yearSpan = (a, b) => (a == null ? 'Now' : a === b ? `${a}-${String(a + 1).slice(2)}` : `${a}–${String(b + 1).slice(2)}`);
+let ONE_YEAR = false; // football seasons are single years
+const yearSpan = (a, b) => (a == null ? 'Now' : ONE_YEAR ? (a === b ? `${a}` : `${a}–${String(b).slice(2)}`)
+  : a === b ? `${a}-${String(a + 1).slice(2)}` : `${a}–${String(b + 1).slice(2)}`);
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const r1 = (v) => Math.round(v * 10) / 10;
 const overlaps = (a, b) => a.x0 < b.x1 && a.x1 > b.x0 && a.y0 < b.y1 && a.y1 > b.y0;
@@ -62,6 +64,7 @@ function curve(a, b, bend) {
 
 export class HockeyMap {
   constructor(el, model, topo, handlers) {
+    ONE_YEAR = model.sport === 'football';
     this.el = el;
     this.model = model;
     this.topo = topo;
@@ -846,7 +849,7 @@ export class HockeyMap {
     const logo = q('.j-logo');
     if (o.done) {
       const ys = o.p.c.map((c) => c[0]);
-      setText('.j-yr', ys.length ? `${Math.min(...ys)}–${String(Math.max(...ys) + 1).slice(2)}` : '');
+      setText('.j-yr', ys.length ? (ONE_YEAR ? yearSpan(Math.min(...ys), Math.max(...ys)) : `${Math.min(...ys)}–${String(Math.max(...ys) + 1).slice(2)}`) : '');
       setText('.j-name', o.p.n);
       setText('.j-sub', `${total} ${total === 1 ? 'stop' : 'stops'} on the map`);
       setText('.j-step', '');

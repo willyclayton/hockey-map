@@ -116,18 +116,20 @@ def league_tables(text):
     return rows
 
 
-def find_title(node, league_links):
-    """Pick the Wikipedia title for a team from its league article links."""
+def find_title(node, league_links, suffix=""):
+    """Pick the Wikipedia title for a team from its league article links (suffix: e.g. " football")."""
     name, nick, city, lg = norm(node["name"]), norm(node.get("nickname", "")), norm(node.get("city", "")), node["league"]
+    sx = norm(suffix)
+    strip = (lambda t: t[: -len(sx)] if sx and t.endswith(sx) else t)
     exact = []
     for tgt, txt in league_links:
-        if norm(base(tgt)) == name or norm(txt) == name:
+        if strip(norm(base(tgt))) == name or norm(txt) == name:
             exact.append(tgt)
     if exact:
         exact.sort(key=lambda t: (f"({lg})" not in t and "(" in t, "(" not in t))
         return exact[0]
     if nick:
-        cands = {tgt for tgt, txt in league_links if norm(base(tgt)).endswith(nick) or norm(txt).endswith(nick)}
+        cands = {tgt for tgt, txt in league_links if strip(norm(base(tgt))).endswith(nick) or norm(txt).endswith(nick)}
         if len(cands) > 1 and city:
             cands = {c for c in cands if city[:5] in norm(c)} or cands
         if len(cands) == 1:
@@ -135,9 +137,12 @@ def find_title(node, league_links):
     return None
 
 
-def resolve(nodes, force=False):
-    ref = {} if force else read_json(REF_PATH, {})
-    fixed = {k for k, v in (overrides().get("teams") or {}).items() if v.get("lat") is not None}
+def resolve(nodes, force=False, leagues=None, ref_path=REF_PATH, ovr_path=OVR_PATH, suffix="", word="hockey"):
+    """leagues: [{id, wiki}] (defaults to hockey's); suffix: added to team names for article guesses
+    (" football" for college programs); word: a guessed article must mention it."""
+    leagues = leagues or LEAGUES
+    ref = {} if force else read_json(ref_path, {})
+    fixed = {k for k, v in (overrides(ovr_path).get("teams") or {}).items() if v.get("lat") is not None}
     todo = [n for n in nodes if n["id"] not in fixed and (n["id"] not in ref or ref[n["id"]].get("lat") is None)]
     league_cache = {}
     if todo:
@@ -145,18 +150,18 @@ def resolve(nodes, force=False):
     for n in todo:
         lg = n["league"]
         if lg not in league_cache:
-            wiki = next(l["wiki"] for l in LEAGUES if l["id"] == lg)
+            wiki = next(l["wiki"] for l in leagues if l["id"] == lg)
             _, text = wiki_raw(urllib.parse.unquote(wiki))
             league_cache[lg] = (links(text), league_tables(text or ""))
         llinks, _ = league_cache[lg]
-        title = find_title(n, llinks)
+        title = find_title(n, llinks, suffix)
         text = None
         if title:
             title, text = wiki_raw(title)
         if not text:
-            for guess in (n["name"], f"{n['name']} ({lg})"):
+            for guess in ([f"{n['name']}{suffix}"] if suffix else []) + [n["name"], f"{n['name']} ({lg})"]:
                 t2, tx = wiki_raw(guess)
-                if tx and "hockey" in tx.lower():
+                if tx and word in tx.lower():
                     title, text = t2, tx
                     break
         entry = {"wiki": title if text else None}
@@ -181,7 +186,9 @@ def resolve(nodes, force=False):
                 entry["lat"], entry["lng"] = coord
         log(f"  {n['id']:<12} {n['name']:<34} -> {entry.get('wiki')} | {entry.get('arena')} | {entry.get('lat')},{entry.get('lng')}")
         ref[n["id"]] = entry
-    write_json(REF_PATH, dict(sorted(ref.items())))
+        if len(ref) % 25 == 0:
+            write_json(ref_path, dict(sorted(ref.items())))  # keep progress if interrupted
+    write_json(ref_path, dict(sorted(ref.items())))
     return ref
 
 
@@ -231,5 +238,5 @@ def infobox_affiliations(nodes, ref):
     return pairs
 
 
-def overrides():
-    return read_json(OVR_PATH, {"teams": {}, "affiliations": {"add": [], "remove": []}})
+def overrides(path=OVR_PATH):
+    return read_json(path, {"teams": {}, "affiliations": {"add": [], "remove": []}})

@@ -14,11 +14,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/base.css?v=202611210441">
-  <link rel="stylesheet" href="css/map.css?v=202611210441">
-  <link rel="stylesheet" href="css/chrome.css?v=202611210441">
-  <link rel="stylesheet" href="css/panel.css?v=202611210441">
-  <link rel="stylesheet" href="css/tour.css?v=202611210441">
+  <link rel="stylesheet" href="css/base.css?v=202611230334">
+  <link rel="stylesheet" href="css/map.css?v=202611230334">
+  <link rel="stylesheet" href="css/chrome.css?v=202611230334">
+  <link rel="stylesheet" href="css/panel.css?v=202611230334">
+  <link rel="stylesheet" href="css/tour.css?v=202611230334">
 </head>
 <body>
   <div id="app">
@@ -73,6 +73,13 @@
           <svg class="ctl-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="ctl-wrap"><div class="ctl-body" id="ctl-body"><div class="ctl-inner">
+          <div class="ctl-row">
+            <span class="ctl-label" id="lbl-sport">Sport</span>
+            <div class="seg" id="sport-mode" role="group" aria-labelledby="lbl-sport">
+              <button type="button" data-sport="hockey" aria-pressed="true" data-tip="NHL, AHL, ECHL, CHL, USHL, SPHL and PWHL">Hockey</button>
+              <button type="button" data-sport="football" aria-pressed="false" data-tip="NFL and NCAA Division I football">Football</button>
+            </div>
+          </div>
           <div class="ctl-row">
             <span class="ctl-label" id="lbl-layers">Layers</span>
             <div class="filter-group" role="group" aria-labelledby="lbl-layers">
@@ -168,6 +175,6 @@
 
   <script src="vendor/d3.v7.9.0.min.js"></script>
   <script src="vendor/topojson-client.3.1.0.min.js"></script>
-  <script type="module" src="js/main.js?v=202611210441"></script>
+  <script type="module" src="js/main.js?v=202611230334"></script>
 </body>
 </html>

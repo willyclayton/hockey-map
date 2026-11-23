@@ -15,7 +15,7 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
 
@@ -33,8 +33,11 @@ jobs:
           key: hockey-cache-${{ github.run_id }}
           restore-keys: hockey-cache-
 
-      - name: Build data
+      - name: Build hockey data
         run: python3 scripts/build_data.py --refresh
+
+      - name: Build football data
+        run: python3 scripts/build_football.py --refresh
 
       - name: Commit changes
         run: |

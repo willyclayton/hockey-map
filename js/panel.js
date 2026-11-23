@@ -1,11 +1,11 @@
 // panel.js: the side panel (desktop) / bottom sheet (mobile) with team and player views.
 // Owns: view rendering, view-to-view transitions, the sticky header + breadcrumb, tabs,
 // per-view UI state (tab, scroll, filters) that main.js stores in history entries, and sheet drag.
-import { M, map, state, actions } from './app.js?v=202611210441';
-import { orgOf, pipelineLabel, seasonLabel, fold, ensurePlayerScores } from './model.js?v=202611210441';
-import { ratingColor } from './map.js?v=202611210441';
-import { $, esc, plural, logoHTML, leaguePill, avatarHTML, teamName, refLeague } from './util.js?v=202611210441';
-import { openAbout } from './chrome.js?v=202611210441';
+import { M, map, state, actions, SPORT, APP_NAME } from './app.js?v=202611230334';
+import { orgOf, pipelineLabel, seasonLabel, fold, ensurePlayerScores, teammatesOf } from './model.js?v=202611230334';
+import { ratingColor } from './map.js?v=202611230334';
+import { $, esc, plural, logoHTML, leaguePill, avatarHTML, teamName, refLeague } from './util.js?v=202611230334';
+import { openAbout } from './chrome.js?v=202611230334';
 
 const selectTeam = (...a) => actions.selectTeam(...a);
 const selectPlayer = (...a) => actions.selectPlayer(...a);
@@ -22,8 +22,19 @@ const EASE_IN = 'cubic-bezier(.4, 0, 1, 1)';
 
 const TABS = ['over', 'roster', 'conn', 'reun'];
 const SORTS = [['pos', 'Position'], ['score', 'Connection score'], ['num', 'Number'], ['name', 'Name'], ['age', 'Age'], ['travel', 'Most traveled']];
-const POS_GROUP = { C: 'F', LW: 'F', RW: 'F', F: 'F', W: 'F', D: 'D', LD: 'D', RD: 'D', G: 'G' };
-const POS_NAME = { C: 'Center', LW: 'Left wing', RW: 'Right wing', F: 'Forward', W: 'Wing', D: 'Defense', LD: 'Defense', RD: 'Defense', G: 'Goalie' };
+const HOCKEY_POS = {
+  group: { C: 'F', LW: 'F', RW: 'F', F: 'F', W: 'F', D: 'D', LD: 'D', RD: 'D', G: 'G' },
+  name: { C: 'Center', LW: 'Left wing', RW: 'Right wing', F: 'Forward', W: 'Wing', D: 'Defense', LD: 'Defense', RD: 'Defense', G: 'Goalie' },
+  groups: [['Forwards', 'F'], ['Defense', 'D'], ['Goalies', 'G'], ['Other', undefined]],
+};
+const FOOTBALL_POS = {
+  group: { QB: 'O', RB: 'O', FB: 'O', WR: 'O', TE: 'O', OL: 'O', C: 'O', DL: 'D', LB: 'D', CB: 'D', S: 'D', DB: 'D', K: 'S', P: 'S', LS: 'S' },
+  name: { QB: 'Quarterback', RB: 'Running back', FB: 'Fullback', WR: 'Wide receiver', TE: 'Tight end', OL: 'Offensive line', C: 'Center',
+    DL: 'Defensive line', LB: 'Linebacker', CB: 'Cornerback', S: 'Safety', DB: 'Defensive back', K: 'Kicker', P: 'Punter', LS: 'Long snapper', ATH: 'Athlete' },
+  groups: [['Offense', 'O'], ['Defense', 'D'], ['Special teams', 'S'], ['Other', undefined]],
+};
+const POSN = SPORT === 'football' ? FOOTBALL_POS : HOCKEY_POS;
+const POS_GROUP = POSN.group, POS_NAME = POSN.name;
 
 const svg = (d, extra = '') => `<svg viewBox="0 0 24 24" aria-hidden="true" ${extra}>${d}</svg>`;
 const ICON = {
@@ -279,7 +290,7 @@ function teamHTML(t) {
   const facts = [];
   if (t.arena) facts.push(`<span><b>${esc(t.arena)}</b></span>`);
   if (t.loc || t.city) facts.push(`<span>${esc(t.loc || t.city)}</span>`);
-  if (t.rec) facts.push(`<span><b>${esc(t.rec)}</b> · ${t.pts} pts</span>`);
+  if (t.rec) facts.push(`<span><b>${esc(t.rec)}</b>${t.pts != null ? ` · ${t.pts} pts` : ''}</span>`);
   const rc = ratingColor(t.rating);
   let h = `<header class="hero"><div class="hero-row"><div class="hero-logo">${t.logo ? `<img src="${esc(t.logo)}" alt="">` : `<b>${esc(t.abbr || t.short)}</b>`}</div>
     <div class="hero-text"><h2 class="hero-name" tabindex="-1">${esc(t.name)}</h2><div class="hero-sub">${leaguePill(t.lg)}${t.div ? `<span>${esc(t.div)}</span>` : ''}</div></div>
@@ -314,6 +325,7 @@ function overviewHTML(t) {
       <div class="mates">${top.map((p) => `<button class="prow" data-player="${p.i}" type="button">${avatarHTML(p)}<span class="pmain"><span class="pname">${esc(p.n)}</span><span class="psub">${esc(`Played with ${p.sm.mates} active players · ${p.sm.teams} map teams`)}</span></span>${scoreChip(p)}</button>`).join('')}</div></section>`;
   }
 
+  if (SPORT === 'football') h += footballOrgHTML(t);
   const org = orgOf(M, t);
   if (org.nhl.length + org.ahl.length + org.echl.length > 1) {
     const row = (label, list) => (list.length ? `<div class="org-row"><span class="org-label">${label}</span><div class="org-teams">${list.map((x) => `<button class="team-chip ${x.i === t.i ? 'self' : ''}" style="--team-c:${x.color}" ${x.i === t.i ? 'aria-current="true" disabled' : `data-team="${x.i}" data-hl="${x.i}"`} type="button">${logoHTML(x, 'sm')}<span>${esc(x.name)}</span></button>`).join('')}</div></div>` : '');
@@ -326,6 +338,35 @@ function overviewHTML(t) {
     h += `<section class="section"><h3>Prospects in junior <span class="count">${t.prospects.length}</span></h3><p class="note">${esc(t.short)} draft picks now playing in the OHL, WHL, QMJHL or USHL.</p><div class="org-teams">${byTeam.slice(0, 14).map(([ti, ps]) => `<button class="team-chip" data-team="${ti}" data-hl="${ti}" type="button" title="${esc(ps.map((pi) => M.players[pi].n).join(', '))}">${logoHTML(M.teams[ti], 'sm')}<span>${esc(M.teams[ti].name)}</span><em>${ps.length}</em></button>`).join('')}</div></section>`;
   }
   return h;
+}
+
+// Football: an NFL roster's colleges, or a college's alumni across the NFL today.
+function footballOrgHTML(t) {
+  const chip = (i, n, title) => `<button class="team-chip" data-team="${i}" data-hl="${i}" type="button" title="${esc(title)}">${logoHTML(M.teams[i], 'sm')}<span>${esc(M.teams[i].short)}</span><em>${n}</em></button>`;
+  if (t.lg === 'NFL') {
+    const by = new Map(); // college ref -> players
+    for (const pi of t.roster) {
+      const refs = new Set(M.players[pi].c.map((c) => c[1]).filter((r) => r < 0 ? M.off[-r - 1].lg === 'NCAA' : M.teams[r].lg !== 'NFL'));
+      for (const r of refs) { if (!by.has(r)) by.set(r, []); by.get(r).push(pi); }
+    }
+    if (!by.size) return '';
+    const list = [...by.entries()].sort((a, b) => b[1].length - a[1].length);
+    const names = (ps) => ps.map((pi) => M.players[pi].n).join(', ');
+    const off = list.filter(([r]) => r < 0).length;
+    return `<section class="section"><h3>Built from <span class="count">${list.length} schools</span></h3><p class="note">Where the ${esc(t.short)} roster played college football${off ? `, including ${plural(off, 'school')} off the map (Division II, III and NAIA)` : ''}.</p>
+      <div class="org-teams">${list.slice(0, 16).map(([r, ps]) => (r >= 0 ? chip(r, ps.length, names(ps)) : `<span class="team-chip off" title="${esc(names(ps))}"><span class="off-logo">NCAA</span><span>${esc(M.off[-r - 1].name)}</span><em>${ps.length}</em></span>`)).join('')}</div></section>`;
+  }
+  const by = new Map(); // NFL team -> alumni on it now
+  for (const [o, e] of t.links) {
+    if (M.teams[o].lg !== 'NFL') continue;
+    const ps = [...e.players].filter((pi) => M.players[pi].t.includes(o));
+    if (ps.length) by.set(o, ps);
+  }
+  const total = new Set([...by.values()].flat()).size;
+  if (!total) return `<section class="section"><h3>Now in the NFL</h3><p class="note">No ${esc(t.short)} alumni on current NFL rosters.</p></section>`;
+  const list = [...by.entries()].sort((a, b) => b[1].length - a[1].length);
+  return `<section class="section"><h3>Now in the NFL <span class="count">${total} ${total === 1 ? 'player' : 'players'}</span></h3><p class="note">${esc(t.short)} alumni on ${plural(list.length, 'NFL roster')} today.</p>
+    <div class="org-teams">${list.map(([o, ps]) => chip(o, ps.length, ps.map((pi) => M.players[pi].n).join(', '))).join('')}</div></section>`;
 }
 
 function scoreChip(p) {
@@ -403,7 +444,7 @@ function rosterList(t) {
   const row = (p, sub) => `<button class="prow" data-player="${p.i}" type="button">${avatarHTML(p)}<span class="pmain"><span class="pname">${p.no != null ? `<span class="num">${p.no}</span>` : ''}${esc(p.n)}</span><span class="psub">${esc(sub)}</span></span>${trailHTML(p, t.i)}${scoreChip(p)}</button>`;
   let h = q ? `<div class="list-meta">${ps.length} of ${plural(all.length, 'player')}</div>` : '';
   if (view.sort === 'pos') {
-    for (const [label, g] of [['Forwards', 'F'], ['Defense', 'D'], ['Goalies', 'G'], ['Other', undefined]]) {
+    for (const [label, g] of POSN.groups) {
       const gs = ps.filter((p) => POS_GROUP[p.p] === g);
       if (gs.length) h += `<div class="pos-head">${label}<span>${gs.length}</span></div>${gs.map((p) => row(p, base(p))).join('')}`;
     }
@@ -516,6 +557,8 @@ function playerHTML(p) {
   if (p.ht || p.wt) facts.push(`<span>${[p.ht, p.wt ? `${p.wt} lb` : null].filter(Boolean).map(esc).join(' · ')}</span>`);
   if (p.sh) facts.push(`<span>${p.p === 'G' ? 'Catches' : 'Shoots'} <b>${esc(p.sh)}</b></span>`);
   if (p.dr) facts.push(`<span>Draft <b>${esc(p.dr)}</b></span>`);
+  if (p.xp) facts.push(`<span><b>${esc(p.xp)}</b></span>`);
+  if (p.col) facts.push(`<span>College <b>${esc(p.col)}</b></span>`);
   const ini = esc(p.n.split(' ').map((w) => w[0]).slice(0, 2).join(''));
   const sub = [p.no != null ? `#${p.no}` : null, POS_NAME[p.p] || p.p].filter(Boolean).join(' · ');
 
@@ -547,7 +590,7 @@ function playerHTML(p) {
     const inner = `<span class="tl-dot"></span>${logo}<span class="tl-main"><span class="tl-team"><span class="tl-tn">${esc(teamName(r.ref, r.nm))}</span>${now ? '<span class="now-badge">Now</span>' : ''}</span><span class="tl-sub">${esc(sub)}${on && r.nm != null ? ` · now ${esc(M.teams[r.ref].name)}` : ''}</span></span>${r.gp ? `<span class="tl-gp">${r.gp}<small>GP</small></span>` : ''}`;
     return on ? `<button class="tl-row${now ? ' now' : ''}" type="button" data-team="${r.ref}" data-hl="${r.ref}" style="--dot:${color}">${inner}</button>` : `<div class="tl-row off" style="--dot:${color}">${inner}</div>`;
   }).join('')}</div>
-  <p class="note tl-note">${p.id.startsWith('n') ? 'Full career from NHL.com.' : `Seasons since ${seasonLabel(M.firstSeason)}, matched across league rosters by name and birth date.`}</p></section>`;
+  <p class="note tl-note">${M.careerNote ? esc(M.careerNote) : p.id.startsWith('n') ? 'Full career from NHL.com.' : `Seasons since ${seasonLabel(M.firstSeason)}, matched across league rosters by name and birth date.`}</p></section>`;
   return h;
 }
 
@@ -569,14 +612,15 @@ function scoreSectionHTML(p) {
 
 // Teams that have one of p's former teammates on them right now.
 function roomsSectionHTML(p) {
-  if (!p.rooms || !p.rooms.size) return '';
-  const list = [...p.rooms.entries()].sort((a, b) => b[1] - a[1] || M.teams[a[0]].baseR - M.teams[b[0]].baseR);
+  const tm = teammatesOf(M, p);
+  if (!tm.rooms.size) return '';
+  const list = [...tm.rooms.entries()].sort((a, b) => b[1] - a[1] || M.teams[a[0]].baseR - M.teams[b[0]].baseR);
   const max = list[0][1];
   const shown = view.allRooms ? list : list.slice(0, 6);
   const rows = shown.map(([ti, n]) => {
     const t = M.teams[ti];
     const names = [];
-    for (const qi of t.roster) if (p.mates.has(qi)) names.push(M.players[qi].n.split(' ').slice(-1)[0]);
+    for (const qi of t.roster) if (tm.mates.has(qi)) names.push(M.players[qi].n.split(' ').slice(-1)[0]);
     const label = names.slice(0, 4).join(', ') + (names.length > 4 ? ` +${names.length - 4}` : '');
     return `<button class="crow" data-team="${ti}" data-hl="${ti}" type="button">${logoHTML(t)}<span class="cmain"><span class="cname"><span class="cn">${esc(t.name)}</span><span class="tag">${t.lg}</span></span><span class="cdesc">${plural(n, 'former teammate')}</span><span class="cnames">${esc(label)}</span></span><span class="cside"><span class="cnum">${n}</span><span class="cbar"><i style="width:${Math.max(6, (n / max) * 100)}%;background:${t.color}"></i></span></span></button>`;
   }).join('');
@@ -588,15 +632,15 @@ function roomsSectionHTML(p) {
 function shareRoute(p, btn) {
   const stops = new Set([...p.nodes, ...p.t]).size;
   const now = M.teams[p.t[0]];
-  share(btn, `#p=${encodeURIComponent(p.id)}`, `${p.n} · Hockey Atlas`,
+  share(btn, `#p=${encodeURIComponent(p.id)}`, `${p.n} · ${APP_NAME}`,
     `${p.n}'s hockey journey: ${stops} ${stops === 1 ? 'team' : 'teams'} on the map${now ? `, now with the ${now.name}` : ''}. Connection score ${p.score ?? '–'}.`);
 }
 function shareTeam(t, btn) {
-  share(btn, `#t=${encodeURIComponent(t.id)}`, `${t.name} · Hockey Atlas`,
+  share(btn, `#t=${encodeURIComponent(t.id)}`, `${t.name} · ${APP_NAME}`,
     `The ${t.name}' player web: linked to ${t.m.reach} teams on the map. Connection rating ${t.rating} (#${t.leagueRank} in the ${t.lg}).`);
 }
 async function share(btn, hash, title, text) {
-  const url = `${location.origin}${location.pathname}${hash}`;
+  const url = `${location.origin}${location.pathname}${location.search}${hash}`;
   if (navigator.share) {
     try { await navigator.share({ title, text, url }); return; }
     catch (e) { if (e && e.name === 'AbortError') return; }

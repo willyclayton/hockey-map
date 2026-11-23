@@ -473,3 +473,7 @@ th[aria-sort="ascending"] .th-sort .arr { transform: rotate(180deg); }
 
 .tour-open { display: inline-flex; align-items: center; gap: 8px; height: 36px; margin: 6px 0 4px; padding: 0 16px 0 12px; border-radius: 999px; border: 1px solid var(--accent-line, rgba(124,196,255,.45)); background: var(--accent-soft, rgba(124,196,255,.14)); color: var(--accent); font: 600 13px var(--font); cursor: pointer; }
 .tour-open svg { width: 13px; height: 13px; }
+
+/* football mode: no affiliate layer */
+body[data-sport="football"] .chip.layer[data-layer="aff"] { display: none; }
+body[data-sport="football"] .tour-open { display: none; } /* the tour's stills are hockey */

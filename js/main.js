@@ -1,11 +1,19 @@
-import { buildModel, ensurePlayerScores } from './model.js?v=202611210441';
-import { HockeyMap } from './map.js?v=202611210441';
-import { M, map, state, actions, setModel, setMap } from './app.js?v=202611210441';
-import { $ } from './util.js?v=202611210441';
-import { renderTeamPanel, renderPlayerPanel, closePanel, wirePanel, getView, onPanelView, refreshHeader, switchTab, sheetInset, panelInsetRight, isSheet } from './panel.js?v=202611210441';
-import { buildFilters, buildLegend, teamTooltip, linkTooltip, wireSearch, wireChrome } from './chrome.js?v=202611210441';
+import { buildModel, ensurePlayerScores } from './model.js?v=202611230334';
+import { HockeyMap } from './map.js?v=202611230334';
+import { M, map, state, actions, setModel, setMap, SPORT, APP_NAME } from './app.js?v=202611230334';
+import { $ } from './util.js?v=202611230334';
+import { renderTeamPanel, renderPlayerPanel, closePanel, wirePanel, getView, onPanelView, refreshHeader, switchTab, sheetInset, panelInsetRight, isSheet } from './panel.js?v=202611230334';
+import { buildFilters, buildLegend, teamTooltip, linkTooltip, wireSearch, wireChrome } from './chrome.js?v=202611230334';
 
 Object.assign(actions, { selectTeam, selectPlayer, clearSelection, goBack, setTab, replayRoute });
+
+// brand the page for the sport before anything loads (title, header, loader)
+if (SPORT !== 'hockey') {
+  document.title = APP_NAME;
+  document.querySelectorAll('.brand h1, .loader-brand').forEach((n) => { n.textContent = APP_NAME; });
+  document.querySelector('#brand')?.setAttribute('aria-label', `${APP_NAME}: show the whole map`);
+  document.body.dataset.sport = SPORT;
+}
 
 init().catch((e) => {
   console.error(e);
@@ -14,7 +22,7 @@ init().catch((e) => {
 
 async function init() {
   const [data, topo] = await Promise.all([
-    fetch('data/hockey.json').then((r) => r.json()),
+    fetch(`data/${SPORT}.json`).then((r) => r.json()),
     fetch('data/na.topo.json').then((r) => r.json()),
   ]);
   setModel(buildModel(data));
@@ -52,7 +60,7 @@ async function init() {
 // state.stack mirrors the entries behind the current one; the panel's breadcrumb names its top.
 
 const STACK_MAX = 40;
-let baseTitle = 'Hockey Atlas';
+let baseTitle = APP_NAME;
 let seq = 0; // position of the current entry, to tell Back from Forward on popstate
 
 const hasSel = () => state.team != null || state.player != null;

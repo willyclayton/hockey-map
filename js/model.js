@@ -6,9 +6,13 @@ export const RATING_WEIGHTS = { reach: 0.35, strength: 0.25, reunions: 0.25, pip
 export const PLAYER_WEIGHTS = { mates: 0.4, rooms: 0.3, teams: 0.2, leagues: 0.1 };
 const AFFILIATED = new Set(['NHL', 'AHL', 'ECHL']);
 const JUNIOR = new Set(['OHL', 'WHL', 'QMJHL', 'USHL']);
-const BASE_R = { NHL: 15, AHL: 12, ECHL: 10, SPHL: 9, PWHL: 10, OHL: 9, WHL: 9, QMJHL: 9, USHL: 8 };
+const BASE_R = { NHL: 15, AHL: 12, ECHL: 10, SPHL: 9, PWHL: 10, OHL: 9, WHL: 9, QMJHL: 9, USHL: 8, NFL: 15, FBS: 9.5, FCS: 8 };
+const COLLEGE = new Set(['FBS', 'FCS']);
+let SPORT = 'hockey'; // set by buildModel from the data file
 
 export function pipelineLabel(lg) {
+  if (lg === 'NFL') return { name: 'Journeymen', desc: 'share of roster that has also played for another NFL team' };
+  if (COLLEGE.has(lg)) return { name: 'Transfers', desc: 'share of roster that has played for another college' };
   if (AFFILIATED.has(lg)) return { name: 'Pipeline', desc: 'share of roster that has played for this team’s NHL/AHL/ECHL affiliates' };
   if (JUNIOR.has(lg)) return { name: 'NHL pipeline', desc: 'share of roster that is NHL-drafted or has played on an NHL/AHL/ECHL team' };
   return { name: 'Map mileage', desc: 'share of roster that has played for another team on the map' };
@@ -16,6 +20,8 @@ export function pipelineLabel(lg) {
 
 export function buildModel(data) {
   const { teams, players, strings, leagues, affiliations } = data;
+  SPORT = data.sport || 'hockey';
+  data.sport = SPORT;
   const leagueById = new Map(leagues.map((l) => [l.id, l]));
   const off = strings.map((s) => {
     const i = s.indexOf('|');
@@ -45,6 +51,7 @@ export function buildModel(data) {
     const t0 = teams[p.t[0]];
     p.lg = t0 ? t0.lg : '';
     p.age = age(p.dob);
+    if (p.img === 1) p.img = `https://a.espncdn.com/i/headshots/${p.lg === 'NFL' ? 'nfl' : 'college-football'}/players/full/${p.id.slice(1)}.png`;
     if (p.rt != null && teams[p.rt] && JUNIOR.has(p.lg)) teams[p.rt].prospects.push(i);
   });
 
@@ -121,7 +128,12 @@ export function buildModel(data) {
     // pipeline
     const n = t.roster.length || 1;
     let hits = 0;
-    if (AFFILIATED.has(t.lg)) {
+    if (t.lg === 'NFL') {
+      for (const pi of t.roster) if ([...players[pi].nodes].some((o) => o !== t.i && teams[o].lg === 'NFL')) hits++;
+    } else if (COLLEGE.has(t.lg)) {
+      // any other school counts, on the map (Division I) or not (off-map refs are negative)
+      for (const pi of t.roster) if (players[pi].c.some((c) => c[1] !== t.i && (c[1] < 0 || COLLEGE.has(teams[c[1]].lg)))) hits++;
+    } else if (AFFILIATED.has(t.lg)) {
       for (const pi of t.roster) if ([...players[pi].nodes].some((o) => t.affs.has(o))) hits++;
     } else if (JUNIOR.has(t.lg)) {
       for (const pi of t.roster) {
@@ -179,8 +191,9 @@ function age(dob) {
   return a > 10 && a < 60 ? a : null;
 }
 
+// Hockey seasons span two years (2025-26); football seasons are one (2025).
 export function seasonLabel(y) {
-  return `${y}-${String(y + 1).slice(2)}`;
+  return SPORT === 'football' ? String(y) : `${y}-${String(y + 1).slice(2)}`;
 }
 
 // ---- player connection score (computed once, on first need; ~100ms, so main.js runs it in idle time)
@@ -191,30 +204,24 @@ export function seasonLabel(y) {
 export function ensurePlayerScores(M) {
   if (M.playerScores) return;
   const { players, teams } = M;
-  const CUR = parseInt(M.season, 10);
-  const skip = (p, c) => c[0] === CUR && p.t.includes(c[1]);
-  const gkey = (c) => c[0] * 100000 + (c[1] + 50000);
-  const stintGroups = new Map();
+  const groups = stintGroups(M);
+  // counts only (no per-player sets): stamp arrays mark who/which team was already counted for this player
+  const markP = new Int32Array(players.length), markT = new Int32Array(teams.length);
+  let stamp = 0;
   for (const p of players) {
+    stamp++;
+    let mates = 0, rooms = 0;
     for (const c of p.c) {
-      const k = gkey(c);
-      let g = stintGroups.get(k);
-      if (!g) stintGroups.set(k, (g = []));
-      g.push(p.i);
+      if (groups.skip(p, c)) continue;
+      for (const q of groups.get(c)) {
+        if (q === p.i || markP[q] === stamp) continue;
+        markP[q] = stamp;
+        mates++;
+        for (const ti of players[q].t) if (markT[ti] !== stamp && !p.t.includes(ti)) { markT[ti] = stamp; rooms++; }
+      }
     }
-  }
-  for (const p of players) {
-    const mates = new Set();
-    for (const c of p.c) {
-      if (skip(p, c)) continue;
-      for (const q of stintGroups.get(gkey(c))) if (q !== p.i) mates.add(q);
-    }
-    const rooms = new Map(); // current team -> former teammates there now
-    for (const q of mates) for (const ti of players[q].t) if (!p.t.includes(ti)) rooms.set(ti, (rooms.get(ti) || 0) + 1);
     const onMap = new Set([...p.nodes, ...p.t]);
-    p.mates = mates;
-    p.rooms = rooms;
-    p.sm = { mates: mates.size, rooms: rooms.size, teams: onMap.size, leagues: new Set([...onMap].map((i) => teams[i].lg)).size };
+    p.sm = { mates, rooms, teams: onMap.size, leagues: new Set([...onMap].map((i) => teams[i].lg)).size };
     // stops on the map route (as the journey playback draws it): consecutive seasons at one team are one stop
     let stops = 0, last = null;
     for (const c of p.c) { if (c[1] < 0) continue; if (c[1] !== last) stops++; last = c[1]; }
@@ -247,4 +254,38 @@ export function orgOf(model, t) {
   const fam = [t, ...[...t.affs].map((i) => model.teams[i])];
   const by = (lg) => fam.filter((x) => x.lg === lg);
   return { nhl: by('NHL'), ahl: by('AHL'), echl: by('ECHL') };
+}
+
+// (season, team) -> players on that team that season; the current season on a player's own current
+// team is skipped when counting their former teammates.
+function stintGroups(M) {
+  if (M._groups) return M._groups;
+  const CUR = parseInt(M.season, 10);
+  const key = (c) => c[0] * 100000 + (c[1] + 50000);
+  const map = new Map();
+  for (const p of M.players) {
+    for (const c of p.c) {
+      const k = key(c);
+      let g = map.get(k);
+      if (!g) map.set(k, (g = []));
+      g.push(p.i);
+    }
+  }
+  M._groups = { get: (c) => map.get(key(c)) || [], skip: (p, c) => c[0] === CUR && p.t.includes(c[1]) };
+  return M._groups;
+}
+
+/** One player's former teammates (Set of player idx) and the teams they are on now (Map team idx -> count). */
+export function teammatesOf(M, p) {
+  if (p._tm) return p._tm;
+  const groups = stintGroups(M);
+  const mates = new Set();
+  for (const c of p.c) {
+    if (groups.skip(p, c)) continue;
+    for (const q of groups.get(c)) if (q !== p.i) mates.add(q);
+  }
+  const rooms = new Map();
+  for (const q of mates) for (const ti of M.players[q].t) if (!p.t.includes(ti)) rooms.set(ti, (rooms.get(ti) || 0) + 1);
+  p._tm = { mates, rooms };
+  return p._tm;
 }

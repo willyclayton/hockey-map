@@ -1,10 +1,10 @@
 // App chrome: top bar + search, league filters, map settings dock, zoom, coach mark, tooltips, hints,
 // global shortcuts and the Rankings / About modals.
-import { M, map, state, actions } from './app.js?v=202611210441';
-import { fold, RATING_WEIGHTS, PLAYER_WEIGHTS, seasonLabel, ensurePlayerScores } from './model.js?v=202611210441';
-import { ratingColor, RATING_RAMP } from './map.js?v=202611210441';
-import { openTour, maybeTour } from './tour.js?v=202611210441';
-import { $, esc, plural, logoHTML, leaguePill, avatarHTML, animateGauges } from './util.js?v=202611210441';
+import { M, map, state, actions, SPORT, APP_NAME } from './app.js?v=202611230334';
+import { fold, RATING_WEIGHTS, PLAYER_WEIGHTS, seasonLabel, ensurePlayerScores } from './model.js?v=202611230334';
+import { ratingColor, RATING_RAMP } from './map.js?v=202611230334';
+import { openTour, maybeTour } from './tour.js?v=202611230334';
+import { $, esc, plural, logoHTML, leaguePill, avatarHTML, animateGauges } from './util.js?v=202611230334';
 
 const selectTeam = (...a) => actions.selectTeam(...a);
 const selectPlayer = (...a) => actions.selectPlayer(...a);
@@ -183,7 +183,7 @@ export function buildLegend() {
     h += `<div class="lg-row"><span class="ctl-label">Ring</span><span class="rings">${M.leagues.map((l) => `<i style="--lc:${l.color}" title="${esc(l.id)}"></i>`).join('')}</span><small>league</small></div>`;
   }
   const affSw = '<svg width="24" height="10" viewBox="0 0 24 10" aria-hidden="true"><path d="M2 5h20" stroke="#e6eef9" stroke-width="1.8" stroke-linecap="round" opacity=".9"/></svg>';
-  h += `<div class="lg-row"><span class="ctl-label">Lines</span><span class="lg-item ${L.aff === false ? 'off' : ''}"><span class="lg-k">${affSw}</span>Affiliates</span><span class="lg-item ${L.web === false ? 'off' : ''}"><span class="lg-k">${webSw}</span>Player web</span></div>
+  h += `<div class="lg-row"><span class="ctl-label">Lines</span>${SPORT === 'football' ? '' : `<span class="lg-item ${L.aff === false ? 'off' : ''}"><span class="lg-k">${affSw}</span>Affiliates</span>`}<span class="lg-item ${L.web === false ? 'off' : ''}"><span class="lg-k">${webSw}</span>Player web</span></div>
     <div class="lg-row lg-note"><span class="ctl-label"></span>Thicker = more shared players</div>`;
   el.innerHTML = h;
   updateCtlDot();
@@ -706,7 +706,7 @@ function wireModal() {
 // ------------------------------------------------------------------ rankings
 const lb = { kind: 'teams', lg: 'ALL', sort: 'rating', dir: -1, limit: 150 };
 const LB_COLS = {
-  name: 'Team', lg: 'League', rating: 'Rating', reach: 'Reach', strength: 'Links', reunions: 'Reunions', pipeline: 'Pipeline',
+  name: 'Team', lg: 'League', rating: 'Rating', reach: 'Reach', strength: 'Links', reunions: 'Reunions', pipeline: SPORT === 'football' ? 'Movers' : 'Pipeline',
 };
 const LBP_COLS = { pname: 'Player', lg: 'League', score: 'Score', mates: 'Teammates', stops: 'Stops', rooms: 'Rooms', teams: 'Teams' };
 const LBP_TIPS = {
@@ -808,7 +808,7 @@ function renderLb(animate) {
   });
   $('#lb-lead').textContent = lb.kind === 'players'
     ? 'Who has played with the most of today’s players, all over the map? Scores compare each player with the rest of their league, from 0 to 100.'
-    : 'How tangled is each roster in the web of hockey? Ratings compare each team with the rest of its own league, from 0 to 100.';
+    : `How tangled is each roster in the web of ${SPORT}? Ratings compare each team with the rest of its own league, from 0 to 100.`;
   if (lb.kind === 'players') { renderLbPlayers(tbody, order, animate); return; }
   $('#lb-more').innerHTML = '';
   const val = (t) => ({ rating: t.rating, name: t.name, reach: t.m.reach, strength: t.m.strength, reunions: t.m.reunions, pipeline: t.m.pipeline, lg: order.get(t.lg) }[lb.sort]);
@@ -869,8 +869,10 @@ export function openAbout() {
   openModal(`<div class="m-scroll">
     <div class="m-head">
       <div class="m-eyebrow">About</div>
-      <h2 id="modal-title">How the Hockey Atlas works</h2>
-      <p class="lead">Every team in the NHL, AHL, ECHL, SPHL, OHL, WHL, QMJHL, USHL and PWHL sits on the map at its home arena. Click one to see its affiliates, its roster, and every team its players connect it to.</p>
+      <h2 id="modal-title">How the ${APP_NAME} works</h2>
+      <p class="lead">${SPORT === 'football'
+    ? 'Every NFL team and every NCAA Division I program (FBS and FCS) sits on the map at its stadium. Click one to see its roster and every team its players connect it to: colleges, transfers and NFL stops.'
+    : 'Every team in the NHL, AHL, ECHL, SPHL, OHL, WHL, QMJHL, USHL and PWHL sits on the map at its home arena. Click one to see its affiliates, its roster, and every team its players connect it to.'}</p>
     </div>
     <div class="about-grid">
       <section class="about-card"><div class="ab-ico">${ICON.web}</div><h5>The player web</h5><p>Two teams are linked when a player currently on one has played for the other. Thicker lines mean more shared players.</p></section>
@@ -883,7 +885,7 @@ export function openAbout() {
       ${weight('Reach', w.reach, 'How many teams on the map the roster is linked to.')}
       ${weight('Web strength', w.strength, 'The total number of those player links.')}
       ${weight('Reunions', w.reunions, 'Pairs of current teammates who already played together on another team, in the same season.')}
-      ${weight('Pipeline', w.pipeline, 'For NHL/AHL/ECHL clubs, the share of the roster that came through the team’s affiliates. For junior clubs, the share that’s NHL-drafted or has pro experience. For SPHL/PWHL, the share that has played for another team on the map.')}
+      ${SPORT === 'football' ? weight('Movers', w.pipeline, 'For NFL teams, the share of the roster that has played for another NFL team. For colleges, the share that transferred in from another school.') : weight('Pipeline', w.pipeline, 'For NHL/AHL/ECHL clubs, the share of the roster that came through the team’s affiliates. For junior clubs, the share that’s NHL-drafted or has pro experience. For SPHL/PWHL, the share that has played for another team on the map.')}
     </div>
     <h4>What goes into a player’s score</h4>
     <div class="weights">
@@ -894,7 +896,7 @@ export function openAbout() {
     </div>
     <p class="note">Each is ranked against players in the same league, so juniors aren’t compared with 12-year veterans.</p>
     <h4>Data</h4>
-    <p>Rosters for ${esc(M.season)} plus every season back to ${seasonLabel(M.firstSeason)} come from NHL.com and the league stat feeds. NHL players carry their full career history. Everyone else is matched across leagues by name and birth date, so careers before ${seasonLabel(M.firstSeason)} or outside these leagues (college, Europe) only show up for NHL players. Arenas and affiliations come from Wikipedia. Last updated ${esc(M.generated.slice(0, 10))}.</p>
+    <p>${SPORT === 'football' ? `Rosters for ${esc(M.season)} and each player’s season-by-season college and NFL history come from ESPN. ESPN uses one id for a player in college and the NFL, so careers connect exactly: first school, transfers, then NFL teams. Seasons appear where a player recorded stats. Hawaii is drawn as an inset off the West Coast. Stadiums come from Wikipedia. Last updated ${esc(M.generated.slice(0, 10))}.` : `Rosters for ${esc(M.season)} plus every season back to ${seasonLabel(M.firstSeason)} come from NHL.com and the league stat feeds. NHL players carry their full career history. Everyone else is matched across leagues by name and birth date, so careers before ${seasonLabel(M.firstSeason)} or outside these leagues (college, Europe) only show up for NHL players. Arenas and affiliations come from Wikipedia. Last updated ${esc(M.generated.slice(0, 10))}.`}</p>
     <h4>Tips &amp; shortcuts</h4>
     <ul class="shortcuts">
       <li><span>Search any team or player</span><span class="keys"><kbd>/</kbd></span></li>
@@ -919,7 +921,21 @@ export function wireChrome() {
   watchApp();
   $('#btn-leaderboard').addEventListener('click', openLeaderboard);
   $('#modal').addEventListener('click', (e) => { if (e.target.closest('[data-tour]')) { closeModal({ restore: false }); openTour(); } });
-  maybeTour(() => $('#modal').hidden && !hasSelection());
+  if (SPORT === 'hockey') maybeTour(() => $('#modal').hidden && !hasSelection());
+  // Sport switch: each sport is its own dataset, so switching reloads the page on the other one
+  const sp = $('#sport-mode');
+  sp?.querySelectorAll('[data-sport]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.sport === SPORT)));
+  // only offer the other sport once its data file is published
+  const row = sp?.closest('.ctl-row');
+  if (row && SPORT === 'hockey') {
+    row.hidden = true;
+    fetch('data/football.json', { method: 'HEAD' }).then((r) => { row.hidden = !r.ok; }).catch(() => {});
+  }
+  sp?.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-sport]');
+    if (!b || b.dataset.sport === SPORT) return;
+    location.href = `${location.pathname}${b.dataset.sport === 'hockey' ? '' : `?sport=${b.dataset.sport}`}`;
+  });
   $('#btn-about').addEventListener('click', openAbout);
   $('#brand').addEventListener('click', (e) => {
     e.preventDefault();

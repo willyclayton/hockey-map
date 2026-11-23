@@ -305,3 +305,5 @@
 .panel-play { color: var(--accent); border-color: var(--accent-line, rgba(124, 196, 255, .45)); }
 .panel-play svg { width: 13px; height: 13px; margin-left: 2px; }
 .panel-play[hidden] { display: none; }
+.panel .team-chip.off { cursor: default; }
+.panel .team-chip.off .off-logo { width: 22px; height: 22px; font-size: 6.5px; }

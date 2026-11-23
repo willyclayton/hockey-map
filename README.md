@@ -1,5 +1,7 @@
 # Hockey Atlas
 
+**Now with Football:** switch *Sport → Football* in Map settings (or open `?sport=football`) for every NFL team and every NCAA Division I program (FBS + FCS), with the same webs, journeys, reunions, ratings and rankings.
+
 An interactive map of every NHL, AHL, ECHL, SPHL, OHL, WHL, QMJHL, USHL and PWHL team, plus the players that tie them together.
 
 - **Map with logos.** Every team sits at its home arena. Badge size shows the level and the ring color shows the league. Overlapping badges fan out so you can still see every one, and you can zoom and pan.
@@ -55,6 +57,10 @@ python3 scripts/build_data.py --reference  # re-resolve every arena/affiliation 
 ```
 
 Python 3.9+ and the standard library are all it needs. Pillow is optional and shrinks the logos. The **Refresh hockey data** GitHub Action runs this every day and commits any changes, so the live site stays current.
+
+## Football mode
+
+`scripts/build_football.py` builds `data/football.json` from ESPN's public APIs: NFL and Division I teams and rosters, plus each player's college and NFL season logs. ESPN gives a player one id in college and the NFL, so careers connect exactly (first school → transfers → NFL teams). Stadium coordinates come from Wikipedia (`data/football_reference.json`, fixes in `data/football_overrides.json`); Hawaii is drawn as an inset. Football mode swaps hockey's pipeline measure for **Movers**: NFL "journeymen" (played for another NFL team) and college transfers.
 
 ## Running locally
 

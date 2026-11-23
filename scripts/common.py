@@ -38,13 +38,17 @@ def _throttle(url, min_gap):
         _host_last[host] = time.time()
 
 
-def fetch(url, ttl=None, binary=False, min_gap=0.0, retries=4):
+def fetch(url, ttl=None, binary=False, min_gap=0.0, retries=4, ok404=False):
     """GET a URL with an on-disk cache.
 
     ttl: seconds a cached copy stays fresh (None = forever).
+    ok404: a 404 is an answer, not an error: remember it (same ttl) and return None.
     """
     h = hashlib.sha1(url.encode()).hexdigest()
     path = os.path.join(CACHE, h[:2], h)
+    if ok404 and os.path.exists(path + ".404"):
+        if ttl is None or time.time() - os.path.getmtime(path + ".404") < ttl:
+            return None
     if os.path.exists(path):
         age = time.time() - os.path.getmtime(path)
         if ttl is None or age < ttl:
@@ -65,6 +69,10 @@ def fetch(url, ttl=None, binary=False, min_gap=0.0, retries=4):
             return raw if binary else raw.decode("utf-8", "replace")
         except urllib.error.HTTPError as e:
             err = e
+            if e.code == 404 and ok404:
+                os.makedirs(os.path.dirname(path), exist_ok=True)
+                open(path + ".404", "wb").close()
+                return None
             if e.code in (404, 400, 403):
                 break
             time.sleep(2 + attempt * 3)
@@ -74,8 +82,11 @@ def fetch(url, ttl=None, binary=False, min_gap=0.0, retries=4):
     raise RuntimeError(f"fetch failed {url}: {err}")
 
 
-def fetch_json(url, ttl=None, min_gap=0.0):
-    t = fetch(url, ttl=ttl, min_gap=min_gap).strip()
+def fetch_json(url, ttl=None, min_gap=0.0, ok404=False):
+    t = fetch(url, ttl=ttl, min_gap=min_gap, ok404=ok404)
+    if t is None:
+        return None
+    t = t.strip()
     if t.startswith("(") and t.endswith(")"):
         t = t[1:-1]
     return json.loads(t)
