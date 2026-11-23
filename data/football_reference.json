@@ -1,0 +1,2401 @@
+{
+ "FBS-103": {
+  "wiki": "Boston College Eagles football",
+  "arena": "Alumni Stadium",
+  "city": "Chestnut Hill, Massachusetts",
+  "affiliates": [],
+  "lat": 42.335,
+  "lng": -71.16639
+ },
+ "FBS-113": {
+  "wiki": "UMass Minutemen football",
+  "arena": "Warren McGuirk Alumni Stadium",
+  "city": "Amherst, Massachusetts",
+  "affiliates": [],
+  "lat": 42.37731,
+  "lng": -72.53602
+ },
+ "FBS-12": {
+  "wiki": "Arizona Wildcats football",
+  "arena": "Casino Del Sol Stadium",
+  "city": "Tucson, Arizona",
+  "affiliates": [],
+  "lat": 32.229,
+  "lng": -110.949
+ },
+ "FBS-120": {
+  "wiki": "Maryland Terrapins football",
+  "arena": "SECU Stadium",
+  "city": "College Park, Maryland",
+  "affiliates": [],
+  "lat": 38.99028,
+  "lng": -76.94722
+ },
+ "FBS-127": {
+  "wiki": "Michigan State Spartans football",
+  "arena": "Spartan Stadium",
+  "city": "East Lansing, Michigan",
+  "affiliates": [],
+  "lat": 42.72806,
+  "lng": -84.48472
+ },
+ "FBS-130": {
+  "wiki": "Michigan Wolverines football",
+  "arena": "Michigan Stadium",
+  "city": "Ann Arbor, Michigan",
+  "affiliates": [],
+  "lat": 42.26589,
+  "lng": -83.74875
+ },
+ "FBS-135": {
+  "wiki": "Minnesota Golden Gophers football",
+  "arena": "Huntington Bank Stadium",
+  "city": "Minneapolis, Minnesota",
+  "affiliates": [],
+  "lat": 44.976,
+  "lng": -93.225
+ },
+ "FBS-142": {
+  "wiki": "Missouri Tigers football",
+  "arena": "Memorial Stadium",
+  "city": "Columbia, Missouri",
+  "affiliates": [],
+  "lat": 38.93583,
+  "lng": -92.33306
+ },
+ "FBS-145": {
+  "wiki": "Ole Miss Rebels football",
+  "arena": "Vaught–Hemingway Stadium",
+  "city": "University, Mississippi",
+  "affiliates": [],
+  "lat": 34.36194,
+  "lng": -89.53417
+ },
+ "FBS-150": {
+  "wiki": "Duke Blue Devils football",
+  "arena": "Wallace Wade Stadium",
+  "city": "Durham, North Carolina",
+  "affiliates": [],
+  "lat": 35.99528,
+  "lng": -78.94167
+ },
+ "FBS-151": {
+  "wiki": "East Carolina Pirates football",
+  "arena": "Dowdy–Ficklen Stadium",
+  "city": "Greenville, North Carolina",
+  "affiliates": [],
+  "lat": 35.59639,
+  "lng": -77.36528
+ },
+ "FBS-152": {
+  "wiki": "NC State Wolfpack football",
+  "arena": "Carter–Finley Stadium",
+  "city": "Raleigh, North Carolina, U.S.",
+  "affiliates": [],
+  "lat": 35.80083,
+  "lng": -78.71944
+ },
+ "FBS-153": {
+  "wiki": "North Carolina Tar Heels football",
+  "arena": "Kenan Stadium",
+  "city": "Chapel Hill, North Carolina",
+  "affiliates": [],
+  "lat": 35.90694,
+  "lng": -79.04778
+ },
+ "FBS-154": {
+  "wiki": "Wake Forest Demon Deacons football",
+  "arena": "Allegacy Federal Credit Union Stadium",
+  "city": "Winston-Salem, North Carolina",
+  "affiliates": [],
+  "lat": 36.13056,
+  "lng": -80.25472
+ },
+ "FBS-158": {
+  "wiki": "Nebraska Cornhuskers football",
+  "arena": "Memorial Stadium",
+  "city": "Lincoln, Nebraska",
+  "affiliates": [],
+  "lat": 40.82056,
+  "lng": -96.70556
+ },
+ "FBS-16": {
+  "wiki": "Sacramento State Hornets football",
+  "arena": "Hornet Stadium",
+  "city": "Sacramento, California",
+  "affiliates": [],
+  "lat": 38.556,
+  "lng": -121.423
+ },
+ "FBS-164": {
+  "wiki": "Rutgers Scarlet Knights football",
+  "arena": "SHI Stadium",
+  "city": "Piscataway, NJ",
+  "affiliates": [],
+  "lat": 40.51361,
+  "lng": -74.46528
+ },
+ "FBS-166": {
+  "wiki": "New Mexico State Aggies football",
+  "arena": "Aggie Memorial Stadium",
+  "city": "Las Cruces, New Mexico",
+  "affiliates": [],
+  "lat": 32.27972,
+  "lng": -106.74111
+ },
+ "FBS-167": {
+  "wiki": "New Mexico Lobos football",
+  "arena": "University Stadium",
+  "city": "Albuquerque, New Mexico",
+  "affiliates": [],
+  "lat": 35.06694,
+  "lng": -106.62833
+ },
+ "FBS-183": {
+  "wiki": "Syracuse Orange football",
+  "arena": "JMA Wireless Dome",
+  "city": "Syracuse, New York",
+  "affiliates": [],
+  "lat": 43.03611,
+  "lng": -76.13639
+ },
+ "FBS-189": {
+  "wiki": "Bowling Green Falcons football",
+  "arena": "Doyt Perry Stadium",
+  "city": "Bowling Green, Ohio",
+  "affiliates": [],
+  "lat": 41.37806,
+  "lng": -83.6225
+ },
+ "FBS-193": {
+  "wiki": "Miami RedHawks football",
+  "arena": "Yager Stadium",
+  "city": "Oxford, Ohio",
+  "affiliates": [],
+  "lat": 39.51944,
+  "lng": -84.73278
+ },
+ "FBS-194": {
+  "wiki": "Ohio State Buckeyes football",
+  "arena": "Ohio Stadium",
+  "city": "Columbus, Ohio",
+  "affiliates": [],
+  "lat": 40.00167,
+  "lng": -83.01972
+ },
+ "FBS-195": {
+  "wiki": "Ohio Bobcats football",
+  "arena": "Peden Stadium",
+  "city": "Athens, Ohio",
+  "affiliates": [],
+  "lat": 39.32111,
+  "lng": -82.10278
+ },
+ "FBS-197": {
+  "wiki": "Oklahoma State Cowboys football",
+  "arena": "Boone Pickens Stadium",
+  "city": "Stillwater, Oklahoma",
+  "affiliates": [],
+  "lat": 36.12583,
+  "lng": -97.06639
+ },
+ "FBS-2": {
+  "wiki": "Auburn Tigers football",
+  "arena": "Jordan–Hare Stadium",
+  "city": "Auburn, Alabama",
+  "affiliates": [],
+  "lat": 32.60222,
+  "lng": -85.48917
+ },
+ "FBS-2005": {
+  "wiki": "Air Force Falcons football",
+  "arena": "Falcon Stadium",
+  "city": "Air Force Academy, Colorado, U.S.",
+  "affiliates": [],
+  "lat": 38.997,
+  "lng": -104.843
+ },
+ "FBS-2006": {
+  "wiki": "Akron Zips football",
+  "arena": "InfoCision Stadium",
+  "city": "Akron, Ohio",
+  "affiliates": [],
+  "lat": 41.07235,
+  "lng": -81.50802
+ },
+ "FBS-201": {
+  "wiki": "Oklahoma Sooners football",
+  "arena": "Gaylord Family Oklahoma Memorial Stadium",
+  "city": "Norman, Oklahoma",
+  "affiliates": [],
+  "lat": 35.20583,
+  "lng": -97.4425
+ },
+ "FBS-202": {
+  "wiki": "Tulsa Golden Hurricane football",
+  "arena": "Skelly Field at H. A. Chapman Stadium",
+  "city": "Tulsa, Oklahoma",
+  "affiliates": [],
+  "lat": 36.14861,
+  "lng": -95.94389
+ },
+ "FBS-2026": {
+  "wiki": "Appalachian State Mountaineers",
+  "arena": "Kidd Brewer Stadium",
+  "city": "Boone, North Carolina",
+  "affiliates": [],
+  "lat": 36.21167,
+  "lng": -81.68556
+ },
+ "FBS-2032": {
+  "wiki": "Arkansas State Red Wolves football",
+  "arena": "Centennial Bank Stadium",
+  "city": "Jonesboro, Arkansas",
+  "affiliates": [],
+  "lat": 35.84889,
+  "lng": -90.66722
+ },
+ "FBS-204": {
+  "wiki": "Oregon State Beavers football",
+  "arena": "Reser Stadium",
+  "city": "Corvallis, Oregon",
+  "affiliates": [],
+  "lat": 44.559,
+  "lng": -123.281
+ },
+ "FBS-2050": {
+  "wiki": "Ball State Cardinals football",
+  "arena": "Scheumann Stadium",
+  "city": "Muncie, Indiana",
+  "affiliates": [],
+  "lat": 40.21611,
+  "lng": -85.41667
+ },
+ "FBS-2084": {
+  "wiki": "Buffalo Bulls football",
+  "arena": "Broadview Stadium",
+  "city": "Buffalo, New York",
+  "affiliates": [],
+  "lat": 42.99917,
+  "lng": -78.7775
+ },
+ "FBS-21": {
+  "wiki": "San Diego State Aztecs football",
+  "arena": "Snapdragon Stadium",
+  "city": "San Diego, California",
+  "affiliates": [],
+  "lat": 32.78444,
+  "lng": -117.12278
+ },
+ "FBS-2116": {
+  "wiki": "UCF Knights football",
+  "arena": "Acrisure Bounce House",
+  "city": "Orlando, Florida",
+  "affiliates": [],
+  "lat": 28.6091,
+  "lng": -81.1924
+ },
+ "FBS-2117": {
+  "wiki": "Central Michigan Chippewas football",
+  "arena": "Kelly/Shorts Stadium",
+  "city": "Mount Pleasant, Michigan",
+  "affiliates": [],
+  "lat": 43.5775,
+  "lng": -84.77083
+ },
+ "FBS-213": {
+  "wiki": "Penn State Nittany Lions football",
+  "arena": "Beaver Stadium",
+  "city": "University Park, Pennsylvania",
+  "affiliates": [],
+  "lat": 40.8121,
+  "lng": -77.856
+ },
+ "FBS-2132": {
+  "wiki": "Cincinnati Bearcats football",
+  "arena": "Nippert Stadium",
+  "city": "Cincinnati, Ohio",
+  "affiliates": [],
+  "lat": 39.1312,
+  "lng": -84.5162
+ },
+ "FBS-218": {
+  "wiki": "Temple Owls football",
+  "arena": "Lincoln Financial Field",
+  "city": "Philadelphia, Pennsylvania",
+  "affiliates": [],
+  "lat": 39.90083,
+  "lng": -75.1675
+ },
+ "FBS-2199": {
+  "wiki": "Eastern Michigan Eagles football",
+  "arena": "Rynearson Stadium",
+  "city": "Ypsilanti, Michigan",
+  "affiliates": [],
+  "lat": 42.25583,
+  "lng": -83.64722
+ },
+ "FBS-221": {
+  "wiki": "Pittsburgh Panthers football",
+  "arena": "Acrisure Stadium",
+  "city": "Pittsburgh, Pennsylvania",
+  "affiliates": [],
+  "lat": 40.44667,
+  "lng": -80.01583
+ },
+ "FBS-2226": {
+  "wiki": "Florida Atlantic Owls football",
+  "arena": "Flagler Credit Union Stadium",
+  "city": "Boca Raton, Florida",
+  "affiliates": [],
+  "lat": 26.37611,
+  "lng": -80.10167
+ },
+ "FBS-2229": {
+  "wiki": "FIU Panthers football",
+  "arena": "Pitbull Stadium",
+  "city": "Westchester, Florida",
+  "affiliates": [],
+  "lat": 25.7525,
+  "lng": -80.37778
+ },
+ "FBS-2247": {
+  "wiki": "Georgia State Panthers football",
+  "arena": "Center Parc Stadium",
+  "city": "Atlanta, Georgia",
+  "affiliates": [],
+  "lat": 33.73528,
+  "lng": -84.38944
+ },
+ "FBS-228": {
+  "wiki": "Clemson Tigers football",
+  "arena": "Memorial Stadium",
+  "city": "Clemson, South Carolina",
+  "affiliates": [],
+  "lat": 34.67861,
+  "lng": -82.84306
+ },
+ "FBS-2294": {
+  "wiki": "Iowa Hawkeyes football",
+  "arena": "Kinnick Stadium",
+  "city": "Iowa City, Iowa",
+  "affiliates": [],
+  "lat": 41.65861,
+  "lng": -91.55111
+ },
+ "FBS-23": {
+  "wiki": "San Jose State Spartans football",
+  "arena": "CEFCU Stadium",
+  "city": "San Jose, California",
+  "affiliates": [],
+  "lat": 37.31972,
+  "lng": -121.86833
+ },
+ "FBS-2305": {
+  "wiki": "Kansas Jayhawks football",
+  "arena": "David Booth Kansas Memorial Stadium",
+  "city": "Lawrence, Kansas",
+  "affiliates": [],
+  "lat": 38.96333,
+  "lng": -95.24639
+ },
+ "FBS-2306": {
+  "wiki": "Kansas State Wildcats football",
+  "arena": "Bill Snyder Family Football Stadium",
+  "city": "Manhattan, Kansas",
+  "affiliates": [],
+  "lat": 39.20194,
+  "lng": -96.59389
+ },
+ "FBS-2309": {
+  "wiki": "Kent State Golden Flashes football",
+  "arena": "Dix Stadium",
+  "city": "Kent, Ohio",
+  "affiliates": [],
+  "lat": 41.13917,
+  "lng": -81.31333
+ },
+ "FBS-2335": {
+  "wiki": "Liberty Flames football",
+  "arena": "Williams Stadium",
+  "city": "Lynchburg, Virginia",
+  "affiliates": [],
+  "lat": 37.354,
+  "lng": -79.175
+ },
+ "FBS-2348": {
+  "wiki": "Louisiana Tech Bulldogs football",
+  "arena": "Joe Aillet Stadium",
+  "city": "Ruston, Louisiana",
+  "affiliates": [],
+  "lat": 32.53202,
+  "lng": -92.6559
+ },
+ "FBS-235": {
+  "wiki": "Memphis Tigers football",
+  "arena": "Simmons Bank Liberty Stadium",
+  "city": "Memphis, Tennessee",
+  "affiliates": [],
+  "lat": 35.121,
+  "lng": -89.9774
+ },
+ "FBS-238": {
+  "wiki": "Vanderbilt Commodores football",
+  "arena": "FirstBank Stadium",
+  "city": "Nashville, Tennessee",
+  "affiliates": [],
+  "lat": 36.14417,
+  "lng": -86.80889
+ },
+ "FBS-239": {
+  "wiki": "Baylor Bears football",
+  "arena": "McLane Stadium",
+  "city": "Waco, Texas",
+  "affiliates": [],
+  "lat": 31.5582,
+  "lng": -97.1157
+ },
+ "FBS-2390": {
+  "wiki": "Miami Hurricanes football",
+  "arena": "Hard Rock Stadium",
+  "city": "Miami Gardens, Florida, U.S.",
+  "affiliates": [],
+  "lat": 25.95806,
+  "lng": -80.23889
+ },
+ "FBS-2393": {
+  "wiki": "Middle Tennessee Blue Raiders football",
+  "arena": "Johnny \"Red\" Floyd Stadium",
+  "city": "Murfreesboro, Tennessee",
+  "affiliates": [],
+  "lat": 35.85051,
+  "lng": -86.36822
+ },
+ "FBS-24": {
+  "wiki": "Stanford Cardinal football",
+  "arena": "Stanford Stadium",
+  "city": "Stanford, California",
+  "affiliates": [],
+  "lat": 37.43444,
+  "lng": -122.16111
+ },
+ "FBS-242": {
+  "wiki": "Rice Owls football",
+  "arena": "First Community Stadium",
+  "city": "Houston, Texas",
+  "affiliates": [],
+  "lat": 29.71639,
+  "lng": -95.40917
+ },
+ "FBS-2426": {
+  "wiki": "Navy Midshipmen football",
+  "arena": "Navy–Marine Corps Memorial Stadium",
+  "city": "Annapolis, Maryland",
+  "affiliates": [],
+  "lat": 38.985,
+  "lng": -76.507
+ },
+ "FBS-2429": {
+  "wiki": "Charlotte 49ers football",
+  "arena": "Jerry Richardson Stadium",
+  "city": "Charlotte, North Carolina",
+  "affiliates": [],
+  "lat": 35.31056,
+  "lng": -80.74028
+ },
+ "FBS-2433": {
+  "wiki": "Louisiana–Monroe Warhawks football",
+  "arena": "FMOL Health/St. Francis Stadium",
+  "city": "Monroe, Louisiana",
+  "affiliates": [],
+  "lat": 32.53083,
+  "lng": -92.06583
+ },
+ "FBS-2439": {
+  "wiki": "UNLV Rebels football",
+  "arena": "Allegiant Stadium",
+  "city": "Paradise, Nevada",
+  "affiliates": [],
+  "lat": 36.09056,
+  "lng": -115.18389
+ },
+ "FBS-2440": {
+  "wiki": "Nevada Wolf Pack football",
+  "arena": "Mackay Stadium",
+  "city": "Reno, Nevada",
+  "affiliates": [],
+  "lat": 39.54694,
+  "lng": -119.8175
+ },
+ "FBS-2449": {
+  "wiki": "North Dakota State Bison football",
+  "arena": "Fargodome",
+  "city": "Fargo, North Dakota",
+  "affiliates": [],
+  "lat": 46.90306,
+  "lng": -96.80167
+ },
+ "FBS-245": {
+  "wiki": "Texas A&M Aggies football",
+  "arena": "Kyle Field",
+  "city": "College Station, Texas",
+  "affiliates": [],
+  "lat": 30.6099,
+  "lng": -96.3405
+ },
+ "FBS-2459": {
+  "wiki": "Northern Illinois Huskies football",
+  "arena": "Huskie Stadium",
+  "city": "DeKalb, Illinois",
+  "affiliates": [],
+  "lat": 41.934,
+  "lng": -88.778
+ },
+ "FBS-248": {
+  "wiki": "Houston Cougars football",
+  "arena": "TDECU Stadium",
+  "city": "Houston, Texas",
+  "affiliates": [],
+  "lat": 29.72194,
+  "lng": -95.34917
+ },
+ "FBS-2483": {
+  "wiki": "Oregon Ducks football",
+  "arena": "Autzen Stadium",
+  "city": "Eugene, Oregon",
+  "affiliates": [],
+  "lat": 44.05833,
+  "lng": -123.06861
+ },
+ "FBS-249": {
+  "wiki": "North Texas Mean Green football",
+  "arena": "DATCU Stadium",
+  "city": "Denton, Texas",
+  "affiliates": [],
+  "lat": 33.20361,
+  "lng": -97.15944
+ },
+ "FBS-25": {
+  "wiki": "California Golden Bears football",
+  "arena": "California Memorial Stadium",
+  "city": "Berkeley, California",
+  "affiliates": [],
+  "lat": 37.87111,
+  "lng": -122.25083
+ },
+ "FBS-2509": {
+  "wiki": "Purdue Boilermakers football",
+  "arena": "Ross–Ade Stadium",
+  "city": "West Lafayette, Indiana",
+  "affiliates": [],
+  "lat": 40.43444,
+  "lng": -86.91833
+ },
+ "FBS-251": {
+  "wiki": "Texas Longhorns football",
+  "arena": "Darrell K Royal–Texas Memorial Stadium",
+  "city": "Austin, Texas",
+  "affiliates": [],
+  "lat": 30.26722,
+  "lng": -97.74306
+ },
+ "FBS-252": {
+  "wiki": "BYU Cougars football",
+  "arena": "LaVell Edwards Stadium",
+  "city": "Provo, Utah",
+  "affiliates": [],
+  "lat": 40.258,
+  "lng": -111.655
+ },
+ "FBS-2534": {
+  "wiki": "Sam Houston Bearkats football",
+  "arena": "Bowers Stadium",
+  "city": "Huntsville, Texas",
+  "affiliates": [],
+  "lat": 30.71389,
+  "lng": -95.54167
+ },
+ "FBS-254": {
+  "wiki": "Utah Utes football",
+  "arena": "Rice–Eccles Stadium",
+  "city": "Salt Lake City, Utah",
+  "affiliates": [],
+  "lat": 40.75997,
+  "lng": -111.84885
+ },
+ "FBS-256": {
+  "wiki": "James Madison Dukes football",
+  "arena": "Bridgeforth Stadium",
+  "city": "Harrisonburg, Virginia",
+  "affiliates": [],
+  "lat": 38.43528,
+  "lng": -78.87306
+ },
+ "FBS-2567": {
+  "wiki": "SMU Mustangs football",
+  "arena": "Gerald J. Ford Stadium",
+  "city": "University Park, Texas",
+  "affiliates": [],
+  "lat": 32.83664,
+  "lng": -96.78399
+ },
+ "FBS-2572": {
+  "wiki": "Southern Miss Golden Eagles football",
+  "arena": "Renasant Stadium",
+  "city": "Hattiesburg, Mississippi",
+  "affiliates": [],
+  "lat": 31.32889,
+  "lng": -89.33139
+ },
+ "FBS-2579": {
+  "wiki": "South Carolina Gamecocks football",
+  "arena": "Williams–Brice Stadium",
+  "city": "Columbia, South Carolina",
+  "affiliates": [],
+  "lat": 33.97306,
+  "lng": -81.01917
+ },
+ "FBS-258": {
+  "wiki": "Virginia Cavaliers football",
+  "arena": "Scott Stadium",
+  "city": "Charlottesville, Virginia",
+  "affiliates": [],
+  "lat": 38.03111,
+  "lng": -78.51361
+ },
+ "FBS-259": {
+  "wiki": "Virginia Tech Hokies football",
+  "arena": "Lane Stadium",
+  "city": "Blacksburg, Virginia",
+  "affiliates": [],
+  "lat": 37.22,
+  "lng": -80.41806
+ },
+ "FBS-26": {
+  "wiki": "UCLA Bruins football",
+  "arena": "Rose Bowl",
+  "city": "Pasadena, California",
+  "affiliates": [],
+  "lat": 34.161,
+  "lng": -118.168
+ },
+ "FBS-2623": {
+  "wiki": "Missouri State Bears football",
+  "arena": "Robert W. Plaster Stadium",
+  "city": "Springfield, Missouri, U.S.",
+  "affiliates": [],
+  "lat": 37.19778,
+  "lng": -93.27972
+ },
+ "FBS-2628": {
+  "wiki": "TCU Horned Frogs football",
+  "arena": "Amon G. Carter Stadium",
+  "city": "Fort Worth, Texas",
+  "affiliates": [],
+  "lat": 32.70972,
+  "lng": -97.36806
+ },
+ "FBS-2633": {
+  "wiki": "Tennessee Volunteers football",
+  "arena": "Neyland Stadium",
+  "city": "Knoxville, Tennessee",
+  "affiliates": [],
+  "lat": 35.955,
+  "lng": -83.925
+ },
+ "FBS-2636": {
+  "wiki": "UTSA Roadrunners football",
+  "arena": "Alamodome",
+  "city": "San Antonio, Texas",
+  "affiliates": [],
+  "lat": 29.41694,
+  "lng": -98.47889
+ },
+ "FBS-2638": {
+  "wiki": "UTEP Miners football",
+  "arena": "Sun Bowl",
+  "city": "El Paso, Texas",
+  "affiliates": [],
+  "lat": 31.773,
+  "lng": -106.508
+ },
+ "FBS-264": {
+  "wiki": "Washington Huskies football",
+  "arena": "Husky Stadium",
+  "city": "Seattle, Washington",
+  "affiliates": [],
+  "lat": 47.6503,
+  "lng": -122.3016
+ },
+ "FBS-2641": {
+  "wiki": "Texas Tech Red Raiders football",
+  "arena": "Galaxy Stadium",
+  "city": "Lubbock, Texas",
+  "affiliates": [],
+  "lat": 33.59111,
+  "lng": -101.87278
+ },
+ "FBS-2649": {
+  "wiki": "Toledo Rockets football",
+  "arena": "Glass Bowl",
+  "city": "Toledo, Ohio",
+  "affiliates": [],
+  "lat": 41.65694,
+  "lng": -83.61361
+ },
+ "FBS-265": {
+  "wiki": "Washington State Cougars football",
+  "arena": "Martin Stadium",
+  "city": "Pullman, Washington",
+  "affiliates": [],
+  "lat": 46.732,
+  "lng": -117.16
+ },
+ "FBS-2653": {
+  "wiki": "Troy Trojans football",
+  "arena": "Veterans Memorial Stadium",
+  "city": "Troy, Alabama",
+  "affiliates": [],
+  "lat": 31.79944,
+  "lng": -85.95194
+ },
+ "FBS-2655": {
+  "wiki": "Tulane Green Wave football",
+  "arena": "Yulman Stadium",
+  "city": "New Orleans, Louisiana",
+  "affiliates": [],
+  "lat": 29.94482,
+  "lng": -90.11682
+ },
+ "FBS-2711": {
+  "wiki": "Western Michigan Broncos football",
+  "arena": "Waldo Stadium",
+  "city": "Kalamazoo, Michigan",
+  "affiliates": [],
+  "lat": 42.28583,
+  "lng": -85.60111
+ },
+ "FBS-275": {
+  "wiki": "Wisconsin Badgers football",
+  "arena": "Camp Randall Stadium",
+  "city": "Madison, Wisconsin",
+  "affiliates": [],
+  "lat": 43.07,
+  "lng": -89.41278
+ },
+ "FBS-2751": {
+  "wiki": "Wyoming Cowboys football",
+  "arena": "War Memorial Stadium",
+  "city": "Laramie, Wyoming",
+  "affiliates": [],
+  "lat": 41.312,
+  "lng": -105.568
+ },
+ "FBS-276": {
+  "wiki": "Marshall Thundering Herd football",
+  "arena": "Joan C. Edwards Stadium",
+  "city": "Huntington, West Virginia",
+  "affiliates": [],
+  "lat": 38.425,
+  "lng": -82.42083
+ },
+ "FBS-277": {
+  "wiki": "West Virginia Mountaineers football",
+  "arena": "Milan Puskar Stadium",
+  "city": "Morgantown, West Virginia",
+  "affiliates": [],
+  "lat": 39.6502,
+  "lng": -79.9551
+ },
+ "FBS-278": {
+  "wiki": "Fresno State Bulldogs football",
+  "arena": "Valley Children's Stadium",
+  "city": "Fresno, California",
+  "affiliates": [],
+  "lat": 36.814,
+  "lng": -119.758
+ },
+ "FBS-290": {
+  "wiki": "Georgia Southern Eagles football",
+  "arena": "Paulson Stadium",
+  "city": "Statesboro, Georgia",
+  "affiliates": [],
+  "lat": 32.41216,
+  "lng": -81.78314
+ },
+ "FBS-295": {
+  "wiki": "Old Dominion Monarchs football",
+  "arena": "S.B. Ballard Stadium",
+  "city": "Norfolk, Virginia",
+  "affiliates": [],
+  "lat": 36.8889,
+  "lng": -76.30488
+ },
+ "FBS-30": {
+  "wiki": "USC Trojans football",
+  "arena": "Los Angeles Memorial Coliseum",
+  "city": "Los Angeles, California",
+  "affiliates": [],
+  "lat": 34.01417,
+  "lng": -118.28778
+ },
+ "FBS-309": {
+  "wiki": "Louisiana Ragin' Cajuns football",
+  "arena": "Cajun Field at Our Lady of Lourdes Stadium",
+  "city": "Lafayette, Louisiana",
+  "affiliates": [],
+  "lat": 30.21583,
+  "lng": -92.04194
+ },
+ "FBS-3144": {
+  "wiki": null
+ },
+ "FBS-3145": {
+  "wiki": null
+ },
+ "FBS-3146": {
+  "wiki": null
+ },
+ "FBS-3147": {
+  "wiki": null
+ },
+ "FBS-3193": {
+  "wiki": "American Conference (NCAA)",
+  "arena": null,
+  "city": null,
+  "affiliates": [],
+  "lat": 33.574,
+  "lng": -86.288
+ },
+ "FBS-3194": {
+  "wiki": "National",
+  "arena": null,
+  "city": null,
+  "affiliates": []
+ },
+ "FBS-3197": {
+  "wiki": null
+ },
+ "FBS-3198": {
+  "wiki": null
+ },
+ "FBS-324": {
+  "wiki": "Coastal Carolina Chanticleers football",
+  "arena": "Brooks Stadium",
+  "city": "Conway, South Carolina",
+  "affiliates": [],
+  "lat": 33.7929,
+  "lng": -79.0175
+ },
+ "FBS-326": {
+  "wiki": "Texas State Bobcats football",
+  "arena": "UFCU Stadium",
+  "city": "San Marcos, Texas",
+  "affiliates": [],
+  "lat": 29.89111,
+  "lng": -97.92556
+ },
+ "FBS-328": {
+  "wiki": "Utah State Aggies football",
+  "arena": "Maverik Stadium",
+  "city": "Logan, Utah",
+  "affiliates": [],
+  "lat": 41.75167,
+  "lng": -111.81167
+ },
+ "FBS-333": {
+  "wiki": "Alabama Crimson Tide football",
+  "arena": "Bryant–Denny Stadium",
+  "city": "Tuscaloosa, Alabama",
+  "affiliates": [],
+  "lat": 33.20833,
+  "lng": -87.55028
+ },
+ "FBS-338": {
+  "wiki": "Kennesaw State Owls football",
+  "arena": "Fifth Third Stadium",
+  "city": "Kennesaw, Georgia",
+  "affiliates": [],
+  "lat": 34.02897,
+  "lng": -84.56763
+ },
+ "FBS-344": {
+  "wiki": "Mississippi State Bulldogs football",
+  "arena": "Davis Wade Stadium",
+  "city": "Starkville, Mississippi",
+  "affiliates": [],
+  "lat": 33.45639,
+  "lng": -88.79361
+ },
+ "FBS-349": {
+  "wiki": "Army Black Knights football",
+  "arena": "Michie Stadium",
+  "city": "West Point, New York",
+  "affiliates": [],
+  "lat": 41.3875,
+  "lng": -73.96417
+ },
+ "FBS-356": {
+  "wiki": "Illinois Fighting Illini football",
+  "arena": "Gies Memorial Stadium",
+  "city": "Champaign, Illinois",
+  "affiliates": [],
+  "lat": 40.09917,
+  "lng": -88.23583
+ },
+ "FBS-36": {
+  "wiki": "Colorado State Rams football",
+  "arena": "Canvas Stadium",
+  "city": "Fort Collins, Colorado",
+  "affiliates": [],
+  "lat": 40.57,
+  "lng": -105.0885
+ },
+ "FBS-38": {
+  "wiki": "Colorado Buffaloes football",
+  "arena": "Folsom Field",
+  "city": "Boulder, Colorado",
+  "affiliates": [],
+  "lat": 40.009,
+  "lng": -105.267
+ },
+ "FBS-41": {
+  "wiki": "UConn Huskies football",
+  "arena": "Pratt & Whitney Stadium at Rentschler Field",
+  "city": "East Hartford, Connecticut",
+  "affiliates": [],
+  "lat": 41.75972,
+  "lng": -72.61889
+ },
+ "FBS-48": {
+  "wiki": "Delaware Fightin' Blue Hens football",
+  "arena": "Delaware Stadium",
+  "city": "Newark, Delaware, U.S.",
+  "affiliates": [],
+  "lat": 39.6617,
+  "lng": -75.7488
+ },
+ "FBS-5": {
+  "wiki": "UAB Blazers football",
+  "arena": "Protective Stadium",
+  "city": "Birmingham, Alabama",
+  "affiliates": [],
+  "lat": 33.5278,
+  "lng": -86.8092
+ },
+ "FBS-52": {
+  "wiki": "Florida State Seminoles football",
+  "arena": "Doak Campbell Stadium",
+  "city": "Tallahassee, Florida",
+  "affiliates": [],
+  "lat": 30.43806,
+  "lng": -84.30444
+ },
+ "FBS-55": {
+  "wiki": "Jacksonville State Gamecocks football",
+  "arena": "AmFirst Stadium",
+  "city": "Jacksonville, Alabama",
+  "affiliates": [],
+  "lat": 33.82028,
+  "lng": -85.76639
+ },
+ "FBS-57": {
+  "wiki": "Florida Gators football",
+  "arena": "Ben Hill Griffin Stadium",
+  "city": "Gainesville, Florida",
+  "affiliates": [],
+  "lat": 29.65,
+  "lng": -82.3486
+ },
+ "FBS-58": {
+  "wiki": "South Florida Bulls football",
+  "arena": "Raymond James Stadium",
+  "city": "Tampa, FL",
+  "affiliates": [],
+  "lat": 27.97583,
+  "lng": -82.50333
+ },
+ "FBS-59": {
+  "wiki": "Georgia Tech Yellow Jackets football",
+  "arena": "Bobby Dodd Stadium",
+  "city": "Atlanta, Georgia",
+  "affiliates": [],
+  "lat": 33.7725,
+  "lng": -84.39278
+ },
+ "FBS-6": {
+  "wiki": "South Alabama Jaguars football",
+  "arena": "Hancock Whitney Stadium",
+  "city": "Mobile, Alabama",
+  "affiliates": [],
+  "lat": 30.6969,
+  "lng": -88.19201
+ },
+ "FBS-61": {
+  "wiki": "Georgia Bulldogs football",
+  "arena": "Sanford Stadium",
+  "city": "Athens, Georgia",
+  "affiliates": [],
+  "lat": 33.9498,
+  "lng": -83.37336
+ },
+ "FBS-62": {
+  "wiki": "Hawaii Rainbow Warriors football",
+  "arena": "Clarence T. C. Ching Athletics Complex",
+  "city": "Honolulu, Hawaii",
+  "affiliates": [],
+  "lat": 21.294,
+  "lng": -157.818
+ },
+ "FBS-66": {
+  "wiki": "Iowa State Cyclones football",
+  "arena": "Jack Trice Stadium",
+  "city": "Ames, Iowa",
+  "affiliates": [],
+  "lat": 42.01417,
+  "lng": -93.63583
+ },
+ "FBS-68": {
+  "wiki": "Boise State Broncos football",
+  "arena": "Albertsons Stadium",
+  "city": "Boise, Idaho",
+  "affiliates": [],
+  "lat": 43.603,
+  "lng": -116.196
+ },
+ "FBS-77": {
+  "wiki": "Northwestern Wildcats football",
+  "arena": "Ryan Field",
+  "city": "Evanston, Illinois",
+  "affiliates": [],
+  "lat": 42.06556,
+  "lng": -87.6925
+ },
+ "FBS-8": {
+  "wiki": "Arkansas Razorbacks football",
+  "arena": "Donald W. Reynolds Razorback Stadium",
+  "city": "Fayetteville, Arkansas",
+  "affiliates": [],
+  "lat": 36.06806,
+  "lng": -94.17889
+ },
+ "FBS-84": {
+  "wiki": "Indiana Hoosiers football",
+  "arena": "Memorial Stadium",
+  "city": "Bloomington, Indiana",
+  "affiliates": [],
+  "lat": 39.18083,
+  "lng": -86.52556
+ },
+ "FBS-87": {
+  "wiki": "Notre Dame Fighting Irish football",
+  "arena": "Notre Dame Stadium",
+  "city": "Notre Dame, Indiana",
+  "affiliates": [],
+  "lat": 41.69833,
+  "lng": -86.23389
+ },
+ "FBS-9": {
+  "wiki": "Arizona State Sun Devils football",
+  "arena": "Mountain America Stadium",
+  "city": "Tempe, Arizona",
+  "affiliates": [],
+  "lat": 33.42639,
+  "lng": -111.9325
+ },
+ "FBS-96": {
+  "wiki": "Kentucky Wildcats football",
+  "arena": "Kroger Field",
+  "city": "Lexington, Kentucky",
+  "affiliates": [],
+  "lat": 38.02278,
+  "lng": -84.50528
+ },
+ "FBS-97": {
+  "wiki": "Louisville Cardinals football",
+  "arena": "L&N Federal Credit Union Stadium",
+  "city": "Louisville, Kentucky",
+  "affiliates": [],
+  "lat": 38.20583,
+  "lng": -85.75889
+ },
+ "FBS-98": {
+  "wiki": "Western Kentucky Hilltoppers football",
+  "arena": "Houchens Industries–L. T. Smith Stadium",
+  "city": "Bowling Green, Kentucky",
+  "affiliates": [],
+  "lat": 36.98472,
+  "lng": -86.45944
+ },
+ "FBS-99": {
+  "wiki": "LSU Tigers football",
+  "arena": "Tiger Stadium",
+  "city": "Baton Rouge, Louisiana",
+  "affiliates": [],
+  "lat": 30.41222,
+  "lng": -91.18389
+ },
+ "FCS-107": {
+  "wiki": "Holy Cross Crusaders football",
+  "arena": "Fitton Field",
+  "city": "Worcester, Massachusetts",
+  "affiliates": [],
+  "lat": 42.24156,
+  "lng": -71.80997
+ },
+ "FCS-108": {
+  "wiki": "Harvard Crimson football",
+  "arena": "Harvard Stadium",
+  "city": "Boston, Massachusetts, U.S.",
+  "affiliates": [],
+  "lat": 42.36639,
+  "lng": -71.12722
+ },
+ "FCS-110242": {
+  "wiki": "West Florida Argonauts football",
+  "arena": "Pen Air Field",
+  "city": "Pensacola, Florida, U.S.",
+  "affiliates": [],
+  "lat": 30.40739,
+  "lng": -87.21864
+ },
+ "FCS-112350": {
+  "wiki": null
+ },
+ "FCS-112351": {
+  "wiki": null
+ },
+ "FCS-119": {
+  "wiki": "Towson Tigers football",
+  "arena": "Johnny Unitas Stadium",
+  "city": "Towson, Maryland",
+  "affiliates": [],
+  "lat": 39.38846,
+  "lng": -76.61594
+ },
+ "FCS-13": {
+  "wiki": "Cal Poly Mustangs football",
+  "arena": "Mustang Memorial Field",
+  "city": "San Luis Obispo, California",
+  "affiliates": [],
+  "lat": 35.29833,
+  "lng": -120.665
+ },
+ "FCS-147": {
+  "wiki": "Montana State Bobcats football",
+  "arena": "Bobcat Stadium",
+  "city": "Bozeman, Montana",
+  "affiliates": [],
+  "lat": 45.659,
+  "lng": -111.049
+ },
+ "FCS-149": {
+  "wiki": "Montana Grizzlies football",
+  "arena": "Washington–Grizzly Stadium",
+  "city": "Missoula, Montana",
+  "affiliates": [],
+  "lat": 46.864,
+  "lng": -113.981
+ },
+ "FCS-155": {
+  "wiki": "North Dakota Fighting Hawks football",
+  "arena": "Alerus Center",
+  "city": "Grand Forks, North Dakota",
+  "affiliates": [],
+  "lat": 47.911,
+  "lng": -97.091
+ },
+ "FCS-159": {
+  "wiki": "Dartmouth Big Green football",
+  "arena": "Memorial Field",
+  "city": "Hanover, New Hampshire",
+  "affiliates": [],
+  "lat": 43.70111,
+  "lng": -72.28417
+ },
+ "FCS-160": {
+  "wiki": "New Hampshire Wildcats football",
+  "arena": "Wildcat Stadium",
+  "city": "Durham, New Hampshire",
+  "affiliates": [],
+  "lat": 43.13861,
+  "lng": -70.93972
+ },
+ "FCS-163": {
+  "wiki": "Princeton Tigers football",
+  "arena": "Princeton Stadium",
+  "city": "Princeton, New Jersey",
+  "affiliates": [],
+  "lat": 40.34575,
+  "lng": -74.65003
+ },
+ "FCS-171": {
+  "wiki": "Columbia Lions football",
+  "arena": "Robert K. Kraft Field at Lawrence A. Wien Stadium",
+  "city": "New York, New York",
+  "affiliates": [],
+  "lat": 40.87322,
+  "lng": -73.91645
+ },
+ "FCS-172": {
+  "wiki": "Cornell Big Red football",
+  "arena": "Schoellkopf Field",
+  "city": "Ithaca, New York, U.S.",
+  "affiliates": [],
+  "lat": 42.44409,
+  "lng": -76.47866
+ },
+ "FCS-2000": {
+  "wiki": "Abilene Christian Wildcats football",
+  "arena": "Anthony Field at Wildcat Stadium",
+  "city": "Abilene, Texas",
+  "affiliates": [],
+  "lat": 32.47309,
+  "lng": -99.70874
+ },
+ "FCS-2010": {
+  "wiki": "Alabama A&M Bulldogs football",
+  "arena": "Louis Crews Stadium",
+  "city": "Normal, Alabama",
+  "affiliates": [],
+  "lat": 34.78367,
+  "lng": -86.57844
+ },
+ "FCS-2011": {
+  "wiki": "Alabama State Hornets football",
+  "arena": "ASU Stadium",
+  "city": "Montgomery, Alabama",
+  "affiliates": [],
+  "lat": 32.36389,
+  "lng": -86.29056
+ },
+ "FCS-2016": {
+  "wiki": "Alcorn State Braves football",
+  "arena": "Casem-Spinks Stadium",
+  "city": "Lorman, Mississippi",
+  "affiliates": [],
+  "lat": 31.87355,
+  "lng": -91.13492
+ },
+ "FCS-2029": {
+  "wiki": "Arkansas–Pine Bluff Golden Lions football",
+  "arena": "Simmons Bank Field",
+  "city": "Pine Bluff, Arkansas",
+  "affiliates": [],
+  "lat": 34.25333,
+  "lng": -92.02111
+ },
+ "FCS-2046": {
+  "wiki": "Austin Peay Governors football",
+  "arena": "Fortera Stadium",
+  "city": "Clarksville, Tennessee",
+  "affiliates": [],
+  "lat": 36.53611,
+  "lng": -87.35278
+ },
+ "FCS-2065": {
+  "wiki": "Bethune–Cookman Wildcats football",
+  "arena": "Daytona Stadium",
+  "city": "Daytona Beach, Florida",
+  "affiliates": [],
+  "lat": 29.17306,
+  "lng": -81.1175
+ },
+ "FCS-2083": {
+  "wiki": "Bucknell Bison football",
+  "arena": "Christy Mathewson–Memorial Stadium",
+  "city": "Lewisburg, Pennsylvania, U.S.",
+  "affiliates": [],
+  "lat": 40.95187,
+  "lng": -76.8854
+ },
+ "FCS-2086": {
+  "wiki": "Butler Bulldogs football",
+  "arena": "Bud and Jackie Sellick Bowl",
+  "city": "Indianapolis, Indiana",
+  "affiliates": [],
+  "lat": 39.84444,
+  "lng": -86.16583
+ },
+ "FCS-2097": {
+  "wiki": "Campbell Fighting Camels football",
+  "arena": "Barker–Lane Stadium",
+  "city": "Buies Creek, North Carolina",
+  "affiliates": [],
+  "lat": 35.4046,
+  "lng": -78.7427
+ },
+ "FCS-2110": {
+  "wiki": "Central Arkansas Bears football",
+  "arena": "Estes Stadium",
+  "city": "Conway, Arkansas",
+  "affiliates": [],
+  "lat": 35.08028,
+  "lng": -92.46028
+ },
+ "FCS-2115": {
+  "wiki": "Central Connecticut Blue Devils football",
+  "arena": "Arute Field",
+  "city": "New Britain, Connecticut",
+  "affiliates": [],
+  "lat": 41.69505,
+  "lng": -72.76163
+ },
+ "FCS-2127": {
+  "wiki": "Charleston Southern Buccaneers football",
+  "arena": "Buccaneer Field",
+  "city": "Charleston, South Carolina",
+  "affiliates": [],
+  "lat": 32.97833,
+  "lng": -80.06778
+ },
+ "FCS-2130": {
+  "wiki": "Chicago State Cougars football",
+  "arena": "SeatGeek Stadium",
+  "city": "Bridgeview, Illinois, U.S.",
+  "affiliates": [],
+  "lat": 41.76472,
+  "lng": -87.80611
+ },
+ "FCS-2142": {
+  "wiki": "Colgate Raiders football",
+  "arena": "Crown Field at Andy Kerr Stadium",
+  "city": "Hamilton, New York",
+  "affiliates": [],
+  "lat": 42.81694,
+  "lng": -75.5452
+ },
+ "FCS-2166": {
+  "wiki": "Davidson Wildcats football",
+  "arena": "Davidson College Stadium",
+  "city": "Davidson, North Carolina",
+  "affiliates": [],
+  "lat": 35.4996,
+  "lng": -80.84285
+ },
+ "FCS-2168": {
+  "wiki": "Dayton Flyers football",
+  "arena": "Welcome Stadium",
+  "city": "Dayton, Ohio",
+  "affiliates": [],
+  "lat": 39.73667,
+  "lng": -84.19806
+ },
+ "FCS-2169": {
+  "wiki": "Delaware State Hornets football",
+  "arena": "Alumni Stadium",
+  "city": "Dover, Delaware",
+  "affiliates": [],
+  "lat": 39.18917,
+  "lng": -75.54333
+ },
+ "FCS-2181": {
+  "wiki": "Drake Bulldogs football",
+  "arena": "Drake Stadium",
+  "city": "Des Moines, Iowa",
+  "affiliates": [],
+  "lat": 41.605,
+  "lng": -93.655
+ },
+ "FCS-2184": {
+  "wiki": "Duquesne Dukes football",
+  "arena": "Arthur J. Rooney Athletic Field",
+  "city": "Pittsburgh, Pennsylvania",
+  "affiliates": [],
+  "lat": 40.43556,
+  "lng": -79.99
+ },
+ "FCS-219": {
+  "wiki": "Penn Quakers football",
+  "arena": "Franklin Field",
+  "city": "Philadelphia, Pennsylvania, U.S.",
+  "affiliates": [],
+  "lat": 39.95,
+  "lng": -75.19
+ },
+ "FCS-2193": {
+  "wiki": "East Tennessee State Buccaneers football",
+  "arena": "William B. Greene Jr. Stadium",
+  "city": "Johnson City, Tennessee",
+  "affiliates": [],
+  "lat": 36.299,
+  "lng": -82.374
+ },
+ "FCS-2197": {
+  "wiki": "Eastern Illinois Panthers football",
+  "arena": "O'Brien Field",
+  "city": "Charleston, Illinois",
+  "affiliates": [],
+  "lat": 39.48056,
+  "lng": -88.18111
+ },
+ "FCS-2198": {
+  "wiki": "Eastern Kentucky Colonels football",
+  "arena": "Roy Kidd Stadium",
+  "city": "Richmond, Kentucky",
+  "affiliates": [],
+  "lat": 37.73439,
+  "lng": -84.29741
+ },
+ "FCS-2210": {
+  "wiki": "Elon Phoenix football",
+  "arena": "Rhodes Stadium",
+  "city": "Elon, North Carolina",
+  "affiliates": [],
+  "lat": 36.11003,
+  "lng": -79.50782
+ },
+ "FCS-222": {
+  "wiki": "Villanova Wildcats football",
+  "arena": "Villanova Stadium",
+  "city": "Villanova, Pennsylvania",
+  "affiliates": [],
+  "lat": 40.03306,
+  "lng": -75.33667
+ },
+ "FCS-2230": {
+  "wiki": "Fordham Rams football",
+  "arena": "Coffey Field",
+  "city": "Bronx, New York",
+  "affiliates": [],
+  "lat": 40.86167,
+  "lng": -73.88278
+ },
+ "FCS-2241": {
+  "wiki": "Gardner–Webb Runnin' Bulldogs football",
+  "arena": "Ernest W. Spangler Stadium",
+  "city": "Boiling Springs, North Carolina",
+  "affiliates": [],
+  "lat": 35.24564,
+  "lng": -81.67324
+ },
+ "FCS-225": {
+  "wiki": "Brown Bears football",
+  "arena": "Richard Gouse Field at Brown Stadium",
+  "city": "Providence, Rhode Island",
+  "affiliates": [],
+  "lat": 41.84222,
+  "lng": -71.39444
+ },
+ "FCS-2261": {
+  "wiki": "Hampton Pirates football",
+  "arena": "Armstrong Stadium",
+  "city": "Hampton, Virginia",
+  "affiliates": [],
+  "lat": 37.02049,
+  "lng": -76.33355
+ },
+ "FCS-227": {
+  "wiki": "Rhode Island Rams football",
+  "arena": "Meade Stadium",
+  "city": "Kingston, Rhode Island",
+  "affiliates": [],
+  "lat": 41.48801,
+  "lng": -71.53464
+ },
+ "FCS-2277": {
+  "wiki": "Houston Christian Huskies football",
+  "arena": "Husky Stadium",
+  "city": "Houston, Texas",
+  "affiliates": [],
+  "lat": 29.6925,
+  "lng": -95.51139
+ },
+ "FCS-2287": {
+  "wiki": "Illinois State Redbirds football",
+  "arena": "Hancock Stadium",
+  "city": "Normal, Illinois",
+  "affiliates": [],
+  "lat": 40.51194,
+  "lng": -88.99667
+ },
+ "FCS-2296": {
+  "wiki": "Jackson State Tigers football",
+  "arena": "Mississippi Veterans Memorial Stadium",
+  "city": "Jackson, Mississippi",
+  "affiliates": [],
+  "lat": 32.32964,
+  "lng": -90.17978
+ },
+ "FCS-231": {
+  "wiki": "Furman Paladins football",
+  "arena": "Paladin Stadium",
+  "city": "Greenville, South Carolina",
+  "affiliates": [],
+  "lat": 34.9202,
+  "lng": -82.43712
+ },
+ "FCS-2320": {
+  "wiki": "Lamar Cardinals football",
+  "arena": "Provost Umphrey Stadium",
+  "city": "Beaumont, Texas",
+  "affiliates": [],
+  "lat": 30.04306,
+  "lng": -94.07
+ },
+ "FCS-2329": {
+  "wiki": "Lehigh Mountain Hawks football",
+  "arena": "Goodman Stadium",
+  "city": "Bethlehem, Pennsylvania, U.S.",
+  "affiliates": [],
+  "lat": 40.58889,
+  "lng": -75.35528
+ },
+ "FCS-233": {
+  "wiki": "South Dakota Coyotes football",
+  "arena": "DakotaDome",
+  "city": "Vermillion, South Dakota",
+  "affiliates": [],
+  "lat": 42.79111,
+  "lng": -96.92778
+ },
+ "FCS-2341": {
+  "wiki": null
+ },
+ "FCS-236": {
+  "wiki": "Chattanooga Mocs football",
+  "arena": "Finley Stadium",
+  "city": "Chattanooga, Tennessee",
+  "affiliates": [],
+  "lat": 35.03637,
+  "lng": -85.31576
+ },
+ "FCS-2368": {
+  "wiki": "Marist Red Foxes football",
+  "arena": "Tenney Stadium at Leonidoff Field",
+  "city": "Poughkeepsie, New York, United States",
+  "affiliates": [],
+  "lat": 41.71843,
+  "lng": -73.934
+ },
+ "FCS-2377": {
+  "wiki": "McNeese Cowboys football",
+  "arena": "Navarre Stadium",
+  "city": "Lake Charles, Louisiana",
+  "affiliates": [],
+  "lat": 30.17333,
+  "lng": -93.21
+ },
+ "FCS-2382": {
+  "wiki": "Mercer Bears football",
+  "arena": "Five Star Stadium",
+  "city": "Macon, Georgia",
+  "affiliates": [],
+  "lat": 32.8267,
+  "lng": -83.6551
+ },
+ "FCS-2385": {
+  "wiki": "Mercyhurst Lakers football",
+  "arena": "Saxon Stadium",
+  "city": "Erie, Pennsylvania",
+  "affiliates": [],
+  "lat": 42.1033,
+  "lng": -80.0531
+ },
+ "FCS-2400": {
+  "wiki": "Mississippi Valley State Delta Devils football",
+  "arena": "Rice–Totten Stadium",
+  "city": "Itta Bena, Mississippi",
+  "affiliates": [],
+  "lat": 33.50944,
+  "lng": -90.34306
+ },
+ "FCS-2405": {
+  "wiki": "Monmouth Hawks football",
+  "arena": "Kessler Stadium",
+  "city": "West Long Branch, New Jersey",
+  "affiliates": [],
+  "lat": 40.27931,
+  "lng": -74.00946
+ },
+ "FCS-2413": {
+  "wiki": "Morehead State Eagles football",
+  "arena": "Phil Simms Stadium",
+  "city": "Morehead, Kentucky",
+  "affiliates": [],
+  "lat": 38.19192,
+  "lng": -83.42534
+ },
+ "FCS-2415": {
+  "wiki": "Morgan State Bears football",
+  "arena": "Hughes Stadium",
+  "city": "Baltimore, Maryland",
+  "affiliates": [],
+  "lat": 39.34361,
+  "lng": -76.58306
+ },
+ "FCS-2428": {
+  "wiki": "North Carolina Central Eagles football",
+  "arena": "O'Kelly–Riddick Stadium",
+  "city": "Durham, North Carolina",
+  "affiliates": [],
+  "lat": 35.97386,
+  "lng": -78.897
+ },
+ "FCS-2441": {
+  "wiki": "New Haven Chargers",
+  "arena": "Ralph F. DellaCamera Stadium",
+  "city": "West Haven, Connecticut",
+  "affiliates": [],
+  "lat": 41.29583,
+  "lng": -72.9673
+ },
+ "FCS-2447": {
+  "wiki": "Nicholls Colonels football",
+  "arena": "Manning Field at John L. Guidry Stadium",
+  "city": "Thibodaux, Louisiana",
+  "affiliates": [],
+  "lat": 29.78639,
+  "lng": -90.80417
+ },
+ "FCS-2448": {
+  "wiki": "North Carolina A&T Aggies football",
+  "arena": "Truist Stadium",
+  "city": "Greensboro, North Carolina",
+  "affiliates": [],
+  "lat": 36.08139,
+  "lng": -79.77028
+ },
+ "FCS-2450": {
+  "wiki": "Norfolk State Spartans football",
+  "arena": "William \"Dick\" Price Stadium",
+  "city": "Norfolk, Virginia",
+  "affiliates": [],
+  "lat": 36.84696,
+  "lng": -76.26005
+ },
+ "FCS-2453": {
+  "wiki": "North Alabama Lions football",
+  "arena": "Bobby Wallace Field at Bank Independent Stadium",
+  "city": "Florence, Alabama",
+  "affiliates": [],
+  "lat": 34.80917,
+  "lng": -87.68439
+ },
+ "FCS-2458": {
+  "wiki": "Northern Colorado Bears football",
+  "arena": "Nottingham Field",
+  "city": "Greeley, Colorado",
+  "affiliates": [],
+  "lat": 40.40306,
+  "lng": -104.70528
+ },
+ "FCS-2460": {
+  "wiki": "Northern Iowa Panthers football",
+  "arena": "UNI-Dome",
+  "city": "Cedar Falls, Iowa",
+  "affiliates": [],
+  "lat": 42.5156,
+  "lng": -92.4673
+ },
+ "FCS-2464": {
+  "wiki": "Northern Arizona Lumberjacks football",
+  "arena": "Walkup Skydome",
+  "city": "Flagstaff, Arizona",
+  "affiliates": [],
+  "lat": 35.1805,
+  "lng": -111.6525
+ },
+ "FCS-2466": {
+  "wiki": "Northwestern State Demons football",
+  "arena": "Harry Turpin Stadium",
+  "city": "Natchitoches, Louisiana",
+  "affiliates": [],
+  "lat": 31.74722,
+  "lng": -93.09611
+ },
+ "FCS-2502": {
+  "wiki": "Portland State Vikings football",
+  "arena": "Hillsboro Stadium",
+  "city": "Portland, Oregon",
+  "affiliates": [],
+  "lat": 45.554,
+  "lng": -122.907
+ },
+ "FCS-2504": {
+  "wiki": "Prairie View A&M Panthers football",
+  "arena": "Panther Stadium at Blackshear Field",
+  "city": "Prairie View, Texas",
+  "affiliates": [],
+  "lat": 30.09111,
+  "lng": -95.99444
+ },
+ "FCS-2506": {
+  "wiki": "Presbyterian Blue Hose football",
+  "arena": "Bailey Memorial Stadium",
+  "city": "Clinton, South Carolina",
+  "affiliates": [],
+  "lat": 34.46167,
+  "lng": -81.86139
+ },
+ "FCS-2523": {
+  "wiki": "Robert Morris Colonials football",
+  "arena": "Joe Walton Stadium",
+  "city": "Moon Township, Pennsylvania",
+  "affiliates": [],
+  "lat": 40.52119,
+  "lng": -80.21627
+ },
+ "FCS-2529": {
+  "wiki": "Sacred Heart Pioneers football",
+  "arena": "Campus Field",
+  "city": "Fairfield, Connecticut",
+  "affiliates": [],
+  "lat": 41.21917,
+  "lng": -73.24583
+ },
+ "FCS-253": {
+  "wiki": "Southern Utah Thunderbirds football",
+  "arena": "Eccles Coliseum",
+  "city": "Cedar City, Utah",
+  "affiliates": [],
+  "lat": 37.67583,
+  "lng": -113.07694
+ },
+ "FCS-2535": {
+  "wiki": "Samford Bulldogs football",
+  "arena": "Bobby Bowden",
+  "city": "Homewood, Alabama",
+  "affiliates": [],
+  "lat": 33.46194,
+  "lng": -86.80889
+ },
+ "FCS-2545": {
+  "wiki": null
+ },
+ "FCS-2546": {
+  "wiki": "Southeast Missouri State Redhawks football",
+  "arena": "Houck Stadium",
+  "city": "Cape Girardeau, Missouri",
+  "affiliates": [],
+  "lat": 37.30944,
+  "lng": -89.53111
+ },
+ "FCS-2569": {
+  "wiki": "South Carolina State Bulldogs football",
+  "arena": "Oliver C. Dawson Stadium",
+  "city": "Orangeburg, South Carolina",
+  "affiliates": [],
+  "lat": 33.49859,
+  "lng": -80.84464
+ },
+ "FCS-257": {
+  "wiki": "Richmond Spiders football",
+  "arena": "Robins Stadium",
+  "city": "Richmond, Virginia, U.S.",
+  "affiliates": [],
+  "lat": 37.58089,
+  "lng": -77.53681
+ },
+ "FCS-2571": {
+  "wiki": "South Dakota State Jackrabbits football",
+  "arena": "Dana J. Dykhouse Stadium",
+  "city": "Brookings, South Dakota",
+  "affiliates": [],
+  "lat": 44.30215,
+  "lng": -96.78631
+ },
+ "FCS-2582": {
+  "wiki": "Southern Jaguars football",
+  "arena": "A. W. Mumford Stadium",
+  "city": "Baton Rouge, Louisiana",
+  "affiliates": [],
+  "lat": 30.52186,
+  "lng": -91.18953
+ },
+ "FCS-2617": {
+  "wiki": "Stephen F. Austin Lumberjacks football",
+  "arena": "Homer Bryce Stadium",
+  "city": "Nacogdoches, Texas",
+  "affiliates": [],
+  "lat": 31.62583,
+  "lng": -94.64444
+ },
+ "FCS-2619": {
+  "wiki": "Stony Brook Seawolves football",
+  "arena": "Kenneth P. LaValle Stadium",
+  "city": "Stony Brook, New York",
+  "affiliates": [],
+  "lat": 40.91889,
+  "lng": -73.12417
+ },
+ "FCS-2627": {
+  "wiki": "Tarleton State Texans football",
+  "arena": "Memorial Stadium",
+  "city": "Stephenville, Texas",
+  "affiliates": [],
+  "lat": 32.215,
+  "lng": -98.224
+ },
+ "FCS-2630": {
+  "wiki": "UT Martin Skyhawks football",
+  "arena": "Graham Stadium",
+  "city": "Martin, Tennessee",
+  "affiliates": [],
+  "lat": 36.3447,
+  "lng": -88.8619
+ },
+ "FCS-2634": {
+  "wiki": "Tennessee State Tigers football",
+  "arena": "Nissan Stadium",
+  "city": "Nashville, Tennessee",
+  "affiliates": [],
+  "lat": 36.16639,
+  "lng": -86.77139
+ },
+ "FCS-2635": {
+  "wiki": "Tennessee Tech Golden Eagles football",
+  "arena": "Tucker Stadium",
+  "city": "Cookeville, Tennessee",
+  "affiliates": [],
+  "lat": 36.17809,
+  "lng": -85.50617
+ },
+ "FCS-2640": {
+  "wiki": "Texas Southern Tigers football",
+  "arena": "W.W. Thorne Stadium",
+  "city": "Houston, Texas",
+  "affiliates": [],
+  "lat": 29.93231,
+  "lng": -95.36106
+ },
+ "FCS-2643": {
+  "wiki": "The Citadel Bulldogs football",
+  "arena": "Johnson Hagood Stadium",
+  "city": "Charleston, South Carolina",
+  "affiliates": [],
+  "lat": 32.79371,
+  "lng": -79.95588
+ },
+ "FCS-2674": {
+  "wiki": "Valparaiso Beacons football",
+  "arena": "Brown Field",
+  "city": "Valparaiso, Indiana",
+  "affiliates": [],
+  "lat": 41.46556,
+  "lng": -87.04806
+ },
+ "FCS-2678": {
+  "wiki": "VMI Keydets football",
+  "arena": "Foster Stadium",
+  "city": "Lexington, Virginia",
+  "affiliates": [],
+  "lat": 37.78889,
+  "lng": -79.435
+ },
+ "FCS-2681": {
+  "wiki": "Wagner Seahawks football",
+  "arena": "Wagner College Stadium",
+  "city": "Staten Island, New York",
+  "affiliates": [],
+  "lat": 40.61741,
+  "lng": -74.09482
+ },
+ "FCS-2692": {
+  "wiki": "Weber State Wildcats football",
+  "arena": "Stewart Stadium",
+  "city": "Ogden, Utah",
+  "affiliates": [],
+  "lat": 41.19194,
+  "lng": -111.94
+ },
+ "FCS-2698": {
+  "wiki": "West Georgia Wolves football",
+  "arena": "University Stadium",
+  "city": "Carrollton, Georgia",
+  "affiliates": [],
+  "lat": 33.57977,
+  "lng": -85.12362
+ },
+ "FCS-2710": {
+  "wiki": "Western Illinois Leathernecks football",
+  "arena": "Hanson Field",
+  "city": "Macomb, Illinois",
+  "affiliates": [],
+  "lat": 40.4684,
+  "lng": -90.6842
+ },
+ "FCS-2717": {
+  "wiki": "Western Carolina Catamounts football",
+  "arena": "E. J. Whitmire Stadium",
+  "city": "Cullowhee, North Carolina",
+  "affiliates": [],
+  "lat": 35.30472,
+  "lng": -83.1825
+ },
+ "FCS-2729": {
+  "wiki": "William & Mary Tribe football",
+  "arena": "Zable Stadium",
+  "city": "Williamsburg, Virginia",
+  "affiliates": [],
+  "lat": 37.27278,
+  "lng": -76.71417
+ },
+ "FCS-2747": {
+  "wiki": "Wofford Terriers football",
+  "arena": "Gibbs Stadium",
+  "city": "Spartanburg, South Carolina",
+  "affiliates": [],
+  "lat": 34.96177,
+  "lng": -81.93286
+ },
+ "FCS-2754": {
+  "wiki": "Youngstown State Penguins football",
+  "arena": "Stambaugh Stadium",
+  "city": "Youngstown, Ohio",
+  "affiliates": [],
+  "lat": 41.10946,
+  "lng": -80.6493
+ },
+ "FCS-2755": {
+  "wiki": "Grambling State Tigers football",
+  "arena": "Eddie Robinson Stadium",
+  "city": "Grambling, Louisiana",
+  "affiliates": [],
+  "lat": 32.52092,
+  "lng": -92.72129
+ },
+ "FCS-2771": {
+  "wiki": "Merrimack Warriors football",
+  "arena": "Duane Stadium",
+  "city": "North Andover, Massachusetts",
+  "affiliates": [],
+  "lat": 42.6663,
+  "lng": -71.1202
+ },
+ "FCS-2803": {
+  "wiki": "Bryant Bulldogs football",
+  "arena": "Beirne Stadium",
+  "city": "Smithfield, Rhode Island",
+  "affiliates": [],
+  "lat": 41.92429,
+  "lng": -71.53857
+ },
+ "FCS-2815": {
+  "wiki": "Lindenwood Lions football",
+  "arena": "Harlen C. Hunter Stadium",
+  "city": "St. Charles, Missouri",
+  "affiliates": [],
+  "lat": 38.7866,
+  "lng": -90.5019
+ },
+ "FCS-282": {
+  "wiki": "Indiana State Sycamores football",
+  "arena": "Memorial Stadium",
+  "city": "Terre Haute, Indiana",
+  "affiliates": [],
+  "lat": 39.47472,
+  "lng": -87.36694
+ },
+ "FCS-2837": {
+  "wiki": "East Texas A&M Lions football",
+  "arena": "Ernest Hawkins Field at Memorial Stadium",
+  "city": "Commerce, Texas",
+  "affiliates": [],
+  "lat": 33.24583,
+  "lng": -95.91
+ },
+ "FCS-284": {
+  "wiki": "Stonehill Skyhawks football",
+  "arena": "W. B. Mason Stadium",
+  "city": "Easton, Massachusetts",
+  "affiliates": [],
+  "lat": 42.0573,
+  "lng": -71.0824
+ },
+ "FCS-2900": {
+  "wiki": "St. Thomas Tommies (Minnesota)",
+  "arena": "O'Shaughnessy Stadium",
+  "city": "St. Paul, Minnesota",
+  "affiliates": [],
+  "lat": 44.94356,
+  "lng": -93.19163
+ },
+ "FCS-2916": {
+  "wiki": "Incarnate Word Cardinals football",
+  "arena": "Gayle and Tom Benson Stadium",
+  "city": "San Antonio, Texas",
+  "affiliates": [],
+  "lat": 29.46747,
+  "lng": -98.47
+ },
+ "FCS-301": {
+  "wiki": "San Diego Toreros football",
+  "arena": "Torero Stadium",
+  "city": "San Diego, California",
+  "affiliates": [],
+  "lat": 32.7731,
+  "lng": -117.1837
+ },
+ "FCS-302": {
+  "wiki": "UC Davis Aggies football",
+  "arena": "UC Davis Health Stadium",
+  "city": "Davis, California",
+  "affiliates": [],
+  "lat": 38.53651,
+  "lng": -121.76278
+ },
+ "FCS-304": {
+  "wiki": "Idaho State Bengals football",
+  "arena": "ICCU Dome",
+  "city": "Pocatello, Idaho",
+  "affiliates": [],
+  "lat": 42.87,
+  "lng": -112.429
+ },
+ "FCS-3101": {
+  "wiki": "Utah Tech Trailblazers football",
+  "arena": "Greater Zion Stadium",
+  "city": "St. George, Utah",
+  "affiliates": [],
+  "lat": 37.09944,
+  "lng": -113.56722
+ },
+ "FCS-311": {
+  "wiki": "Maine Black Bears football",
+  "arena": "Alfond Stadium",
+  "city": "Orono, Maine",
+  "affiliates": [],
+  "lat": 44.905,
+  "lng": -68.67167
+ },
+ "FCS-322": {
+  "wiki": "Lafayette Leopards football",
+  "arena": "Fisher Stadium",
+  "city": "Easton, Pennsylvania",
+  "affiliates": [],
+  "lat": 40.70083,
+  "lng": -75.21056
+ },
+ "FCS-331": {
+  "wiki": "Eastern Washington Eagles football",
+  "arena": "Roos Field",
+  "city": "Cheney, Washington",
+  "affiliates": [],
+  "lat": 47.493,
+  "lng": -117.588
+ },
+ "FCS-399": {
+  "wiki": null
+ },
+ "FCS-43": {
+  "wiki": "Yale Bulldogs football",
+  "arena": "Yale Bowl",
+  "city": "New Haven, Connecticut",
+  "affiliates": [],
+  "lat": 41.313,
+  "lng": -72.96
+ },
+ "FCS-46": {
+  "wiki": "Georgetown Hoyas football",
+  "arena": "Cooper Field",
+  "city": "Washington, D.C.",
+  "affiliates": [],
+  "lat": 38.90802,
+  "lng": -77.07532
+ },
+ "FCS-47": {
+  "wiki": "Howard Bison football",
+  "arena": "William H. Greene Stadium",
+  "city": "Washington, D.C.",
+  "affiliates": [],
+  "lat": 38.9255,
+  "lng": -77.0208
+ },
+ "FCS-50": {
+  "wiki": "Florida A&M Rattlers football",
+  "arena": "Bragg Memorial Stadium",
+  "city": "Tallahassee, Florida",
+  "affiliates": [],
+  "lat": 30.42611,
+  "lng": -84.29167
+ },
+ "FCS-56": {
+  "wiki": "Stetson Hatters football",
+  "arena": "Spec Martin Stadium",
+  "city": "DeLand, Florida",
+  "affiliates": [],
+  "lat": 29.02012,
+  "lng": -81.30001
+ },
+ "FCS-70": {
+  "wiki": "Idaho Vandals football",
+  "arena": "Kibbie Dome",
+  "city": "Moscow, Idaho",
+  "affiliates": [],
+  "lat": 46.726,
+  "lng": -117.017
+ },
+ "FCS-79": {
+  "wiki": "Southern Illinois Salukis football",
+  "arena": "Saluki Stadium",
+  "city": "Carbondale, Illinois",
+  "affiliates": [],
+  "lat": 37.7086,
+  "lng": -89.2162
+ },
+ "FCS-93": {
+  "wiki": "Murray State Racers football",
+  "arena": "Roy Stewart Stadium",
+  "city": "Murray, Kentucky",
+  "affiliates": [],
+  "lat": 36.6213,
+  "lng": -88.3177
+ },
+ "NFL-1": {
+  "wiki": "Atlanta Falcons",
+  "arena": "Mercedes-Benz Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 33.75556,
+  "lng": -84.4
+ },
+ "NFL-10": {
+  "wiki": "Tennessee Titans",
+  "arena": "Nissan Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 36.16639,
+  "lng": -86.77139
+ },
+ "NFL-11": {
+  "wiki": "Indianapolis Colts",
+  "arena": "Lucas Oil Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 39.76006,
+  "lng": -86.16381
+ },
+ "NFL-12": {
+  "wiki": "Kansas City Chiefs",
+  "arena": "Arrowhead Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 39.04889,
+  "lng": -94.48389
+ },
+ "NFL-13": {
+  "wiki": "Las Vegas Raiders",
+  "arena": "Allegiant Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 36.09056,
+  "lng": -115.18389
+ },
+ "NFL-14": {
+  "wiki": "Los Angeles Rams",
+  "arena": "SoFi Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 33.953,
+  "lng": -118.339
+ },
+ "NFL-15": {
+  "wiki": "Miami Dolphins",
+  "arena": "Hard Rock Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 25.95806,
+  "lng": -80.23889
+ },
+ "NFL-16": {
+  "wiki": "Minnesota Vikings",
+  "arena": "U.S. Bank Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 44.974,
+  "lng": -93.258
+ },
+ "NFL-17": {
+  "wiki": "New England Patriots",
+  "arena": "Gillette Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 42.091,
+  "lng": -71.264
+ },
+ "NFL-18": {
+  "wiki": "New Orleans Saints",
+  "arena": "Caesars Superdome",
+  "city": null,
+  "affiliates": [],
+  "lat": 29.95083,
+  "lng": -90.08111
+ },
+ "NFL-19": {
+  "wiki": "New York Giants",
+  "arena": "MetLife Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 40.81361,
+  "lng": -74.07444
+ },
+ "NFL-2": {
+  "wiki": "Buffalo Bills",
+  "arena": "Highmark Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 42.77306,
+  "lng": -78.79222
+ },
+ "NFL-20": {
+  "wiki": "New York Jets",
+  "arena": "MetLife Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 40.81361,
+  "lng": -74.07444
+ },
+ "NFL-21": {
+  "wiki": "Philadelphia Eagles",
+  "arena": "Lincoln Financial Field",
+  "city": null,
+  "affiliates": [],
+  "lat": 39.90083,
+  "lng": -75.1675
+ },
+ "NFL-22": {
+  "wiki": "Arizona Cardinals",
+  "arena": "State Farm Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 33.528,
+  "lng": -112.263
+ },
+ "NFL-23": {
+  "wiki": "Pittsburgh Steelers",
+  "arena": "Acrisure Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 40.44667,
+  "lng": -80.01583
+ },
+ "NFL-24": {
+  "wiki": "Los Angeles Chargers",
+  "arena": "SoFi Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 33.953,
+  "lng": -118.339
+ },
+ "NFL-25": {
+  "wiki": "San Francisco 49ers",
+  "arena": "Levi's Stadium",
+  "city": "right",
+  "affiliates": [],
+  "lat": 37.403,
+  "lng": -121.97
+ },
+ "NFL-26": {
+  "wiki": "Seattle Seahawks",
+  "arena": "Lumen Field",
+  "city": null,
+  "affiliates": [],
+  "lat": 47.5952,
+  "lng": -122.3316
+ },
+ "NFL-27": {
+  "wiki": "Tampa Bay Buccaneers",
+  "arena": "Raymond James Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 27.97583,
+  "lng": -82.50333
+ },
+ "NFL-28": {
+  "wiki": "Washington Commanders",
+  "arena": "Northwest Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 38.90778,
+  "lng": -76.86444
+ },
+ "NFL-29": {
+  "wiki": "Carolina Panthers",
+  "arena": "Bank of America Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 35.22583,
+  "lng": -80.85278
+ },
+ "NFL-3": {
+  "wiki": "Chicago Bears",
+  "arena": "Soldier Field",
+  "city": null,
+  "affiliates": [],
+  "lat": 41.8623,
+  "lng": -87.6167
+ },
+ "NFL-30": {
+  "wiki": "Jacksonville Jaguars",
+  "arena": "EverBank Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 30.32389,
+  "lng": -81.6375
+ },
+ "NFL-33": {
+  "wiki": "Baltimore Ravens",
+  "arena": "M&T Bank Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 39.27806,
+  "lng": -76.62278
+ },
+ "NFL-34": {
+  "wiki": "Houston Texans",
+  "arena": "Reliant Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 29.68472,
+  "lng": -95.41083
+ },
+ "NFL-4": {
+  "wiki": "Cincinnati Bengals",
+  "arena": "Paycor Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 39.095,
+  "lng": -84.516
+ },
+ "NFL-5": {
+  "wiki": "Cleveland Browns",
+  "arena": "Huntington Bank Field",
+  "city": null,
+  "affiliates": [],
+  "lat": 41.50611,
+  "lng": -81.69944
+ },
+ "NFL-6": {
+  "wiki": "Dallas Cowboys",
+  "arena": "AT&T Stadium",
+  "city": null,
+  "affiliates": [],
+  "lat": 32.74778,
+  "lng": -97.09278
+ },
+ "NFL-7": {
+  "wiki": "Denver Broncos",
+  "arena": "Empower Field at Mile High",
+  "city": null,
+  "affiliates": [],
+  "lat": 39.74389,
+  "lng": -105.02
+ },
+ "NFL-8": {
+  "wiki": "Detroit Lions",
+  "arena": "Ford Field",
+  "city": null,
+  "affiliates": [],
+  "lat": 42.34,
+  "lng": -83.04556
+ },
+ "NFL-9": {
+  "wiki": "Green Bay Packers",
+  "arena": "Lambeau Field",
+  "city": null,
+  "affiliates": [],
+  "lat": 44.50139,
+  "lng": -88.06222
+ }
+}

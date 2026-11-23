@@ -325,14 +325,12 @@ for pid, a in people.items():
         rec["img"] = 1  # the page builds ESPN's headshot URL from the id
     xp = (a.get("experience") or {})
     if teams_out[cur[0]]["lg"] == "NFL":
-        yrs = xp.get("years")
-        n = (yrs or 0) + 1
-        rec["xp"] = "Rookie" if n == 1 else f"{n}{'th' if 10 <= n % 100 <= 20 else {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th')} NFL season"
+        rec["xp"] = int(xp.get("years") or 0) + 1  # NFL season number; the page spells it out
         col = (a.get("college") or {}).get("name")
         if col:
             rec["col"] = col
-    elif xp.get("displayValue"):
-        rec["xp"] = xp["displayValue"]
+    elif xp.get("abbreviation"):
+        rec["xp"] = xp["abbreviation"]  # FR / SO / JR / SR / GR
     pindex[pid] = len(players)
     players.append(rec)
     for i in cur:

@@ -9,6 +9,8 @@ const JUNIOR = new Set(['OHL', 'WHL', 'QMJHL', 'USHL']);
 const BASE_R = { NHL: 15, AHL: 12, ECHL: 10, SPHL: 9, PWHL: 10, OHL: 9, WHL: 9, QMJHL: 9, USHL: 8, NFL: 15, FBS: 9.5, FCS: 8 };
 const COLLEGE = new Set(['FBS', 'FCS']);
 let SPORT = 'hockey'; // set by buildModel from the data file
+const CLASS = { FR: 'Freshman', SO: 'Sophomore', JR: 'Junior', SR: 'Senior', GR: 'Graduate' };
+const ordinal = (n) => `${n}${n % 100 >= 11 && n % 100 <= 13 ? 'th' : { 1: 'st', 2: 'nd', 3: 'rd' }[n % 10] || 'th'}`;
 
 export function pipelineLabel(lg) {
   if (lg === 'NFL') return { name: 'Journeymen', desc: 'share of roster that has also played for another NFL team' };
@@ -51,6 +53,8 @@ export function buildModel(data) {
     const t0 = teams[p.t[0]];
     p.lg = t0 ? t0.lg : '';
     p.age = age(p.dob);
+    if (typeof p.xp === 'number') p.xp = p.xp === 1 ? 'NFL rookie' : `${ordinal(p.xp)} NFL season`;
+    else if (p.xp && CLASS[p.xp]) p.xp = CLASS[p.xp];
     if (p.img === 1) p.img = `https://a.espncdn.com/i/headshots/${p.lg === 'NFL' ? 'nfl' : 'college-football'}/players/full/${p.id.slice(1)}.png`;
     if (p.rt != null && teams[p.rt] && JUNIOR.has(p.lg)) teams[p.rt].prospects.push(i);
   });

@@ -1,0 +1,30 @@
+{
+ "_note": "Manual fixes applied on top of data/football_reference.json (Wikipedia lookups). Keys are team ids in data/football.json.",
+ "teams": {
+  "FCS-2341": {
+   "wiki": "LIU Sharks football",
+   "arena": "Bethpage Federal Credit Union Stadium",
+   "city": "Brookville, New York",
+   "lat": 40.81628,
+   "lng": -73.58955
+  },
+  "FCS-2545": {
+   "wiki": "Southeastern Louisiana Lions football",
+   "arena": "Strawberry Stadium",
+   "city": "Hammond, Louisiana",
+   "lat": 30.51083,
+   "lng": -90.46833
+  },
+  "FCS-399": {
+   "wiki": "Albany Great Danes football",
+   "arena": "Bob Ford Field at Tom & Mary Casey Stadium",
+   "city": "Albany, New York",
+   "lat": 42.68331,
+   "lng": -73.82714
+  }
+ },
+ "affiliations": {
+  "add": [],
+  "remove": []
+ }
+}

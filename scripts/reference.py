@@ -54,6 +54,7 @@ def _num(s):
 
 def parse_coord(text):
     """First {{coord}} template in wikitext -> (lat, lng)."""
+    text = re.sub(r"<!--.*?-->", "", text or "", flags=re.S)  # editors leave alternate values in comments
     for m in re.finditer(r"\{\{\s*coord\s*\|([^{}]*)\}\}", text or "", re.I):
         parts = [p.strip() for p in m.group(1).split("|")]
         parts = [p for p in parts if p and "=" not in p]
