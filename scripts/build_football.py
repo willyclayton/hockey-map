@@ -304,7 +304,8 @@ for pid, a in people.items():
     if not cur:
         continue
     c = []
-    for y, r in sorted(careers[pid], key=lambda x: (x[0], x[1] in team_index and teams_out[team_index[x[1]]]["lg"] == "NFL")):
+    now = set(current[pid])
+    for y, r in sorted(careers[pid], key=lambda x: (x[0], x[1] in team_index and teams_out[team_index[x[1]]]["lg"] == "NFL", x[1] in now)):
         c.append([y, team_index[r] if r in team_index else -1 - int(r[4:])])
     pos = ((a.get("position") or {}).get("abbreviation") or "").upper()
     rec = {"id": f"f{pid}", "n": a.get("fullName") or a.get("displayName"), "p": POS.get(pos, pos), "t": cur, "c": c}
@@ -325,7 +326,10 @@ for pid, a in people.items():
         rec["img"] = 1  # the page builds ESPN's headshot URL from the id
     xp = (a.get("experience") or {})
     if teams_out[cur[0]]["lg"] == "NFL":
-        rec["xp"] = int(xp.get("years") or 0) + 1  # NFL season number; the page spells it out
+        # NFL season number (the page spells it out). Counted from the first NFL season in the career log;
+        # ESPN's experience field is often a season off, so it is only a fallback for players with no NFL stats.
+        nfl_years = [y for y, r in careers[pid] if r in nodes and nodes[r]["league"] == "NFL" and y < CUR]
+        rec["xp"] = CUR - min(nfl_years) + 1 if nfl_years else max(1, int(xp.get("years") or 0))
         col = (a.get("college") or {}).get("name")
         if col:
             rec["col"] = col

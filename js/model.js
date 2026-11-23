@@ -47,6 +47,9 @@ export function buildModel(data) {
 
   players.forEach((p, i) => {
     p.i = i;
+    // within a season, the team a player is on now comes last (a traded player ended up there)
+    const now = new Set(p.t);
+    p.c.sort((a, b) => a[0] - b[0] || now.has(a[1]) - now.has(b[1]));
     p.nodes = new Set();
     for (const c of p.c) if (c[1] >= 0) p.nodes.add(c[1]);
     p.curTeams = p.t;

@@ -1,10 +1,10 @@
 // App chrome: top bar + search, league filters, map settings dock, zoom, coach mark, tooltips, hints,
 // global shortcuts and the Rankings / About modals.
-import { M, map, state, actions, SPORT, APP_NAME } from './app.js?v=202611230347';
-import { fold, RATING_WEIGHTS, PLAYER_WEIGHTS, seasonLabel, ensurePlayerScores } from './model.js?v=202611230347';
-import { ratingColor, RATING_RAMP } from './map.js?v=202611230347';
-import { openTour, maybeTour } from './tour.js?v=202611230347';
-import { $, esc, plural, logoHTML, leaguePill, avatarHTML, animateGauges } from './util.js?v=202611230347';
+import { M, map, state, actions, SPORT, APP_NAME } from './app.js?v=202611230359';
+import { fold, RATING_WEIGHTS, PLAYER_WEIGHTS, seasonLabel, ensurePlayerScores } from './model.js?v=202611230359';
+import { ratingColor, RATING_RAMP } from './map.js?v=202611230359';
+import { openTour, maybeTour } from './tour.js?v=202611230359';
+import { $, esc, plural, logoHTML, leaguePill, avatarHTML, animateGauges } from './util.js?v=202611230359';
 
 const selectTeam = (...a) => actions.selectTeam(...a);
 const selectPlayer = (...a) => actions.selectPlayer(...a);
