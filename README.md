@@ -48,7 +48,9 @@ You'll find it in the player panel (with a list of where their former teammates 
 - **AHL, ECHL, OHL, WHL, QMJHL, USHL, SPHL, PWHL:** the HockeyTech/LeagueStat feeds the league websites use. They provide rosters for every season since 2017-18.
 - **Wikipedia:** arena coordinates and NHL/AHL/ECHL affiliations, cached in `data/reference.json`. Manual fixes go in `data/overrides.json`.
 
-Within a league, players are linked by that league's player ID. Across leagues they're matched by last name and birth date. NHL players get their full career, including college and Europe. Everyone else gets matched seasons from 2017-18 on.
+Within a league, players are linked by that league's player ID. Across leagues they're matched by last name and birth date. NHL players get their full career, including college and Europe (international tournaments are left out). Everyone else gets matched seasons from 2017-18 on.
+
+Season rosters are snapshots, so they miss players traded mid-season and list some who never played. A past team-season therefore counts only when the player's own record has games there: NHL.com for NHL seasons, and the league's player stats for the HockeyTech leagues. This season's rosters decide the current team. A player still listed by a club he has left (a junior trade, say) is placed with the club of his latest game.
 
 ```bash
 python3 scripts/build_data.py            # uses .cache/, refreshes current-season data after 12h

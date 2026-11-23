@@ -37,8 +37,11 @@ ap.add_argument("--workers", type=int, default=8)
 args = ap.parse_args()
 CUR_TTL = 60 if args.refresh else DAY / 2
 
-INTL_LEAGUES = re.compile(r"^(WC|OG|OGQ|WJC|WJ|WHC|U-?1\d|U-?20|WCH|WCUP|4N|IIHF|OLY|EYOF|YOG|HG|WCA|WJAC|"
-                          r"INTL|INT|FRIENDLY|EUROTOUR|EHT|5N|WCQ|OGQUAL|WC-A|WC-B|DCQ|DC)", re.I)
+# International / national-team / all-star competitions (not club hockey). Whole league codes only:
+# "WC" is the World Championship, but "WCHA" is college hockey and "U20 SM-sarja" a Finnish junior league.
+INTL_LEAGUES = re.compile(r"^(WC|WCUP|WCH|WCA|WCQ|WCCC|OG|OGQ|OGQUAL|OGC|OLY|OLYMPICS|WJC|WJ|WJAC|WHC|4N|5N|IIHF|"
+                          r"EYOF|YOG|HG|INTL|INT|INTERNATIONAL|FRIENDLY|EUROTOUR|EHT|DCQ|DC|U-1[78]|U1[78]-DEV)"
+                          r"(?=$|[-\s\d])", re.I)
 INTL_EVENTS = re.compile(r"hlinka|gretzky cup|world (junior|championship|cup)|olympic|four nations|"
                          r"\b(team )?(usa|canada) u-?\d\d\b|\bu-?1[78] (team|wc)|challenge cup|ivan hlinka", re.I)
 NHL_ABBR_FIX = {"LA": "LAK", "NJ": "NJD", "SJ": "SJS", "TB": "TBL", "MON": "MTL", "CLB": "CBJ", "NAS": "NSH",
@@ -169,6 +172,7 @@ rosters_nhl = pool(lambda j: fetch_json(f"{NHL}/roster/{j[1]}/{'current' if j[0]
 
 # ---------------------------------------------------------------- HockeyTech leagues
 ht_seasons = {}  # league -> {year: season_id}
+reg_year = defaultdict(dict)  # league -> {regular-season id: year}, every regular season in scope
 for L in HT_LEAGUES:
     d = fetch_json(ht_url(L, feed="modulekit", view="seasons"), ttl=DAY)
     reg, pre = {}, {}
@@ -185,6 +189,7 @@ for L in HT_LEAGUES:
         if s.get("career") != "1" or re.search(r"tie ?break|prospect|all-?star|showcase|exhibition|challenge", nm, re.I):
             continue
         reg.setdefault(y, s["season_id"])
+        reg_year[L][str(s["season_id"])] = y
     ht_seasons[L] = {"reg": reg, "pre": pre}
     log(f"  {L}: seasons {sorted(reg)}")
 
@@ -343,6 +348,96 @@ for (L, y, sid, tid), roster in ht_rosters.items():
 for g in name_groups.values():  # dedupe repeated rows (same player, many seasons) before pairing
     g[:] = list(dict.fromkeys(g))
 link_identities()
+
+
+# A player on two non-NHL current rosters (a junior trade or a pro assignment the old club hasn't
+# cleared from its roster yet) plays for the club of his latest game this season. A stale listing he
+# never played for this season is dropped. NHL rosters are authoritative (injuries, conditioning loans).
+def ht_games(L, pid):
+    d = fetch_json(ht_url(L, feed="modulekit", view="player", category="gamebygame", player_id=pid,
+                          season_id=cur_sid[L][1]), ttl=CUR_TTL)
+    return ((d or {}).get("SiteKit", {}).get("Player") or {}).get("games") or []
+
+
+cur_by_root = defaultdict(list)
+for nid, els in current_rows.items():
+    if nodes[nid]["league"] != "NHL":
+        for el in els:
+            cur_by_root[find(el)].append((nid, el))
+for r, lst in cur_by_root.items():
+    if len({nid for nid, _ in lst}) < 2:
+        continue
+    last = {}  # node -> date of latest game
+    for el in {el for _, el in lst}:
+        L, pid = el.split(":", 1)
+        for g in ht_games(L, pid):
+            nid = f"{L}-{g.get('player_team')}"
+            if any(n == nid for n, _ in lst):
+                last[nid] = max(last.get(nid, ""), g.get("date_played") or "")
+    if not last:
+        continue  # no games yet: keep every listing
+    keep = max(last, key=last.get)
+    for nid, el in lst:
+        if nid == keep:
+            continue
+        current_rows[nid].remove(el)
+        if nid not in last:
+            stints[el].pop((cur_sid[nodes[nid]["league"]][0], nid), None)
+        log(f"  {el}: listed by {nodes[nid]['name']} too, but last played for {nodes[keep]['name']}")
+
+
+
+# Season rosters are snapshots: a player traded during a season is missing from his old club's roster,
+# and clubs list players who never got into a game (try-outs, extra goalies, juniors signed in spring).
+# Each player's own season stats decide instead: a past team-season counts when he played games there.
+# This season's roster listing stays (he is on the team now), plus any club he played for earlier on.
+def ht_stats(el):
+    L, pid = el.split(":", 1)
+    ttl = CUR_TTL * 6 if el in cur_elems else (5 + sum(map(ord, pid)) % 4) * DAY  # past-only: spread refreshes
+    d = fetch_json(ht_url(L, feed="modulekit", view="player", category="seasonstats", player_id=pid), ttl=ttl)
+    return (d["SiteKit"].get("Player") or {}).get("regular") or []
+
+
+cur_elems = {el for els in current_rows.values() for el in els}
+elems_by_root = defaultdict(set)
+for el in stints:
+    elems_by_root[find(el)].add(el)
+ht_jobs = sorted({el for r in {find(e) for e in cur_elems} for el in elems_by_root[r]
+                  if el.split(":", 1)[0] in HT_LEAGUES})
+log(f"HockeyTech: season stats for {len(ht_jobs)} player records")
+ht_played = pool(ht_stats, ht_jobs)
+n_add = n_drop = 0
+for el, rows in ht_played.items():
+    if rows is None:
+        continue  # download failed: keep the roster view
+    L = el.split(":", 1)[0]
+    played = {}
+    for row in rows:
+        y, tid, gp = reg_year[L].get(str(row.get("season_id"))), str(row.get("team_id") or ""), row.get("games_played")
+        gp = int(gp) if str(gp).isdigit() else 0
+        if y is None or not tid or gp <= 0 or (L, tid) in dropped:
+            continue
+        tname = next((t["name"] for t in ht_teams_by_season.get((L, y), []) if t["tid"] == tid), None)
+        tname = tname or (row.get("team_name") or "").strip()
+        nid = f"{L}-{tid}"
+        if nid in nodes:
+            ref, nm = nid, (tname if tname and norm(tname) != norm(nodes[nid]["name"]) else None)
+        elif tname:
+            ref, nm = f"off:{sref(L + '|' + tname)}", None
+        else:
+            continue
+        played[(y, ref)] = (max(played.get((y, ref), (0,))[0], gp), nm)
+    for key, (gp, nm) in played.items():
+        if key in stints[el]:
+            stints[el][key][0] = max(stints[el][key][0] or 0, gp)
+        else:
+            stints[el][key] = [gp, nm]
+            n_add += 1
+    for key in [k for k in stints[el] if k[0] < cur_sid[L][0] and k not in played]:
+        del stints[el][key]
+        n_drop += 1
+log(f"  {n_add} team-seasons added from player stats, {n_drop} roster listings without games dropped")
+
 person_stints = defaultdict(dict)
 person_elems = defaultdict(set)
 for el, ss in stints.items():
@@ -385,11 +480,18 @@ LEAGUE_ALIAS = {"LHJMQ": "QMJHL", "QMJHL": "QMJHL", "OHL": "OHL", "WHL": "WHL", 
                 "NHL": "NHL", "USHL": "USHL", "SPHL": "SPHL", "PWHL": "PWHL"}
 
 
+# Names a prefix match would get wrong: St. John's (Newfoundland) is not Saint John (New Brunswick).
+NOT_TEAM = {("QMJHL", "saintjohns"), ("AHL", "saintjohns"), ("ECHL", "saintjohns")}
+prefix_matches = {}
+
+
 def map_team(league, name):
     L = LEAGUE_ALIAS.get(league)
     if not L:
         return None
     n = norm(name)
+    if (L, n) in NOT_TEAM:
+        return None
     hit = alias_full[L].get(n)
     if hit and len(hit) == 1:
         return next(iter(hit))
@@ -399,19 +501,62 @@ def map_team(league, name):
     cands = {nid for a, ids in alias_full[L].items() if a.startswith(n) or (len(a) > 5 and n.startswith(a))
              for nid in ids}
     if len(cands) == 1:
-        return cands.pop()
+        nid = cands.pop()
+        prefix_matches[f"{L}|{name}"] = nodes[nid]["name"]
+        return nid
     return None
 
 
 # ---------------------------------------------------------------- NHL player careers (full history)
 nhl_ids = sorted({int(el.split(":")[1]) for els in current_rows.values() for el in els if el.startswith("NHL:")})
-log(f"NHL: {len(nhl_ids)} career histories")
-landings = pool(lambda pid: fetch_json(f"{NHL}/player/{pid}/landing", ttl=CUR_TTL * 6), nhl_ids)
+# Current players elsewhere (AHL, ECHL, ...) who were on an NHL roster before: their NHL.com record
+# checks those NHL seasons (it is not used for the rest of their career).
+cur_roots = {find(el) for els in current_rows.values() for el in els}
+past_nhl_ids = sorted({int(el.split(":")[1]) for r in cur_roots for el in person_elems[r]
+                       if el.startswith("NHL:")} - set(nhl_ids))
+log(f"NHL: {len(nhl_ids)} career histories, {len(past_nhl_ids)} former NHL players")
+landings = pool(lambda pid: fetch_json(f"{NHL}/player/{pid}/landing", ttl=CUR_TTL * 6), nhl_ids + past_nhl_ids)
+
+
+def nhl_ref(tn):
+    nid = map_team("NHL", tn)
+    if nid:
+        return nid
+    i = string_idx.get("NHL|" + tn)
+    return f"off:{i}" if i is not None else None
+
+
+def is_nhl(ref):
+    return nodes[ref]["league"] == "NHL" if ref in nodes else strings[int(ref[4:])].startswith("NHL|")
+
+
+def check_nhl_seasons(r, d):
+    """NHL.com's past-season rosters include offseason moves: a June trade lists the player on his new
+    club for the season just finished (and drops him from the old one). A past NHL season counts only if
+    the player's own NHL.com record has games for that club that season."""
+    played, unsure = set(), set()
+    for s in d.get("seasonTotals", []):
+        if s.get("leagueAbbrev") != "NHL":
+            continue
+        y, ref = int(str(s["season"])[:4]), nhl_ref((s.get("teamName") or {}).get("default", "").strip())
+        if ref:
+            played.add((y, ref))
+        else:
+            unsure.add(y)  # a name we can't place: leave that season alone
+    for key in [k for k in person_stints[r] if k[0] < CUR and k[0] not in unsure and is_nhl(k[1])]:
+        if key not in played:
+            del person_stints[r][key]
+            pruned.append(key)
+
+
 unmapped = defaultdict(int)
+pruned = []
+past_set = set(past_nhl_ids)
 for pid, d in landings.items():
     if not d:
         continue
     r = find(f"NHL:{pid}")
+    check_nhl_seasons(r, d)
     leagues_with_data = defaultdict(set)
     for (y, ref) in person_stints[r]:
         leagues_with_data[y].add(nodes[ref]["league"] if ref in nodes else strings[int(ref[4:])].split("|")[0])
@@ -420,13 +565,19 @@ for pid, d in landings.items():
             continue
         y = int(str(s["season"])[:4])
         lg = (s.get("leagueAbbrev") or "").strip()
+        if pid in past_set and (lg != "NHL" or y < FIRST_SEASON):
+            continue  # former NHL players: only their NHL seasons, in the years their careers cover
         tn = (s.get("teamName") or {}).get("default", "").strip()
         if not tn or INTL_LEAGUES.match(lg) or INTL_EVENTS.search(f"{lg} {tn}"):
             continue
         nid = map_team(lg, tn)
         Lc = LEAGUE_ALIAS.get(lg)
         if nid:
-            nm = tn if norm(tn) != norm(nodes[nid]["name"]) and len(tn) > len(nodes[nid]["city"]) + 3 else None
+            # keep a historical name (a relocated franchise: "Kootenay" is now Wenatchee), but not the
+            # current team's own name, city or nickname
+            cur_names = {norm(nodes[nid][k]) for k in ("name", "city", "nickname") if nodes[nid].get(k)}
+            same = nid in _ntdp or any(c.startswith(norm(tn)) for c in cur_names)  # "Wilkes-Barre", "USNTDP"
+            nm = tn if not same else None
             key = (y, nid)
             ex = person_stints[r].get(key)
             if ex:
@@ -434,12 +585,15 @@ for pid, d in landings.items():
             else:
                 person_stints[r][key] = [s.get("gamesPlayed"), nm]
         else:
-            if Lc and y >= FIRST_SEASON and Lc in leagues_with_data[y]:
+            if Lc and Lc != "NHL" and y >= FIRST_SEASON and Lc in leagues_with_data[y]:
                 continue  # already known from that league's own rosters
             if Lc:
                 unmapped[f"{lg}|{tn}"] += 1
             key = (y, f"off:{sref((lg or '?') + '|' + tn)}")
             person_stints[r].setdefault(key, [s.get("gamesPlayed"), None])
+log(f"  {len(pruned)} NHL roster listings without NHL games that season dropped")
+if prefix_matches:
+    log("  matched by name prefix:", ", ".join(f"{k} -> {v}" for k, v in sorted(prefix_matches.items())))
 if unmapped:
     top = sorted(unmapped.items(), key=lambda kv: -kv[1])[:25]
     log("  unmapped in-scope teams (defunct/renamed):", ", ".join(f"{k}×{v}" for k, v in top))
@@ -508,8 +662,8 @@ def get_logo(n):
 log("logos")
 logos = pool(lambda nid: get_logo(nodes[nid]), [n["id"] for n in node_list], workers=6)
 keep = {os.path.basename(v) for v in logos.values() if v}
-for f in os.listdir(LOGO_DIR):
-    if f not in keep:
+for f in os.listdir(LOGO_DIR):  # stale logos only; subfolders (e.g. football/) belong to other builds
+    if f not in keep and os.path.isfile(os.path.join(LOGO_DIR, f)):
         os.remove(os.path.join(LOGO_DIR, f))
 
 # ---------------------------------------------------------------- output
@@ -533,14 +687,15 @@ def bio(el):
         h = p.get("heightInInches")
         return {"name": f"{p['firstName']['default']} {p['lastName']['default']}",
                 "pos": POS.get(p.get("positionCode"), p.get("positionCode")),
-                "no": p.get("sweaterNumber"), "dob": p.get("birthDate"), "from": ", ".join(x for x in bc if x),
+                "no": p.get("sweaterNumber"), "dob": p.get("birthDate") if valid_dob(p.get("birthDate")) else None, "from": ", ".join(x for x in bc if x),
                 "sh": p.get("shootsCatches"), "ht": f"{h // 12}-{h % 12}" if h else None,
                 "wt": p.get("weightInPounds"), "img": p.get("headshot"), "nhl": p["id"]}
     no = p.get("tp_jersey_number") or p.get("jersey_number")
     img = p.get("player_image") or ""
     return {"name": f"{p.get('first_name', '').strip()} {p.get('last_name', '').strip()}".strip(),
             "pos": POS.get((p.get("position") or "").upper(), p.get("position")),
-            "no": int(no) if str(no).isdigit() else None, "dob": p.get("rawbirthdate") or None,
+            "no": int(no) if str(no).isdigit() else None,
+            "dob": p.get("rawbirthdate") if valid_dob(p.get("rawbirthdate")) else None,
             "from": (p.get("birthplace") or p.get("hometown") or "").strip(" ,") or None,
             "sh": p.get("shoots") or p.get("catches") or None, "ht": p.get("height") or None,
             "wt": int(p["weight"]) if str(p.get("weight", "")).isdigit() else None,
