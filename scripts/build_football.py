@@ -177,6 +177,14 @@ log(f"  {len(people)} players on {len(nodes)} rosters, season {CUR}")
 nfl_pids = [p for p, ns in current.items() if any(nodes[n]["league"] == "NFL" for n in ns)]
 log(f"career logs: {len(nfl_pids)} NFL + {len(people)} college")
 nfl_logs = pool(lambda pid: statlog("nfl", pid), nfl_pids, label="nfl logs")
+# NFL profiles: the draft year anchors a player's NFL start (some record no stats as rookies)
+profiles = pool(lambda pid: fetch_json(f"{CORE}/nfl/athletes/{pid}", ttl=30 * DAY), nfl_pids, label="nfl profiles")
+draft = {}
+for pid, pr in profiles.items():
+    dr = (pr or {}).get("draft") or {}
+    if dr.get("year"):
+        draft[pid] = {"year": int(dr["year"]), "round": dr.get("round"), "pick": dr.get("selection"),
+                      "team": ref_id((dr.get("team") or {}).get("$ref"), "teams")}
 col_logs = pool(lambda pid: statlog("college-football", pid), list(people), label="college logs")
 
 # names for schools in careers that are not on the map (Division II/III, NAIA, defunct programs)
@@ -215,11 +223,19 @@ for pid, a in people.items():
             st.add((y, nid))
     cur_nodes = current[pid]
     is_nfl = any(nodes[n]["league"] == "NFL" for n in cur_nodes)
-    if is_nfl and not any(nodes[r]["league"] != "NFL" if r in nodes else True for _, r in st):
-        col = a.get("college") or {}
-        if col.get("id"):  # no college stats on file: place the school just before the rookie season
-            exp = (a.get("experience") or {}).get("years") or 0
-            st.add((CUR - int(exp) - 1, college_ref(col["id"], col.get("name"))))
+    col = a.get("college") or {}
+    if is_nfl and col.get("id"):
+        # ESPN lists the final school; stats logs miss seasons without stats (e.g. linemen, or a transfer's
+        # last stop), so make sure that school is in the career: right after the last college season on
+        # file, and before the NFL start (draft year, or first NFL season with stats)
+        cref = college_ref(col["id"], col.get("name"))
+        if cref not in {r for _, r in st}:
+            is_col = lambda r: r.startswith("off:") or nodes[r]["league"] != "NFL"
+            col_seasons = [y for y, r in st if is_col(r)]
+            nfl_seasons = [y for y, tid in nfl_logs.get(pid) or []]
+            start = min(([draft[pid]["year"]] if pid in draft else []) + nfl_seasons or [CUR])
+            y = min(max(col_seasons) + 1, start - 1) if col_seasons else start - 1
+            st.add((y, cref))
     for n in cur_nodes:
         if not any(y == CUR and r == n for y, r in st):
             st.add((CUR, n))
@@ -328,8 +344,15 @@ for pid, a in people.items():
     if teams_out[cur[0]]["lg"] == "NFL":
         # NFL season number (the page spells it out). Counted from the first NFL season in the career log;
         # ESPN's experience field is often a season off, so it is only a fallback for players with no NFL stats.
+        # counted from the NFL start: the draft year, or the first NFL season with stats (ESPN's own
+        # experience field is often a season off, so it is only the fallback for undrafted, stat-less players)
         nfl_years = [y for y, r in careers[pid] if r in nodes and nodes[r]["league"] == "NFL" and y < CUR]
-        rec["xp"] = CUR - min(nfl_years) + 1 if nfl_years else max(1, int(xp.get("years") or 0))
+        starts = ([draft[pid]["year"]] if pid in draft else []) + ([min(nfl_years)] if nfl_years else [])
+        rec["xp"] = CUR - min(starts) + 1 if starts else max(1, int(xp.get("years") or 0))
+        if pid in draft:
+            dr = draft[pid]
+            ab = nodes.get(f"NFL-{dr['team']}", {}).get("abbr", "")
+            rec["dr"] = f"{dr['year']} R{dr['round']} #{dr['pick']} {ab}".strip() if dr.get("round") else str(dr["year"])
         col = (a.get("college") or {}).get("name")
         if col:
             rec["col"] = col
