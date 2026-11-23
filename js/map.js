@@ -1482,7 +1482,7 @@ export class HockeyMap {
     const pts = indices.map((i) => this.model.teams[i]).filter((t) => t?.xy).map((t) => t.xy);
     if (!pts.length) return;
     const R = this.viewRect({ padRight, padBottom });
-    const m = this.w < MOBILE ? 18 : 48; // room for badges and labels around the edge teams
+    const m = this.w < MOBILE ? (this.sel.player != null ? 34 : 22) : 48; // room for badges and labels around the edge teams (route badges are drawn larger)
     const x0 = d3.min(pts, (p) => p[0]), x1 = d3.max(pts, (p) => p[0]);
     const y0 = d3.min(pts, (p) => p[1]), y1 = d3.max(pts, (p) => p[1]);
     const availW = Math.max(60, R.x1 - R.x0 - 2 * m), availH = Math.max(60, R.y1 - R.y0 - 2 * m);
