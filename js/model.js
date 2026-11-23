@@ -40,6 +40,9 @@ export function buildModel(data) {
     t.prospects = [];
     t.short = t.nick || t.name;
   });
+  // Which club a career entry is, for ordering: the same club listed under two leagues (a Memorial Cup
+  // run, a 16U team in two circuits) counts as one.
+  const club = (c) => (c[1] >= 0 ? teams[c[1]].name : off[-c[1] - 1].name);
   for (const [a, b] of affiliations) {
     teams[a].affs.add(b);
     teams[b].affs.add(a);
@@ -47,9 +50,7 @@ export function buildModel(data) {
 
   players.forEach((p, i) => {
     p.i = i;
-    // within a season, the team a player is on now comes last (a traded player ended up there)
-    const now = new Set(p.t);
-    p.c.sort((a, b) => a[0] - b[0] || now.has(a[1]) - now.has(b[1]));
+    orderCareer(p, club);
     p.nodes = new Set();
     for (const c of p.c) if (c[1] >= 0) p.nodes.add(c[1]);
     p.curTeams = p.t;
@@ -295,4 +296,63 @@ export function teammatesOf(M, p) {
   for (const q of mates) for (const ti of M.players[q].t) if (!p.t.includes(ti)) rooms.set(ti, (rooms.get(ti) || 0) + 1);
   p._tm = { mates, rooms };
   return p._tm;
+}
+
+// Data gives seasons, not dates, so a season with several teams has no known order. Pick the order that
+// makes the fewest team changes overall (the most plausible path: a call-up continues from where the
+// last season ended and ends where the next one starts), with the team a player is on now last. Ties go
+// to the order whose map route (teams on the map only) makes the fewest moves.
+// A small dynamic programme over seasons; state = (last club, last team on the map).
+function orderCareer(p, club) {
+  const now = new Set(p.t);
+  p.c.sort((a, b) => a[0] - b[0] || now.has(a[1]) - now.has(b[1]));
+  const seasons = [...new Set(p.c.map((c) => c[0]))];
+  if (seasons.length === p.c.length) return; // one team per season: nothing to order
+  let states = [{ last: null, map: null, cost: 0, prev: null, o: null }];
+  seasons.forEach((y, k) => {
+    const g = p.c.filter((c) => c[0] === y);
+    const final = k === seasons.length - 1 && g.some((c) => now.has(c[1]));
+    const orders = seasonOrders(g).filter((o) => !final || now.has(o[o.length - 1][1]));
+    const best = new Map();
+    for (const st of states) {
+      for (const o of orders) {
+        let { last, map, cost } = st;
+        for (const c of o) {
+          const k = club(c);
+          if (last !== null && k !== last) cost += 1000;
+          last = k;
+          if (c[1] >= 0) {
+            if (map !== null && c[1] !== map) cost += 1;
+            map = c[1];
+          }
+        }
+        const key = last + '|' + map;
+        const cur = best.get(key);
+        if (!cur || cost < cur.cost) best.set(key, { last, map, cost, prev: st, o });
+      }
+    }
+    states = [...best.values()];
+  });
+  let st = states.reduce((a, b) => (b.cost < a.cost ? b : a));
+  const out = [];
+  for (; st.prev; st = st.prev) out.unshift(...st.o);
+  p.c = out;
+}
+
+// Every order of a season's teams (seasons rarely hold more than a few). Bigger ones: each first/last
+// pair, keeping the middle in data order.
+function seasonOrders(g) {
+  if (g.length === 1) return [g];
+  if (g.length <= 7) {
+    const out = [];
+    const perm = (rest, acc) => {
+      if (!rest.length) return out.push(acc);
+      rest.forEach((c, i) => perm(rest.filter((_, j) => j !== i), acc.concat([c])));
+    };
+    perm(g, []);
+    return out;
+  }
+  const out = [];
+  for (const F of g) for (const L of g) if (F !== L) out.push([F, ...g.filter((c) => c !== F && c !== L), L]);
+  return out;
 }
